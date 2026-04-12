@@ -21,6 +21,7 @@ internal_thoughts.log
 
 # Release bundle local env
 Release_Build/.env
+Release_Build/antahkarana_kernel/evolution_vault/*.json
 
 # Python cache / virtual environment
 __pycache__/
