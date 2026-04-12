@@ -168,6 +168,18 @@ Run benchmark v1:
 python tools/run_benchmark_v1.py
 ```
 
+Generate grounded benchmark cycles (rate-limit aware):
+
+```powershell
+python tools/generate_benchmark_cycles.py 20 80
+```
+
+Fast mode with capped backoff:
+
+```powershell
+python tools/generate_benchmark_cycles.py 20 80 30
+```
+
 Thresholds live in:
 - `benchmarks/benchmark_v1_thresholds.json`
 

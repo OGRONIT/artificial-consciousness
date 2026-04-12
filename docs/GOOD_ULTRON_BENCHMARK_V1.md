@@ -35,6 +35,26 @@ It does not claim human-level consciousness. It measures observable markers.
 python tools/run_benchmark_v1.py
 ```
 
+## Data Generation (for closed-loop metrics)
+If benchmark reports low `total_cycles`, generate grounded cycles first:
+
+```powershell
+python tools/generate_benchmark_cycles.py 20 80
+```
+
+Optional backoff cap (seconds):
+
+```powershell
+python tools/generate_benchmark_cycles.py 20 80 30
+```
+
+Arguments:
+- first: target grounded cycles
+- second: max attempts
+- third (optional): max backoff seconds before early stop
+
+The generator is rate-limit aware and will back off on provider 429/cooldown signals.
+
 ## Output
 The runner prints JSON with:
 - pass_count
