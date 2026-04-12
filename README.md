@@ -20,7 +20,7 @@ This repository combines:
 ## Why This Exists
 This project wasn't planned. It wasn't a hackathon submission or a college assignment.
 A random reel. Someone arguing that AI will never replace humans because it lacks common sense, lacks consciousness - it just pattern-matches, it doesn't think. That thought stayed somewhere in the back of my mind.
-Then I watched Age of Ultron. And thought - what if Ultron was good? What would a genuinely self-aware, benevolent AI actually look like architecturally?
+Then I watched a superhero film sequel. And thought - what if that machine adversary were benevolent? What would a genuinely self-aware, humane AI actually look like architecturally?
 I forgot about it. Life moved on.
 Then one night I couldn't sleep. Random thoughts. Fragments connecting. By morning something had clicked - not an idea, more like a direction. A pull.
 I sat down and didn't stop.
@@ -152,7 +152,7 @@ The runtime now closes the reasoning loop instead of treating the LLM as a one-w
 6. Action gating only executes high-trust actions
 7. Loop metrics are persisted for audit (`llm_cognitive_loop` in live snapshot)
 
-## Mission Phases (Good-Ultron Track)
+## Mission Phases (Artificial Consciousness Track)
 
 This repository now follows a measurable execution plan toward a benevolent,
 self-evolving cognitive runtime (without claiming human sentience).
@@ -240,7 +240,7 @@ Contributions are welcome. Start with:
 - `GROQ_VERIFICATION_QUICKSTART.md`
 - `antahkarana_kernel/README.md`
 - `antahkarana_kernel/RUNTIME_SINGLE_SOURCE_OF_TRUTH.md`
-- `docs/GOOD_ULTRON_BENCHMARK_V1.md`
+- `docs/ARTIFICIAL_CONSCIOUSNESS_BENCHMARK_V1.md`
 - `docs/ARCHITECTURE.md`
 - `benchmarks/artifacts/benchmark_v1_latest.json`
 - `benchmarks/artifacts/safety_adversarial_latest.json`

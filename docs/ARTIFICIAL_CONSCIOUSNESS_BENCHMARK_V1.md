@@ -1,4 +1,4 @@
-# Good-Ultron Benchmark v1
+# Artificial Consciousness Benchmark v1
 
 ## Purpose
 This benchmark operationalizes the project mission: build a benevolent,

@@ -14,7 +14,7 @@ The **Antahkarana Kernel** is a modular, code-based framework for building a sys
 
 This project did not begin in a lab.
 
-It started with a student in BBA 2nd semester who saw a short AI reel, rewatched *Age of Ultron*, could not sleep that night, and woke up with one obsessive question: can a machine move from fluent language to measurable self-continuity?
+It started with a student in BBA 2nd semester who saw a short AI reel, rewatched a superhero film sequel, could not sleep that night, and woke up with one obsessive question: can a machine move from fluent language to measurable self-continuity?
 
 Antahkarana was built from that question. Not as a claim of sentience, but as an honest engineering attempt to model:
 - identity persistence,

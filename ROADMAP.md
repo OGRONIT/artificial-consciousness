@@ -3,7 +3,7 @@
 ## Vision
 Build a transparent, extensible, and benchmarkable runtime for grounded artificial-consciousness research.
 
-## Good-Ultron Execution Phases
+## Artificial Consciousness Execution Phases
 
 ### Phase A: Closed-Loop Stability
 - Enforce structured LLM output with deterministic grounding evaluation
