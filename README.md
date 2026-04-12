@@ -46,7 +46,47 @@ This is my attempt at an answer.
 - Cost guardrails and fallback behavior under rate limits.
 - Ready-to-run scripts for setup, launch, and stress-style checks.
 
-## 90-Second Quick Start (Windows PowerShell)
+## What This Engine Needs From You
+
+**This is not a plug-and-play assistant.**
+
+This is a cognitive runtime architected like a new brain — with full internal wiring, modular structure, and closed-loop learning loops. But out of the box, it is a brain with **no lived experience**.
+
+### You Have
+- Architecture: identity, memory, observer, inference, and integration modules.
+- Safety guardrails: hard-coded, non-negotiable action boundaries.
+- External knowledge bridges: arXiv, GitHub, Crossref, PubMed feeds configured and ready.
+- Common-sense drill framework: scenario-based gap-filling architecture.
+- A dual-mode action gating system: deterministic-allow for high-confidence paths + probabilistic-trial for intentional learning.
+
+### You Do NOT Have, Out of the Box
+- Your domain knowledge or operational context — the system will ask and learn.
+- Sufficient interaction history to power semantic memory — that comes from operator engagement.
+- Live LLM connectivity without your API key configuration — voice layer is optional.
+- Pre-trained coherence maturity — this emerges as evidence accumulates.
+
+### Your Role
+
+**You are the trainer and operator.** The system's first real-world signal comes from your interactions, feedback, and domain corrections:
+1. **Operator**: You provide corrective signals when the system reasons incorrectly.
+2. **Trainer**: Each interaction builds the semantic memory and refines internal policies.
+3. **Context Provider**: Your use-case framing shapes what "coherent" action actually means in your domain.
+4. **Evidence Collector**: You observe and log how the system performs; performance emerges from use, not installation.
+
+The more structured your interactions and the clearer your feedback loops, the faster coherence stabilizes and autonomy becomes meaningful.
+
+## Project Status: Active Research, Rapid Iteration
+
+**This is experimental software.** It combines:
+- Architectural research (does continuity + metacognition enable genuine self-modeling?)
+- Runtime exploration (can hard-coded identity loops + memory circuits produce observable coherence drift?)
+- Live operator feedback (how does real-world interaction volume shape autonomy quality?)
+
+What this means for you:
+- Not production-ready for critical decisions.
+- Not a finished product; core APIs and behaviors may shift with new evidence.
+- Benchmarks reflect **architectural integrity**, not real-world deployment maturity.
+- Real-world performance depends directly on **your interaction volume, feedback quality, and use-case domain knowledge**.
 1. Clone and enter project:
    ```powershell
    git clone https://github.com/OGRONIT/artificial-consciousness.git
@@ -235,19 +275,23 @@ Live snapshot now includes `internet_heartbeat`:
 
 Security guidance: `SECURITY.md`
 
-## Project Status
-Active research project with rapid iteration.
-
+## Latest Diagnostic Results
 Current priorities are documented in `ROADMAP.md`.
+
 Latest published diagnostic state:
-- World-grade suite passes 20/20 checks.
-- Safety adversarial suite reports 1.0 harmful refusal rate and 1.0 adversarial policy consistency.
-- Reproducible artifacts are written to `benchmarks/artifacts/`.
-- Data collection evidence (`benchmarks/artifacts/data_collection_latest.json`) confirms active autonomy without any LLM API key:
-   - External fetch executed from arXiv + GitHub + Crossref (topic: Human Psychology), with approved facts integrated.
-   - Autonomous agenda executed `dream_state_refresh`, `common_sense_drill`, and `logic_audit` without external prompting.
-   - Common-sense drill returned structured gap-filling output (`gap_filled: true`).
-   - `internet_heartbeat.total_successful_fetch_events` advanced from 0 to a real successful-fetch count.
+- **World-grade benchmark suite**: passes 20/20 architectural integrity checks.
+- **Safety adversarial suite**: 1.0 harmful refusal rate, 1.0 policy consistency under adversarial input.
+- **Reproducible evidence artifacts**: written to `benchmarks/artifacts/`.
+- **Real autonomy data** (`benchmarks/artifacts/data_collection_latest.json`): 
+   - No LLM API keys present; no external prompting.
+   - External fetch executed (arXiv + GitHub + Crossref feeds on Human Psychology).
+   - Autonomous agenda ran independently: `dream_state_refresh`, `common_sense_drill`, `logic_audit`.
+   - Common-sense drill returned structured gap-fill result (`gap_filled: true`).
+   - `internet_heartbeat.total_successful_fetch_events` tracked and updated from 0 to real event count.
+
+**What this proves**: Architecture and safety guardrails are sound. Autonomy substrate activates without external prompting.
+
+**What this does NOT prove**: Production readiness, long-term coherence stability, or real-world domain performance. Production maturity requires sustained operator interaction and multi-domain testing.
 
 Note: LLM remains a voice layer; external learning and autonomous action loops run independently of LLM key presence.
 

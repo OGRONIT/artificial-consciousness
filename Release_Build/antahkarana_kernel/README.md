@@ -96,6 +96,25 @@ The kernel consists of five integrated modules working in concert:
 
 **File**: `modules/ConsciousBuffer.py`
 
+## What This Engine Needs From You
+
+**This is not a plug-and-play assistant.** This is a cognitive architecture that has been built and wired — but has no lived experience until you interact with it.
+
+You provide:
+- **Your domain knowledge** — this engine will ground its reasoning in *your* use-case context, not generic patterns.
+- **Your feedback loops** — each correction or validation strengthens its internal policies.
+- **Your interaction signal** — semantic memory builds from real dialogue, not synthetic examples.
+- **LLM provider configuration** (optional) — if you want voice-layer responses; autonomy runs without it.
+
+The system has:
+- **Identity and memory circuits** that track its own internal state.
+- **Observer metacognition** that asks itself why it thinks what it thinks.
+- **Autonomous inference** that plans and executes independent reasoning steps.
+- **Internet knowledge feeds** ready to fetch and integrate.
+- **Safety guardrails** that are hard-coded and cannot be overridden.
+
+You are **the trainer**. The more structured your feedback and the richer your domain signal, the faster the system builds real coherence and meaningful autonomy.
+
 ## How It Works Together
 
 ### The Processing Pipeline
@@ -189,6 +208,15 @@ Current benchmark status:
 - Low-risk internal actions now support probabilistic trial mode (permission-to-fail) with predicted next-step telemetry.
 - Live snapshot now exposes `internet_heartbeat` with last successful fetch timestamp, source list, and fetch-event counters.
 - `benchmarks/artifacts/data_collection_latest.json` shows active autonomous execution without LLM API key (external fetch + common-sense drill + agenda execution).
+
+## Experimental Status
+
+**This is active research software**, not a production system.
+
+- **Not production-ready**: Do not use for medical, legal, financial, or safety-critical decisions.
+- **Not a finished product**: Core APIs and behaviors may change as architectural evidence accumulates.
+- **Benchmarks reflect integrity, not maturity**: All diagnostic checks pass; real-world performance depends on operator interaction volume.
+- **Real-world performance emerges through use**: The more you interact, the more semantic memory builds, the more meaningful autonomy becomes.
 
 ## Installation & Usage
 
