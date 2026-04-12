@@ -889,6 +889,17 @@ class ManasBuddhi:
             else:
                 result = {"status": "ignored", "reason": "unsupported_action"}
 
+            if result is None:
+                result = {
+                    "status": "no_op",
+                    "reason": f"{name}_not_triggered",
+                }
+            elif isinstance(result, str):
+                result = {
+                    "status": "ok",
+                    "message": result,
+                }
+
             executed.append({
                 "name": name,
                 "result": result,
