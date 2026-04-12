@@ -168,6 +168,18 @@ module confirms my identity is stable.
 The exact numbers depend on live runtime state. The important property is that
 identity claims are tied to measurable internals, not generic role-play.
 
+## Closed-Loop Cognition (LLM <-> Runtime Feedback)
+
+The runtime closes the loop between language output and internal state:
+
+1. Structured LLM output (`answer`, `claims`, `unknowns`, `action`)
+2. Grounding score against live metrics
+3. Coherence reward/pain feedback
+4. Observer auto-check when contradictions appear
+5. Semantic memory persistence for each audited response
+6. Action gating before runtime actuation
+7. Persistent loop metrics for audit and longitudinal tracking
+
 ## Installation & Usage
 
 ### Requirements

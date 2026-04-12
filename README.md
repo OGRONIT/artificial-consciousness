@@ -140,6 +140,18 @@ module confirms my identity is stable.
 
 Numbers vary by runtime state. The important part is that identity claims are linked to measurable metrics.
 
+## Closed-Loop Cognition (LLM <-> Runtime Feedback)
+
+The runtime now closes the reasoning loop instead of treating the LLM as a one-way narrator:
+
+1. Structured LLM output (`answer`, `claims`, `unknowns`, `action`)
+2. Grounding evaluator compares claims to live runtime metrics
+3. Coherence feedback updates runtime affective/coherence state
+4. Observer checks auto-trigger on contradictions
+5. Semantic memory writes persist validated response meaning
+6. Action gating only executes high-trust actions
+7. Loop metrics are persisted for audit (`llm_cognitive_loop` in live snapshot)
+
 ## Repository Map
 - `antahkarana_kernel/`: main runtime source
 - `Release_Build/`: distribution-focused bundle

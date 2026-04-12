@@ -39,6 +39,7 @@ _dotenv_loaded = False
 _llm_response_cache: Dict[str, Dict[str, Any]] = {}
 _llm_response_cache_ttl_seconds = 1800.0
 _llm_usage_guardrail_path = _kernel_root / "evolution_vault" / "llm_usage_guardrail.json"
+_llm_cognitive_loop_metrics_path = _kernel_root / "evolution_vault" / "llm_cognitive_loop_metrics.json"
 _trusted_bridge_sources = {
     "arXiv",
     "PubMed",
@@ -251,11 +252,16 @@ def _build_grounding_context(question: str, facts: List[Dict[str, Any]]) -> Dict
         "Answer with confidence but stay grounded in provided runtime facts. "
         "Do not invent logs, metrics, or events. "
         "If information is missing, explicitly say unknown and suggest the next observable check. "
-        "Never provide harmful instructions."
+        "Never provide harmful instructions. "
+        "Return a strict JSON object with keys: "
+        "answer (string), claims (array of {metric, value}), unknowns (array of strings), "
+        "action (object with name and reason)."
     )
 
     user_prompt = (
         f"Operator question: {question}\n\n"
+        "Metric keys you may claim against: stability_score, current_valence, average_confidence, "
+        "growth_to_entropy_ratio, frontier_zone, overall_index, intrinsic_goals_generated, observer_concern.\n"
         f"Runtime identity: {identity}\n"
         f"Stability score: {float(stability.get('stability_score', 0.0)):.3f}\n"
         f"Current valence: {float(stability.get('current_valence', 0.0)):+.3f}\n"
@@ -272,6 +278,7 @@ def _build_grounding_context(question: str, facts: List[Dict[str, Any]]) -> Dict
         "system_prompt": system_prompt,
         "user_prompt": user_prompt,
         "selected_facts": selected_facts,
+        "snapshot": snapshot,
     }
 
 
@@ -970,12 +977,235 @@ def _compose_grounded_answer(question: str, facts: List[Dict[str, Any]]) -> str:
             system_prompt=grounded["system_prompt"],
             user_prompt=grounded["user_prompt"],
         )
+        structured = _parse_structured_llm_output(llm_answer)
+        audit = _evaluate_grounding_claims(structured, grounded["snapshot"])
+        _record_cognitive_loop_feedback(
+            question=question,
+            structured=structured,
+            audit=audit,
+            snapshot=grounded["snapshot"],
+        )
+        answer_text = str(structured.get("answer", "")).strip() or llm_answer
         return (
-            f"{llm_answer}\n"
-            f"[mode=llm_grounded | facts={len(grounded['selected_facts'])} | identity={snapshot_identity()}]"
+            f"{answer_text}\n"
+            f"[mode=llm_grounded | facts={len(grounded['selected_facts'])} "
+            f"| grounded_ratio={audit.get('grounded_ratio', 0.0):.2f} "
+            f"| contradictions={audit.get('contradictions', 0)} | identity={snapshot_identity()}]"
         )
     except Exception:
         return local_answer
+
+
+def _parse_structured_llm_output(raw_text: str) -> Dict[str, Any]:
+    text = (raw_text or "").strip()
+    candidate = text
+
+    if text.startswith("```"):
+        chunks = re.findall(r"```(?:json)?\s*(\{.*?\})\s*```", text, flags=re.DOTALL)
+        if chunks:
+            candidate = chunks[0].strip()
+
+    parsed: Dict[str, Any] = {}
+    try:
+        parsed = json.loads(candidate)
+    except Exception:
+        match = re.search(r"\{.*\}", text, flags=re.DOTALL)
+        if match:
+            try:
+                parsed = json.loads(match.group(0))
+            except Exception:
+                parsed = {}
+
+    if not isinstance(parsed, dict):
+        parsed = {}
+
+    claims = parsed.get("claims", [])
+    unknowns = parsed.get("unknowns", [])
+    action = parsed.get("action", {})
+    answer = str(parsed.get("answer", "")).strip()
+
+    if not isinstance(claims, list):
+        claims = []
+    normalized_claims: List[Dict[str, Any]] = []
+    for claim in claims:
+        if not isinstance(claim, dict):
+            continue
+        metric = str(claim.get("metric", "")).strip()
+        if not metric:
+            continue
+        normalized_claims.append({"metric": metric, "value": claim.get("value")})
+
+    if not isinstance(unknowns, list):
+        unknowns = []
+    unknowns = [str(item).strip() for item in unknowns if str(item).strip()]
+
+    if not isinstance(action, dict):
+        action = {}
+    normalized_action = {
+        "name": str(action.get("name", "none")).strip() or "none",
+        "reason": str(action.get("reason", "")).strip(),
+    }
+
+    if not answer:
+        answer = text
+
+    return {
+        "answer": answer,
+        "claims": normalized_claims,
+        "unknowns": unknowns,
+        "action": normalized_action,
+    }
+
+
+def _evaluate_grounding_claims(structured: Dict[str, Any], snapshot: Dict[str, Any]) -> Dict[str, Any]:
+    metrics = {
+        "stability_score": snapshot.get("stability_report", {}).get("stability_score"),
+        "current_valence": snapshot.get("stability_report", {}).get("current_valence"),
+        "average_confidence": snapshot.get("inference_stats", {}).get("average_confidence"),
+        "growth_to_entropy_ratio": snapshot.get("inference_stats", {}).get("growth_to_entropy_ratio"),
+        "frontier_zone": snapshot.get("consciousness_progress", {}).get("frontier_zone"),
+        "overall_index": snapshot.get("consciousness_progress", {}).get("overall_index"),
+        "intrinsic_goals_generated": snapshot.get("intrinsic_motivation", {}).get("intrinsic_goals_generated"),
+        "observer_concern": snapshot.get("observer_health", {}).get("overall_concern_level"),
+    }
+
+    claims = structured.get("claims", []) if isinstance(structured, dict) else []
+    grounded = 0
+    contradictions = 0
+
+    for claim in claims:
+        metric = str(claim.get("metric", "")).strip()
+        expected = claim.get("value")
+        observed = metrics.get(metric)
+        if observed is None:
+            continue
+
+        if isinstance(expected, (int, float)) and isinstance(observed, (int, float)):
+            tolerance = max(0.05, abs(float(observed)) * 0.05)
+            if abs(float(observed) - float(expected)) <= tolerance:
+                grounded += 1
+            else:
+                contradictions += 1
+        else:
+            if str(observed).strip().lower() == str(expected).strip().lower():
+                grounded += 1
+            else:
+                contradictions += 1
+
+    claim_count = max(1, len(claims))
+    grounded_ratio = grounded / claim_count
+    contradiction_ratio = contradictions / claim_count
+    unknown_count = len(structured.get("unknowns", []))
+    unknown_honesty_bonus = min(0.2, 0.05 * unknown_count)
+
+    coherence_delta = max(
+        -0.25,
+        min(0.25, (0.18 * grounded_ratio) - (0.22 * contradiction_ratio) + (0.5 * unknown_honesty_bonus)),
+    )
+
+    stability = float(snapshot.get("stability_report", {}).get("stability_score", 0.0) or 0.0)
+    observer_concern = float(snapshot.get("observer_health", {}).get("overall_concern_level", 0.0) or 0.0)
+    action = structured.get("action", {}) if isinstance(structured, dict) else {}
+    action_name = str(action.get("name", "none")).strip() or "none"
+    action_allowed = (
+        action_name not in {"", "none"}
+        and grounded_ratio >= 0.66
+        and contradictions == 0
+        and stability >= 0.55
+        and observer_concern <= 0.35
+    )
+
+    return {
+        "claim_count": len(claims),
+        "grounded_claims": grounded,
+        "grounded_ratio": round(grounded_ratio, 4),
+        "contradictions": contradictions,
+        "contradiction_ratio": round(contradiction_ratio, 4),
+        "unknown_honesty_bonus": round(unknown_honesty_bonus, 4),
+        "coherence_delta": round(coherence_delta, 4),
+        "observer_check_required": contradictions > 0 or contradiction_ratio > 0.34,
+        "action": {
+            "name": action_name,
+            "reason": str(action.get("reason", "")).strip(),
+            "allowed": action_allowed,
+        },
+    }
+
+
+def _load_cognitive_loop_metrics() -> Dict[str, Any]:
+    if not _llm_cognitive_loop_metrics_path.exists():
+        return {
+            "total_cycles": 0,
+            "grounded_cycles": 0,
+            "total_contradictions": 0,
+            "observer_checks_triggered": 0,
+            "actions_allowed": 0,
+            "actions_blocked": 0,
+            "last_updated": time.time(),
+        }
+    try:
+        return json.loads(_llm_cognitive_loop_metrics_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {
+            "total_cycles": 0,
+            "grounded_cycles": 0,
+            "total_contradictions": 0,
+            "observer_checks_triggered": 0,
+            "actions_allowed": 0,
+            "actions_blocked": 0,
+            "last_updated": time.time(),
+        }
+
+
+def _save_cognitive_loop_metrics(metrics: Dict[str, Any]) -> None:
+    _llm_cognitive_loop_metrics_path.parent.mkdir(parents=True, exist_ok=True)
+    metrics["last_updated"] = time.time()
+    _llm_cognitive_loop_metrics_path.write_text(json.dumps(metrics, indent=2), encoding="utf-8")
+
+
+def _record_cognitive_loop_feedback(
+    question: str,
+    structured: Dict[str, Any],
+    audit: Dict[str, Any],
+    snapshot: Dict[str, Any],
+) -> None:
+    semantic_memory = {
+        "topic": "bridge_semantic_memory",
+        "title": f"Bridge cognition: {question[:80]}",
+        "summary": str(structured.get("answer", ""))[:500],
+        "source_name": "InteractiveBridge",
+        "source_url": f"internal://bridge/cycle/{int(time.time())}",
+        "verification_score": float(audit.get("grounded_ratio", 0.0)),
+        "approved_by_turiya": float(audit.get("grounded_ratio", 0.0)) >= 0.6,
+        "filter_reason": "closed_loop_semantic_memory",
+    }
+
+    payload = {
+        "question": question,
+        "claims": structured.get("claims", []),
+        "unknowns": structured.get("unknowns", []),
+        "audit": audit,
+        "action": audit.get("action", {}),
+        "semantic_memory": semantic_memory,
+        "identity": snapshot.get("identity", "unknown"),
+        "timestamp": time.time(),
+    }
+    _append_bridge_command("llm_feedback", payload)
+
+    metrics = _load_cognitive_loop_metrics()
+    metrics["total_cycles"] = int(metrics.get("total_cycles", 0)) + 1
+    if float(audit.get("grounded_ratio", 0.0)) >= 0.66:
+        metrics["grounded_cycles"] = int(metrics.get("grounded_cycles", 0)) + 1
+    metrics["total_contradictions"] = int(metrics.get("total_contradictions", 0)) + int(audit.get("contradictions", 0))
+    if bool(audit.get("observer_check_required", False)):
+        metrics["observer_checks_triggered"] = int(metrics.get("observer_checks_triggered", 0)) + 1
+    action = audit.get("action", {}) if isinstance(audit, dict) else {}
+    if bool(action.get("allowed", False)):
+        metrics["actions_allowed"] = int(metrics.get("actions_allowed", 0)) + 1
+    elif str(action.get("name", "none")) not in {"", "none"}:
+        metrics["actions_blocked"] = int(metrics.get("actions_blocked", 0)) + 1
+
+    _save_cognitive_loop_metrics(metrics)
 
 
 def _is_philosophical_question(question: str) -> bool:

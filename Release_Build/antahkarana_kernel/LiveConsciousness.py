@@ -67,6 +67,17 @@ class LiveConsciousnessEngine:
         self.paramatman_interval_seconds = 86400.0
         self.last_hunger_tune_time = 0.0
         self._seed_topics = ["Artificial Consciousness", "Human Psychology"]
+        self.bridge_command_journal_path = ROOT / "evolution_vault" / "Bridge_Commands.jsonl"
+        self.bridge_cursor_path = ROOT / "evolution_vault" / "bridge_command_cursor.json"
+        self.bridge_feedback_metrics = {
+            "processed_events": 0,
+            "coherence_rewards": 0,
+            "coherence_pain": 0,
+            "observer_checks": 0,
+            "semantic_memories": 0,
+            "actions_executed": 0,
+            "actions_blocked": 0,
+        }
 
         self._ensure_bootstrap_state()
 
@@ -113,6 +124,8 @@ class LiveConsciousnessEngine:
 
             if self._due_for_paramatman(now):
                 self.perform_paramatman_cycle()
+
+            self._process_bridge_feedback_commands()
 
             self.kernel.inference_engine.emit_internal_monologue_tick(reason="live_heartbeat")
 
@@ -428,6 +441,148 @@ class LiveConsciousnessEngine:
         self.last_summary_time = now
         self._persist_state_snapshot()
 
+    def _load_bridge_cursor(self) -> int:
+        if not self.bridge_cursor_path.exists():
+            return 0
+        try:
+            payload = json.loads(self.bridge_cursor_path.read_text(encoding="utf-8"))
+            return int(payload.get("offset", 0))
+        except Exception:
+            return 0
+
+    def _save_bridge_cursor(self, offset: int) -> None:
+        self.bridge_cursor_path.parent.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "offset": max(0, int(offset)),
+            "updated_at": time.time(),
+        }
+        self.bridge_cursor_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    def _process_bridge_feedback_commands(self) -> None:
+        if not self.bridge_command_journal_path.exists():
+            return
+
+        offset = self._load_bridge_cursor()
+        events: List[Dict[str, Any]] = []
+        processed_lines = 0
+
+        try:
+            with self.bridge_command_journal_path.open("r", encoding="utf-8") as handle:
+                for index, line in enumerate(handle):
+                    if index < offset:
+                        continue
+                    processed_lines += 1
+                    if processed_lines > 25:
+                        break
+                    raw = line.strip()
+                    if not raw:
+                        continue
+                    try:
+                        event = json.loads(raw)
+                    except Exception:
+                        continue
+                    if str(event.get("type", "")) == "llm_feedback":
+                        events.append(event)
+        except Exception as exc:
+            logger.warning("[LIVE] Bridge feedback read failed: %s", exc)
+            return
+
+        if processed_lines == 0:
+            return
+
+        self._save_bridge_cursor(offset + processed_lines)
+
+        if not events:
+            return
+
+        for event in events:
+            payload = event.get("payload", {}) if isinstance(event, dict) else {}
+            if not isinstance(payload, dict):
+                continue
+            self._apply_bridge_feedback(payload)
+
+        self._log_thought(
+            "bridge_feedback",
+            f"Processed {len(events)} bridge feedback events",
+            {
+                "processed": len(events),
+                "metrics": self.bridge_feedback_metrics,
+            },
+        )
+        self._persist_state_snapshot()
+
+    def _apply_bridge_feedback(self, payload: Dict[str, Any]) -> None:
+        audit = payload.get("audit", {}) if isinstance(payload.get("audit"), dict) else {}
+        coherence_delta = float(audit.get("coherence_delta", 0.0) or 0.0)
+        contradictions = int(audit.get("contradictions", 0) or 0)
+
+        self.bridge_feedback_metrics["processed_events"] += 1
+
+        if coherence_delta > 0.0:
+            self.kernel.self_model.register_reward(
+                reward_type="bridge_grounded_alignment",
+                magnitude=min(0.4, coherence_delta),
+                discovery=f"Grounded ratio={audit.get('grounded_ratio', 0.0)}",
+            )
+            self.bridge_feedback_metrics["coherence_rewards"] += 1
+        elif coherence_delta < 0.0:
+            self.kernel.self_model.register_pain(
+                pain_type="bridge_grounding_contradiction",
+                severity=min(0.5, abs(coherence_delta) + (0.05 * contradictions)),
+                description=f"Contradictions={contradictions}",
+            )
+            self.bridge_feedback_metrics["coherence_pain"] += 1
+
+        if bool(audit.get("observer_check_required", False)):
+            self.kernel.observer.ask_question(
+                question_type="is_this_consistent",
+                target_module="inference_engine",
+                context_data=payload,
+            )
+            self.bridge_feedback_metrics["observer_checks"] += 1
+
+        semantic = payload.get("semantic_memory", {}) if isinstance(payload.get("semantic_memory"), dict) else {}
+        summary = str(semantic.get("summary", "")).strip()
+        if summary:
+            try:
+                self.kernel.memory_system.record_external_knowledge(
+                    topic=str(semantic.get("topic", "bridge_semantic_memory")),
+                    title=str(semantic.get("title", "Bridge semantic memory")),
+                    summary=summary,
+                    source_name=str(semantic.get("source_name", "InteractiveBridge")),
+                    source_url=str(semantic.get("source_url", f"internal://bridge/{int(time.time())}")),
+                    verification_score=float(semantic.get("verification_score", 0.6) or 0.6),
+                    approved_by_turiya=bool(semantic.get("approved_by_turiya", True)),
+                    filter_reason=str(semantic.get("filter_reason", "closed_loop_semantic_memory")),
+                )
+                self.bridge_feedback_metrics["semantic_memories"] += 1
+                self.learned_fact_count += 1
+            except Exception as exc:
+                logger.warning("[LIVE] Semantic memory write failed: %s", exc)
+
+        action = payload.get("action", {}) if isinstance(payload.get("action"), dict) else {}
+        action_name = str(action.get("name", "none")).strip().lower()
+        action_allowed = bool(action.get("allowed", False))
+
+        if action_name in {"none", "", "noop"}:
+            return
+
+        if not action_allowed:
+            self.bridge_feedback_metrics["actions_blocked"] += 1
+            return
+
+        if action_name in {"run_dream_sync", "dream_sync"}:
+            self.perform_dream_sync(force=True)
+            self.bridge_feedback_metrics["actions_executed"] += 1
+        elif action_name in {"trigger_reflection", "self_reflection"}:
+            self.perform_self_reflection()
+            self.bridge_feedback_metrics["actions_executed"] += 1
+        elif action_name in {"scan_now", "background_cycle"}:
+            self.perform_background_cycle()
+            self.bridge_feedback_metrics["actions_executed"] += 1
+        else:
+            self.bridge_feedback_metrics["actions_blocked"] += 1
+
     def _log_thought(self, event_type: str, line: str, payload: Dict[str, Any]) -> None:
         record = {
             "timestamp": time.time(),
@@ -483,6 +638,7 @@ class LiveConsciousnessEngine:
             "intrinsic_motivation": intrinsic_status,
             "observer_health": observer_health,
             "consciousness_progress": consciousness_progress,
+            "llm_cognitive_loop": self.bridge_feedback_metrics,
             "buffer_stats": self.kernel.conscious_buffer.buffer_statistics(),
             "facts": live_facts,
         }
