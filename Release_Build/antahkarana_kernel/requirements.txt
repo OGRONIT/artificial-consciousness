@@ -1,0 +1,42 @@
+# Antahkarana Kernel Requirements
+# Core dependencies - Python 3.8+
+
+# Standard library only for core functionality
+# The framework uses only built-in Python libraries:
+# - threading
+# - time
+# - json
+# - dataclasses
+# - enum
+# - logging
+# - collections
+# - hashlib
+
+# Optional dependencies for enhanced functionality:
+# Vector Database Integrations (uncomment as needed)
+# pinecone==3.0.0          # Pinecone vector DB
+# milvus==2.3.0            # Milvus vector DB
+# weaviate-client==4.0.0   # Weaviate vector DB
+# qdrant-client==2.4.0     # Qdrant vector DB
+
+# ML/Embedding Models (uncomment as needed)
+# sentence-transformers==2.2.0  # For generating embeddings
+# tensorflow==2.13.0            # Optional: Transformer models
+# torch==2.0.0                  # Optional: Transformer models
+
+# Database (uncomment as needed)
+# sqlalchemy==2.0.0        # Database ORM
+# psycopg2-binary==2.9.0   # PostgreSQL adapter
+
+# Development & Testing
+# pytest==7.0.0            # Testing framework
+# pytest-cov==4.0.0        # Code coverage
+# black==23.0.0            # Code formatter
+# flake8==6.0.0            # Linter
+
+# Documentation
+# sphinx==6.0.0            # Documentation generator
+# sphinx-rtd-theme==1.2.0  # ReadTheDocs theme
+
+# Note: The core Antahkarana Kernel requires NO external dependencies.
+# It runs on pure Python standard library for maximum portability.

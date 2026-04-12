@@ -1,0 +1,33 @@
+# Secrets / local environment
+.env
+.env.*
+!.env.example
+
+# Runtime-generated logs
+evolution_logs/
+antahkarana_kernel/evolution_logs/
+
+# Runtime state snapshots and personal telemetry
+evolution_vault/*.json
+evolution_vault/*.jsonl
+antahkarana_kernel/evolution_vault/*.json
+antahkarana_kernel/evolution_vault/*.jsonl
+
+# Local live state files
+live_engine_state.json
+antahkarana_kernel/live_engine_state.json
+antahkarana_kernel/inference_heartbeat.json
+internal_thoughts.log
+
+# Release bundle local env
+Release_Build/.env
+
+# Python cache / virtual environment
+__pycache__/
+*.py[cod]
+.venv/
+
+# Runtime local artifacts
+*.log
+*.lock
+*.db

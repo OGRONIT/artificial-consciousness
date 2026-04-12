@@ -1,0 +1,133 @@
+{
+  "kernel": {
+    "identity_name": "AntahkaranaKernel_v1",
+    "enable_logging": true,
+    "log_level": "INFO",
+    "startup_behavior": "full"
+  },
+  
+  "ahamkara": {
+    "description": "Self-Identity Module Configuration",
+    "enable_state_snapshots": true,
+    "snapshot_interval_seconds": 60,
+    "enable_contradiction_tracking": true,
+    "coherence_threshold_warning": 0.5,
+    "coherence_threshold_critical": 0.3
+  },
+  
+  "chitta": {
+    "description": "Experiential Memory Module Configuration",
+    "max_local_memories": 10000,
+    "memory_retention_hours": 720,
+    "enable_clustering": true,
+    "clustering_threshold": 0.7,
+    "vector_db": {
+      "enabled": false,
+      "provider": null,
+      "options": ["pinecone", "milvus", "weaviate", "qdrant"],
+      "dimension": 384,
+      "metric": "cosine"
+    },
+    "learning_value_weights": {
+      "failure_bonus": 0.3,
+      "conflict_bonus": 0.2,
+      "coherence_change_bonus": 0.2
+    }
+  },
+  
+  "manas_buddhi": {
+    "description": "Inference & Logic Loop Configuration",
+    "max_dream_simulations": 5,
+    "max_recalculations": 3,
+    "enable_caching": true,
+    "cache_size": 1000,
+    "inference_timeout_seconds": 5.0,
+    "confidence_threshold_for_commitment": 0.6,
+    "validation_rules": []
+  },
+  
+  "conscious_buffer": {
+    "description": "Global Workspace Theory Integration",
+    "max_buffer_size": 1000,
+    "max_event_window_seconds": 3600,
+    "enable_coherence_analysis": true,
+    "coherence_analysis_window": 50,
+    "broadcast_notification_enabled": true,
+    "working_memory_max_items": 100
+  },
+  
+  "turiya": {
+    "description": "Observer Watchdog Configuration",
+    "check_interval_seconds": 5.0,
+    "question_probability": 0.3,
+    "enable_anomaly_detection": true,
+    "anomaly_severity_threshold": 0.6,
+    "concern_level_warning": 0.5,
+    "concern_level_critical": 0.8,
+    "observation_history_size": 1000,
+    "question_types": [
+      "why_that_decision",
+      "who_are_you_responding_as",
+      "is_this_consistent",
+      "what_did_you_learn",
+      "are_you_healthy",
+      "explain_your_logic",
+      "detect_contradiction",
+      "assess_confidence"
+    ]
+  },
+  
+  "integration": {
+    "enable_cross_module_communication": true,
+    "broadcast_all_decisions": true,
+    "record_all_interactions": true,
+    "auto_recovery": true,
+    "persistence": {
+      "enabled": true,
+      "save_interval_seconds": 300,
+      "save_directory": "./consciousness_saves",
+      "backup_count": 5
+    }
+  },
+  
+  "advanced": {
+    "enable_dream_cycle_optimization": true,
+    "enable_predictive_preprocessing": true,
+    "enable_meta_learning": true,
+    "consciousness_metric_calculation": "weighted_average",
+    "consciousness_metric_weights": {
+      "self_model_integrity": 0.3,
+      "memory_stability": 0.2,
+      "inference_confidence": 0.2,
+      "coherence_score": 0.2,
+      "observer_health": 0.1
+    }
+  },
+  
+  "debug": {
+    "enable_detailed_logging": false,
+    "verbose_module_communication": false,
+    "track_all_variables": false,
+    "enable_performance_profiling": false
+  },
+
+  "bridge": {
+    "description": "Interactive bridge voice layer settings",
+    "llm": {
+      "provider": "groq",
+      "enabled": true,
+      "base_url": "https://api.groq.com/openai/v1/chat/completions",
+      "api_key_env": "GROQ_API_KEY",
+      "model": "llama-3.3-70b-versatile",
+      "temperature": 0.35,
+      "max_tokens": 500,
+      "timeout_seconds": 18,
+      "groq_quickstart": {
+        "provider": "groq",
+        "base_url": "https://api.groq.com/openai/v1/chat/completions",
+        "api_key_env": "GROQ_API_KEY",
+        "model": "llama-3.3-70b-versatile"
+      }
+    }
+  }
+}

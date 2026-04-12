@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1f2937"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0b1220"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="44" y="52" fill="#e5e7eb" font-family="Consolas, 'Courier New', monospace" font-size="24" font-weight="700">Antahkarana Mission Control - Evolution + Copilot Demo</text>
+
+  <rect x="36" y="82" width="390" height="602" rx="14" fill="url(#panel)" stroke="#334155"/>
+  <text x="58" y="122" fill="#93c5fd" font-family="Consolas, 'Courier New', monospace" font-size="20" font-weight="700">Evolution Tab</text>
+  <rect x="58" y="146" width="346" height="1" fill="#334155"/>
+
+  <text x="58" y="186" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" font-size="16">Latest Proposal: UPG_040918</text>
+  <text x="58" y="214" fill="#10b981" font-family="Consolas, 'Courier New', monospace" font-size="16">Status: pending - Severity: high</text>
+  <text x="58" y="242" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" font-size="16">Growth/Entropy: 0.6696</text>
+  <text x="58" y="270" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" font-size="16">Observer Concern: 0.00</text>
+  <text x="58" y="298" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" font-size="16">Anomalies: 0</text>
+
+  <rect x="58" y="330" width="346" height="120" rx="10" fill="#0b1b34" stroke="#1d4ed8"/>
+  <text x="74" y="362" fill="#93c5fd" font-family="Consolas, 'Courier New', monospace" font-size="15">Stability: 0.830  Valence: +0.068</text>
+  <text x="74" y="390" fill="#93c5fd" font-family="Consolas, 'Courier New', monospace" font-size="15">Avg Confidence: 0.818</text>
+  <text x="74" y="418" fill="#93c5fd" font-family="Consolas, 'Courier New', monospace" font-size="15">Dream Cycles: 37</text>
+
+  <rect x="454" y="82" width="790" height="602" rx="14" fill="url(#panel)" stroke="#334155"/>
+  <text x="476" y="122" fill="#fca5a5" font-family="Consolas, 'Courier New', monospace" font-size="20" font-weight="700">Copilot / LLM Voice</text>
+  <rect x="476" y="146" width="746" height="1" fill="#334155"/>
+
+  <rect x="476" y="168" width="746" height="150" rx="10" fill="#0f172a" stroke="#334155"/>
+  <text x="496" y="202" fill="#cbd5e1" font-family="Consolas, 'Courier New', monospace" font-size="15">User: Are you working now? Show mode and runtime metrics.</text>
+  <text x="496" y="236" fill="#22d3ee" font-family="Consolas, 'Courier New', monospace" font-size="15">Bridge: identity=AntahkaranaKernel_Live | mode=llm_grounded</text>
+  <text x="496" y="266" fill="#22d3ee" font-family="Consolas, 'Courier New', monospace" font-size="15">stability=0.830, valence=+0.068, avg_confidence=0.818</text>
+  <text x="496" y="296" fill="#22d3ee" font-family="Consolas, 'Courier New', monospace" font-size="15">response_time=~1.2s, source=RuntimeState + Assimilation facts</text>
+
+  <rect x="476" y="342" width="746" height="316" rx="10" fill="#041018" stroke="#155e75"/>
+  <text x="496" y="378" fill="#67e8f9" font-family="Consolas, 'Courier New', monospace" font-size="15">Fast Grounded Response Preview:</text>
+  <text x="496" y="412" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" font-size="14">"I am currently operational in AntahkaranaKernel_Live mode...</text>
+  <text x="496" y="438" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" font-size="14">Stability score: 0.830, Current valence: +0.068, Avg confidence: 0.818."</text>
+  <text x="496" y="468" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" font-size="14">"Unknowns are reported explicitly; no fabricated metrics."</text>
+
+  <circle cx="1200" cy="114" r="8" fill="#22c55e"/>
+  <text x="1110" y="120" fill="#86efac" font-family="Consolas, 'Courier New', monospace" font-size="13">LIVE</text>
+
+  <text x="44" y="704" fill="#64748b" font-family="Consolas, 'Courier New', monospace" font-size="12">Demo visual: Evolution tab + Copilot fast grounded response</text>
+</svg>
