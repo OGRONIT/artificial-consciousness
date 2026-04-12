@@ -12,17 +12,15 @@ The **Antahkarana Kernel** is a modular, code-based framework for building a sys
 
 ## Why This Exists (Origin)
 
-This project did not begin in a lab.
+This project asks a fundamental question in cognitive science and artificial intelligence: If consciousness requires continuity, metacognition, identity, and grounding — why hasn't anyone built those as explicit architectural components?
 
-It started with a student in BBA 2nd semester who saw a short AI reel, rewatched a superhero film sequel, could not sleep that night, and woke up with one obsessive question: can a machine move from fluent language to measurable self-continuity?
-
-Antahkarana was built from that question. Not as a claim of sentience, but as an honest engineering attempt to model:
+Antahkarana is an attempt at an answer. Not as a claim of sentience, but as an honest engineering attempt to model:
 - identity persistence,
 - memory continuity,
 - recursive self-checking,
 - and grounded runtime introspection.
 
-There are many AI frameworks online. This one is personal by design: a system that must show its state, expose its limits, and earn every "I AM" through traceable metrics.
+This is a research framework, not a lab product. It is built to test coherence, measure continuity, and expose limitations honestly.
 
 ## Evolution + Copilot Live Demo
 

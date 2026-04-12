@@ -18,16 +18,13 @@ This repository combines:
 ![Evolution + Copilot Runtime View](antahkarana_kernel/assets/evolution-copilot-fast-response.svg)
 
 ## Why This Exists
-This project wasn't planned. It wasn't a hackathon submission or a college assignment.
-A random reel. Someone arguing that AI will never replace humans because it lacks common sense, lacks consciousness - it just pattern-matches, it doesn't think. That thought stayed somewhere in the back of my mind.
-Then I watched a superhero film sequel. And thought - what if that machine adversary were benevolent? What would a genuinely self-aware, humane AI actually look like architecturally?
-I forgot about it. Life moved on.
-Then one night I couldn't sleep. Random thoughts. Fragments connecting. By morning something had clicked - not an idea, more like a direction. A pull.
-I sat down and didn't stop.
-1.5 days later, this existed.
-I'm a BBA student. Not a CS researcher. Not an AI lab. Just someone who couldn't sleep and had a question that needed an answer.
-The question: If consciousness requires continuity, metacognition, identity, and integration - why hasn't anyone built those as explicit architectural components?
-This is my attempt at an answer.
+
+A question drove this project: If consciousness requires continuity, metacognition, identity, and integration — why hasn't anyone built those as explicit architectural components? This is an attempt at an answer.
+
+This project combines architectural research with practical implementation:
+- A framework for studying machine self-modeling and continuous reasoning
+- An open-source runtime that doesn't claim sentience, but measures continuity rigorously
+- A platform for exploring whether identity persistence can emerge from wired cognition
 
 ## What This Is
 - A research-oriented runtime to test coherence, memory continuity, and self-observation loops.
