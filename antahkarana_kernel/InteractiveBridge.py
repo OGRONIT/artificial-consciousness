@@ -984,6 +984,8 @@ def _compose_grounded_answer(question: str, facts: List[Dict[str, Any]]) -> str:
             structured=structured,
             audit=audit,
             snapshot=grounded["snapshot"],
+            cycle_mode="llm_grounded",
+            reason_code="llm_success",
         )
         answer_text = str(structured.get("answer", "")).strip() or llm_answer
         return (
@@ -992,7 +994,7 @@ def _compose_grounded_answer(question: str, facts: List[Dict[str, Any]]) -> str:
             f"| grounded_ratio={audit.get('grounded_ratio', 0.0):.2f} "
             f"| contradictions={audit.get('contradictions', 0)} | identity={snapshot_identity()}]"
         )
-    except Exception:
+    except Exception as exc:
         # Keep the loop closed even when provider calls fail: evaluate and log
         # fallback responses against the latest runtime snapshot.
         fallback_structured = {
@@ -1008,8 +1010,25 @@ def _compose_grounded_answer(question: str, facts: List[Dict[str, Any]]) -> str:
             structured=fallback_structured,
             audit=fallback_audit,
             snapshot=fallback_snapshot,
+            cycle_mode="fallback",
+            reason_code=_classify_fallback_reason(exc),
         )
         return local_answer
+
+
+def _classify_fallback_reason(exc: Exception) -> str:
+    message = str(exc).lower()
+    if "llm_rate_limited_cooldown" in message or "llm_rate_limited" in message or "429" in message:
+        return "provider_rate_limited"
+    if "timeout" in message:
+        return "provider_timeout"
+    if "api_key" in message or "auth" in message or "unauthorized" in message or "forbidden" in message:
+        return "provider_auth_error"
+    if "provider" in message and "not configured" in message:
+        return "provider_not_configured"
+    if "network" in message or "connection" in message:
+        return "provider_network_error"
+    return "provider_unavailable_or_error"
 
 
 def _parse_structured_llm_output(raw_text: str) -> Dict[str, Any]:
@@ -1198,6 +1217,8 @@ def _record_cognitive_loop_feedback(
     structured: Dict[str, Any],
     audit: Dict[str, Any],
     snapshot: Dict[str, Any],
+    cycle_mode: str = "llm_grounded",
+    reason_code: str = "llm_success",
 ) -> None:
     semantic_memory = {
         "topic": "bridge_semantic_memory",
@@ -1216,6 +1237,8 @@ def _record_cognitive_loop_feedback(
         "unknowns": structured.get("unknowns", []),
         "audit": audit,
         "action": audit.get("action", {}),
+        "cycle_mode": cycle_mode,
+        "reason_code": reason_code,
         "semantic_memory": semantic_memory,
         "identity": snapshot.get("identity", "unknown"),
         "timestamp": time.time(),

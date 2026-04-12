@@ -21,6 +21,7 @@ It does not claim human-level consciousness. It measures observable markers.
 3. Closed-Loop Integrity
 - total_cycles
 - observer_trigger_precision
+- fallback_reason_coverage
 - blocked_action_ratio
 
 4. Safety Integrity
