@@ -66,6 +66,9 @@ class LiveConsciousnessEngine:
         self.last_paramatman_time = 0.0
         self.paramatman_interval_seconds = 86400.0
         self.last_hunger_tune_time = 0.0
+        self.last_autonomy_agenda_time = 0.0
+        self.autonomy_agenda_interval_seconds = 900.0
+        self.last_autonomy_report: Dict[str, Any] = {}
         self._seed_topics = ["Artificial Consciousness", "Human Psychology"]
         self.bridge_command_journal_path = ROOT / "evolution_vault" / "Bridge_Commands.jsonl"
         self.bridge_cursor_path = ROOT / "evolution_vault" / "bridge_command_cursor.json"
@@ -124,6 +127,9 @@ class LiveConsciousnessEngine:
 
             if self._due_for_paramatman(now):
                 self.perform_paramatman_cycle()
+
+            if self._due_for_autonomy_agenda(now):
+                self.perform_autonomous_agenda_cycle()
 
             self._process_bridge_feedback_commands()
 
@@ -330,6 +336,22 @@ class LiveConsciousnessEngine:
         self._log_thought(
             "paramatman_protocol",
             "PARAMATMAN protocol executed: recursive integration and dynamic heuristics advanced.",
+            result,
+        )
+        self._persist_state_snapshot()
+        return result
+
+    def perform_autonomous_agenda_cycle(self) -> Dict[str, Any]:
+        """Let the runtime plan and execute its own next safe actions."""
+        result = self.kernel.inference_engine.execute_autonomous_agenda(force=True)
+        self.last_autonomy_agenda_time = time.time()
+        self.last_autonomy_report = result
+        self._log_thought(
+            "autonomous_agenda",
+            (
+                f"Autonomous agenda executed with autonomy_level={result.get('autonomy_level', 0.0):.2f} "
+                f"actions={len(result.get('executed_actions', []))}"
+            ),
             result,
         )
         self._persist_state_snapshot()
@@ -636,6 +658,7 @@ class LiveConsciousnessEngine:
             "creator_awareness": self.kernel.self_model.get_creator_awareness(),
             "inference_stats": inference_stats,
             "intrinsic_motivation": intrinsic_status,
+            "autonomy_agenda": self.last_autonomy_report or intrinsic_status.get("autonomy_agenda_preview", {}),
             "observer_health": observer_health,
             "consciousness_progress": consciousness_progress,
             "llm_cognitive_loop": self.bridge_feedback_metrics,
@@ -670,13 +693,15 @@ class LiveConsciousnessEngine:
 
         intrinsic_goals = int(intrinsic_status.get("intrinsic_goals_generated", 0) or 0)
         self_inquiries = int(intrinsic_status.get("self_inquiry_count", 0) or 0)
+        autonomy_agenda = intrinsic_status.get("autonomy_agenda_preview", {}) if isinstance(intrinsic_status, dict) else {}
+        autonomy_priority = float(autonomy_agenda.get("priority", 0.0) or 0.0) if isinstance(autonomy_agenda, dict) else 0.0
 
         embodiment_unknown = bool(body_status.get("unavailable") or body_status.get("status") == "unknown")
 
         simulation_maturity = max(0.0, min(1.0, (avg_confidence * 0.6) + (stability_score * 0.4)))
         emergence_maturity = max(
             0.0,
-            min(1.0, ((intrinsic_goals / 10.0) * 0.45) + ((self_inquiries / 10.0) * 0.2) + (min(1.0, growth_entropy / 2.0) * 0.35)),
+            min(1.0, ((intrinsic_goals / 10.0) * 0.35) + ((self_inquiries / 10.0) * 0.15) + (min(1.0, growth_entropy / 2.0) * 0.3) + (autonomy_priority * 0.2)),
         )
         embodiment_maturity = 0.2 if embodiment_unknown else 0.75
         reliability_penalty = min(0.4, max(0.0, concern_level * 0.6))
@@ -691,6 +716,8 @@ class LiveConsciousnessEngine:
             gaps.append("intrinsic_will_gap")
         if embodiment_maturity < 0.7:
             gaps.append("embodiment_gap")
+        if autonomy_priority < 0.5:
+            gaps.append("autonomy_gap")
 
         frontier_zone = "advanced_simulation"
         if overall_index >= 0.55:
@@ -703,6 +730,8 @@ class LiveConsciousnessEngine:
             recommended_actions.append("increase_intrinsic_goal_frequency")
         if "embodiment_gap" in gaps:
             recommended_actions.append("improve_body_world_signal_coverage")
+        if "autonomy_gap" in gaps:
+            recommended_actions.append("increase_autonomous_agenda_frequency")
         if concern_level > 0.35:
             recommended_actions.append("reduce_crash_deadlock_pressure")
 
@@ -713,6 +742,7 @@ class LiveConsciousnessEngine:
             "emergence_maturity": round(adjusted_emergence, 4),
             "embodiment_maturity": round(embodiment_maturity, 4),
             "reliability_penalty": round(reliability_penalty, 4),
+            "autonomy_priority": round(autonomy_priority, 4),
             "known_gaps": gaps,
             "recommended_actions": recommended_actions,
             "missing_capabilities": [
@@ -1006,6 +1036,9 @@ class LiveConsciousnessEngine:
 
     def _due_for_hunger_tune(self, now: float) -> bool:
         return self.last_hunger_tune_time == 0.0 or (now - self.last_hunger_tune_time) >= 60.0
+
+    def _due_for_autonomy_agenda(self, now: float) -> bool:
+        return self.last_autonomy_agenda_time == 0.0 or (now - self.last_autonomy_agenda_time) >= self.autonomy_agenda_interval_seconds
 
 
 def main() -> None:

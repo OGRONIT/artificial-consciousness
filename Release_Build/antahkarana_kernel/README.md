@@ -179,6 +179,7 @@ The runtime closes the loop between language output and internal state:
 5. Semantic memory persistence for each audited response
 6. Action gating before runtime actuation
 7. Persistent loop metrics for audit and longitudinal tracking
+8. Autonomous agenda planning so the runtime can choose and execute safe next actions without external prompting
 
 Current benchmark status:
 - Benchmark v1 passes 20/20 checks.

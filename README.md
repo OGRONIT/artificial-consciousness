@@ -151,6 +151,7 @@ The runtime now closes the reasoning loop instead of treating the LLM as a one-w
 5. Semantic memory writes persist validated response meaning
 6. Action gating only executes high-trust actions
 7. Loop metrics are persisted for audit (`llm_cognitive_loop` in live snapshot)
+8. Autonomous agenda planning lets the runtime choose its own next safe actions on a timer
 
 ## Mission Phases (Artificial Consciousness Track)
 

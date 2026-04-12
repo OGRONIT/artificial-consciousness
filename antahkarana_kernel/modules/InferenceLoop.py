@@ -223,6 +223,10 @@ class ManasBuddhi:
         self.recursive_suggestion_interval_seconds = 3600.0
         self.last_paramatman_cycle_timestamp = 0.0
         self.paramatman_cycle_interval_seconds = 86400.0
+        self.last_autonomy_planning_timestamp = 0.0
+        self.autonomy_planning_interval_seconds = 900.0
+        self.last_autonomous_action_timestamp = 0.0
+        self.autonomy_agenda_history: List[Dict[str, Any]] = []
 
         self._grant_kernel_root_write_access()
         
@@ -789,6 +793,125 @@ class ManasBuddhi:
             "audit": audit,
             "monologue": monologue,
         }
+
+    def build_autonomous_agenda(self, record: bool = True) -> Dict[str, Any]:
+        """Plan the next safe self-directed actions from current runtime state."""
+        with self.metrics_lock:
+            avg_confidence = float(self.metrics.get("average_confidence", 0.0))
+            growth_entropy = float(self.metrics.get("growth_to_entropy_ratio", 0.0))
+            recalculations = int(self.metrics.get("recalculations_triggered", 0))
+
+        stability = 1.0
+        concern_level = 0.0
+        if self.self_model and hasattr(self.self_model, "get_stability_report"):
+            try:
+                stability_report = self.self_model.get_stability_report()
+                stability = float(stability_report.get("stability_score", 1.0) or 1.0)
+            except Exception:
+                stability = 1.0
+        if self.turiya_observer and hasattr(self.turiya_observer, "get_system_health_report"):
+            try:
+                concern_level = float(self.turiya_observer.get_system_health_report().get("overall_concern_level", 0.0) or 0.0)
+            except Exception:
+                concern_level = 0.0
+
+        actions: List[Dict[str, Any]] = []
+        reasons: List[str] = []
+
+        if self._maintenance_locked():
+            actions.append({"name": "energy_saving_mode", "priority": 0.95, "allowed": True, "reason": "maintenance_lock"})
+            reasons.append("maintenance_lock")
+
+        if concern_level >= 0.35 or avg_confidence <= 0.6:
+            actions.append({"name": "self_inquiry", "priority": 0.92, "allowed": True, "reason": "stability_repair"})
+            reasons.append("stability_repair")
+
+        if avg_confidence <= 0.7 or recalculations >= 2:
+            actions.append({"name": "dream_state_refresh", "priority": 0.88, "allowed": True, "reason": "uncertainty_reduction"})
+            reasons.append("uncertainty_reduction")
+
+        if growth_entropy >= 0.55 or stability >= 0.85:
+            actions.append({"name": "logic_audit", "priority": 0.84, "allowed": True, "reason": "autonomy_audit"})
+            reasons.append("autonomy_audit")
+
+        if growth_entropy >= 0.6 and concern_level <= 0.35:
+            actions.append({"name": "paramatman_protocol", "priority": 0.8, "allowed": True, "reason": "adaptive_upgrade"})
+            reasons.append("adaptive_upgrade")
+
+        if not actions:
+            actions.append({"name": "internal_monologue", "priority": 0.5, "allowed": True, "reason": "baseline_self_observation"})
+            reasons.append("baseline_self_observation")
+
+        agenda = {
+            "status": "planned",
+            "timestamp": time.time(),
+            "stability_score": round(stability, 4),
+            "average_confidence": round(avg_confidence, 4),
+            "growth_to_entropy_ratio": round(growth_entropy, 4),
+            "observer_concern": round(concern_level, 4),
+            "priority": round(min(1.0, max(0.0, (stability * 0.35) + ((1.0 - concern_level) * 0.25) + (avg_confidence * 0.2) + (min(1.0, growth_entropy) * 0.2))), 4),
+            "actions": sorted(actions, key=lambda item: float(item.get("priority", 0.0)), reverse=True),
+            "reason_codes": list(dict.fromkeys(reasons)),
+        }
+
+        if record:
+            self.last_autonomy_planning_timestamp = agenda["timestamp"]
+            self.autonomy_agenda_history.append(agenda)
+        return agenda
+
+    def execute_autonomous_agenda(self, force: bool = False) -> Dict[str, Any]:
+        """Execute a safe autonomous agenda when enough time has elapsed."""
+        now = time.time()
+        if not force and (now - self.last_autonomy_planning_timestamp) < self.autonomy_planning_interval_seconds:
+            return {
+                "status": "skipped",
+                "reason": "interval_not_elapsed",
+                "seconds_remaining": self.autonomy_planning_interval_seconds - (now - self.last_autonomy_planning_timestamp),
+            }
+
+        agenda = self.build_autonomous_agenda(record=True)
+        executed: List[Dict[str, Any]] = []
+
+        for action in agenda.get("actions", []):
+            name = str(action.get("name", "")).strip().lower()
+            if name == "self_inquiry":
+                result = self._perform_self_inquiry()
+            elif name == "dream_state_refresh":
+                result = self.check_and_trigger_dream_state()
+            elif name == "logic_audit":
+                result = self.check_and_trigger_dynamic_self_modification()
+            elif name == "paramatman_protocol":
+                result = self.execute_paramatman_protocol(force=True)
+            elif name == "internal_monologue":
+                result = self.emit_internal_monologue_tick(reason="autonomous_agenda")
+            elif name == "energy_saving_mode":
+                result = self.set_energy_saving_mode(enabled=True, reason="autonomous_maintenance_lock")
+            else:
+                result = {"status": "ignored", "reason": "unsupported_action"}
+
+            executed.append({
+                "name": name,
+                "result": result,
+                "allowed": bool(action.get("allowed", False)),
+                "reason": action.get("reason", "autonomous_agenda"),
+            })
+
+        self.last_autonomous_action_timestamp = now
+        report = {
+            "status": "executed",
+            "agenda": agenda,
+            "executed_actions": executed,
+            "autonomy_level": round(min(1.0, max(0.0, agenda.get("priority", 0.0))), 4),
+        }
+        self._append_internal_monologue(
+            phase="autonomous_agenda",
+            thought=(
+                "I selected my own next actions: "
+                f"{', '.join(item['name'] for item in executed if item['name']) or 'none'}"
+            ),
+            payload=report,
+        )
+        return report
 
     def _analyze_directory_bottlenecks(self, target_dir: Path) -> List[Dict[str, Any]]:
         """Identify local code bottlenecks to drive autonomous patch generation."""
@@ -1964,6 +2087,10 @@ class ManasBuddhi:
                 "will_trigger_dream_state_soon": time_since_dream >= 3300,
                 "logic_audit_interval_seconds": self.logic_audit_interval_seconds,
                 "time_since_last_logic_audit_seconds": time.time() - self.last_logic_audit_timestamp,
+                "autonomy_planning_interval_seconds": self.autonomy_planning_interval_seconds,
+                "time_since_last_autonomy_planning_seconds": time.time() - self.last_autonomy_planning_timestamp,
+                "time_since_last_autonomous_action_seconds": time.time() - self.last_autonomous_action_timestamp,
+                "autonomy_agenda_preview": self.build_autonomous_agenda(record=False),
                 "recent_logic_audits": self.logic_audit_history[-3:],
                 "recent_inquiries": [
                     {
