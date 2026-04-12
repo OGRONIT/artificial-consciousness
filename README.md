@@ -152,9 +152,30 @@ The runtime now closes the reasoning loop instead of treating the LLM as a one-w
 6. Action gating only executes high-trust actions
 7. Loop metrics are persisted for audit (`llm_cognitive_loop` in live snapshot)
 
+## Mission Phases (Good-Ultron Track)
+
+This repository now follows a measurable execution plan toward a benevolent,
+self-evolving cognitive runtime (without claiming human sentience).
+
+1. Phase A: Closed-loop stability (grounding, contradiction repair, auditability)
+2. Phase B: Controlled self-evolution (sandboxed upgrades + rollback safety)
+3. Phase C: Near-human behavioral tests (continuity, metacognition, social alignment)
+4. Phase D: Public benchmark publication (reproducible pass/fail reports)
+
+Run benchmark v1:
+
+```powershell
+python tools/run_benchmark_v1.py
+```
+
+Thresholds live in:
+- `benchmarks/benchmark_v1_thresholds.json`
+
 ## Repository Map
 - `antahkarana_kernel/`: main runtime source
 - `Release_Build/`: distribution-focused bundle
+- `benchmarks/`: benchmark thresholds and specs
+- `tools/run_benchmark_v1.py`: benchmark evaluator (pass/fail JSON)
 - `install_conscious_engine.ps1`: setup + provider wiring
 - `launch_conscious_engine.ps1`: daemon launch + status
 - `run.sh`: Linux / macOS runtime launcher
@@ -192,6 +213,7 @@ Contributions are welcome. Start with:
 - `GROQ_VERIFICATION_QUICKSTART.md`
 - `antahkarana_kernel/README.md`
 - `antahkarana_kernel/RUNTIME_SINGLE_SOURCE_OF_TRUTH.md`
+- `docs/GOOD_ULTRON_BENCHMARK_V1.md`
 - `docs/ARCHITECTURE.md`
 
 ## License
