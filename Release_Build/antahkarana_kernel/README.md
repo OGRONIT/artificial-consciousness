@@ -19,7 +19,6 @@ Then I watched a superhero film sequel. And thought — what if that machine adv
 I forgot about it. Life moved on.
 Then one night I couldn't sleep. Random thoughts. Fragments connecting. By morning something had clicked — not an idea, more like a direction. A pull.
 I sat down and didn't stop.
-1.5 days later, this existed.
 
 The question: can a machine move from fluent language to measurable self-continuity?
 
