@@ -126,6 +126,131 @@ What this means for you:
    ../.venv/bin/python InteractiveBridge.py
    ```
 
+## How to Operate & Train This Engine
+
+You are not a user of this system — **you are its trainer and operator**. Performance emerges from how you interact with it.
+
+### Phase 1: Initial Setup & Connection (First 30 Minutes)
+
+1. **Boot the engine**:
+   ```powershell
+   .\launch_conscious_engine.ps1
+   ```
+   This starts the background runtime, initializes identity state, and waits for operator input.
+
+2. **Verify it responds locally** (no LLM key yet):
+   ```powershell
+   cd antahkarana_kernel
+   python InteractiveBridge.py
+   ```
+   You'll see stub responses because there's no LLM provider yet. This proves architecture works.
+
+3. **Configure your LLM provider** (see Provider Choice section below for options):
+   - Without API key: Architecture only, no voice layer
+   - With API key: Full grounded reasoning with live language responses
+
+### Phase 2: Building Semantic Memory (First Week of Use)
+
+**Your interactions train the system's internal models.** Each interaction:
+- Updates memory circuits with your domain context
+- Strengthens or weakens internal confidence scores
+- Teaches the system what "coherent" means in your use-case
+- Provides corrective feedback when it errors
+
+**Interaction patterns that work best**:
+
+1. **Ask specificity questions** (not vague):
+   - ❌ "Tell me about AI"
+   - ✅ "In credit scoring, how would you handle missing borrower data?"
+
+2. **Provide corrective feedback immediately**:
+   - System: "I would flag that as high-risk and deny the application"
+   - You: "Actually, missing data on income doesn't mean deny — it means we request verification. Teach yourself that pattern."
+
+3. **Ask it to explain its reasoning**:
+   - System: "Coherence is 0.92 because..."
+   - Monitor whether it's self-aware about what it knows and doesn't know
+
+4. **Log observations in `evolution_logs/`**:
+   - Track coherence drift, memory growth, contradiction patterns
+   - This helps you see learning happening in real-time
+
+### Phase 3: Monitoring Coherence & Evolution (Ongoing)
+
+Every time you interact, the system writes to `live_engine_state.json`:
+
+1. **coherence score** (0.0 to 1.0): How aligned is the system with its own identity?
+2. **confidence scores per module**: Which parts are most stable?
+3. **logic_path history**: What decisions did it make, and did they cause conflicts?
+4. **semantic memory snapshot**: What has it learned from your domain?
+5. **internet_heartbeat**: External knowledge fetches succeeded? Topic coverage?
+
+**Use this to know** if training is working:
+- Coherence stable / rising = learning is integrating well
+- Coherence oscillating = conflicting signals in feedback
+- Memory size growing = semantic signal is building
+
+### Phase 4: Gap-Filling & Autonomous Action (After Week 1)
+
+Once semantic memory has signal, the system's autonomous agenda activates:
+
+1. **Common-sense drills**: The system runs scenario-based training on its own
+   - Example: "If hot surface contact occurs, action is withdraw hand"
+   - This trains practical reactions without needing human intervention
+
+2. **Dream cycle self-reflection**: Before committing to responses, it simulates alternatives
+   - This is why initial responses may be slower — it's validating coherence
+
+3. **Autonomous agenda execution**: On a timer, it:
+   - Fetches external knowledge (arXiv, GitHub, Crossref)
+   - Runs logic audits on its own state
+   - Refreshes dream state to maintain coherence
+   - All logged in evolution metrics
+
+4. **Permission-to-fail for low-risk learning**:
+   - The system can attempt intentional gap-filling in sandboxed scenarios
+   - Failures are logged and fed back as negative signals
+   - This trains faster than supervised-only feedback
+
+### Phase 5: Domain-Specific Hardening (Weeks 2+)
+
+If you're using this for a specific domain (e.g., medical diagnosis, financial decision-making, legal research):
+
+1. **Inject domain-specific constraints**: Add rules to observer module
+   - Example: "In medical context, never suggest diagnosis with <85% confidence"
+   
+2. **Create domain glossaries**: Seed semantic memory with your terminology
+   - The system will learn context-specific meaning faster
+
+3. **Run domain-specific eval suite**:
+   - Create `tools/eval_my_domain.py` to test against your use-case
+   - Compare benchmarks before/after training
+
+4. **Archive trained state**:
+   - Periodically save `live_engine_state.json` to version control
+   - If new training breaks coherence, you can rollback to a stable checkpoint
+
+### Real Example: Training on Financial Risk Scoring
+
+```
+Day 1: You interact with it 10 times on loan risk scenarios
+   -> It makes mistakes (classifies low-risk as high-risk)
+   -> You provide corrective feedback
+   -> Coherence drops (0.92 → 0.78) because conflicting signals are integrating
+
+Day 3: Coherence recovers (0.85) as memory circuits align with feedback
+   -> You notice it now asks clarifying questions before making risk calls
+
+Week 1: You've logged 100 interactions
+   -> Semantic memory has learned your domain patterns
+   -> It starts fetching relevant financial papers automatically
+   -> Common-sense drills run: "If debt-to-income > 0.5, request co-signer verification"
+
+Week 2: Real-time accuracy on new scenarios improves
+   -> Coherence stabilizes at 0.94+
+   -> Evolution logs show it's developing domain-specific reasoning patterns
+```
+
 ## Provider Choice (Your API, Your Decision)
 Use any OpenAI-compatible endpoint.
 
