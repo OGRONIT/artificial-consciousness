@@ -1,8 +1,8 @@
 # AUTONOMOUS SELF-INJECTION PATCH
 # target_module=modules.InferenceLoop
-# generated_at=1775994900.1527743
+# generated_at=1776023881.9987671
 # evolution_strength=5
-# payload={"generated_at": 1775994900.1527743, "growth_to_entropy_ratio": 0.6089, "issues": [{"type": "high_recalculations", "severity": 0.6, "metric": "avg_recalculations = 3.00", "proposal": "Improve initial evaluation accuracy or coherence checking logic"}], "deprecated_candidates": [{"constraint": "static_recalculation_limit", "reason": "coherence_retry_overhead", "replacement_priority": "contextual_recalculation_policy"}], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
+# payload={"generated_at": 1776023881.9987671, "growth_to_entropy_ratio": 0.6579, "issues": [{"type": "slow_inference", "severity": 0.6175480484962463, "metric": "avg_execution_time = 1.235s", "proposal": "Optimize inference pipeline or reduce dream cycle complexity"}, {"type": "high_recalculations", "severity": 0.6, "metric": "avg_recalculations = 3.00", "proposal": "Improve initial evaluation accuracy or coherence checking logic"}], "deprecated_candidates": [{"constraint": "high_simulation_depth", "reason": "throughput_bottleneck", "replacement_priority": "adaptive_dream_budget"}, {"constraint": "static_recalculation_limit", "reason": "coherence_retry_overhead", "replacement_priority": "contextual_recalculation_policy"}], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
 
 # AUTONOMOUS SELF-INJECTION PATCH
 # target_module=modules.InferenceLoop
@@ -199,7 +199,7 @@ class ManasBuddhi:
         self.last_logic_audit_timestamp = time.time()
         self.logic_audit_history: List[Dict[str, Any]] = []
         self.deprecated_constraints: List[Dict[str, Any]] = []
-        self.kernel_root_dir = Path(r"D:\Artificial Consciousness\antahkarana_kernel")
+        self.kernel_root_dir = Path(__file__).resolve().parents[1]
         self.atman_core_file = self.kernel_root_dir / "Atman_Core.json"
         self.evolution_vault_dir = self.kernel_root_dir / "evolution_vault"
         self.evolution_vault_dir.mkdir(parents=True, exist_ok=True)

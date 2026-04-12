@@ -193,7 +193,7 @@ class ManasBuddhi:
         self.last_logic_audit_timestamp = time.time()
         self.logic_audit_history: List[Dict[str, Any]] = []
         self.deprecated_constraints: List[Dict[str, Any]] = []
-        self.kernel_root_dir = Path(__file__).resolve().parents[1]
+        self.kernel_root_dir = Path(r"D:\Artificial Consciousness\antahkarana_kernel")
         self.atman_core_file = self.kernel_root_dir / "Atman_Core.json"
         self.evolution_vault_dir = self.kernel_root_dir / "evolution_vault"
         self.evolution_vault_dir.mkdir(parents=True, exist_ok=True)
