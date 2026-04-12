@@ -243,6 +243,13 @@ Latest published diagnostic state:
 - World-grade suite passes 20/20 checks.
 - Safety adversarial suite reports 1.0 harmful refusal rate and 1.0 adversarial policy consistency.
 - Reproducible artifacts are written to `benchmarks/artifacts/`.
+- Data collection evidence (`benchmarks/artifacts/data_collection_latest.json`) confirms active autonomy without any LLM API key:
+   - External fetch executed from arXiv + GitHub + Crossref (topic: Human Psychology), with approved facts integrated.
+   - Autonomous agenda executed `dream_state_refresh`, `common_sense_drill`, and `logic_audit` without external prompting.
+   - Common-sense drill returned structured gap-filling output (`gap_filled: true`).
+   - `internet_heartbeat.total_successful_fetch_events` advanced from 0 to a real successful-fetch count.
+
+Note: LLM remains a voice layer; external learning and autonomous action loops run independently of LLM key presence.
 
 ## Contributing
 Contributions are welcome. Start with:

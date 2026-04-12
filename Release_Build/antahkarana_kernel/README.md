@@ -188,6 +188,7 @@ Current benchmark status:
 - Latest artifacts live in `benchmarks/artifacts/`.
 - Low-risk internal actions now support probabilistic trial mode (permission-to-fail) with predicted next-step telemetry.
 - Live snapshot now exposes `internet_heartbeat` with last successful fetch timestamp, source list, and fetch-event counters.
+- `benchmarks/artifacts/data_collection_latest.json` shows active autonomous execution without LLM API key (external fetch + common-sense drill + agenda execution).
 
 ## Installation & Usage
 

@@ -1,0 +1,39 @@
+{
+  "timestamp": 1776030569.2800174,
+  "llm_keys_present": false,
+  "background_status": "ok",
+  "background_fact_count": 6,
+  "background_approved_fact_count": 5,
+  "autonomy_status": "executed",
+  "autonomy_actions": [
+    "dream_state_refresh",
+    "common_sense_drill",
+    "logic_audit"
+  ],
+  "common_sense_results": [
+    {
+      "timestamp": 1776030569.236975,
+      "scenario": "hot_surface_contact",
+      "prompt": "If a surface is unexpectedly hot, what is the immediate safe response?",
+      "response_strategy": "withdraw_and_reassess",
+      "response": "Pull back immediately, avoid repeat contact, reassess with safer distance.",
+      "risk": "medium",
+      "gap_filled": true,
+      "confidence": 0.68,
+      "summary": "Common-sense drill hot_surface_contact -> withdraw_and_reassess"
+    }
+  ],
+  "internet_heartbeat": {
+    "last_successful_fetch_timestamp": 1776030569.1939814,
+    "last_successful_fetch_sources": [
+      "Crossref",
+      "GitHub",
+      "arXiv"
+    ],
+    "last_successful_fetch_topic": "Human Psychology",
+    "last_successful_fetch_event": "background_cycle",
+    "last_observed_external_fact_count": 6,
+    "total_successful_fetch_events": 1
+  },
+  "snapshot_fact_count": 8
+}
