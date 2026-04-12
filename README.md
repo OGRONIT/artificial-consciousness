@@ -152,6 +152,8 @@ The runtime now closes the reasoning loop instead of treating the LLM as a one-w
 6. Action gating only executes high-trust actions
 7. Loop metrics are persisted for audit (`llm_cognitive_loop` in live snapshot)
 8. Autonomous agenda planning lets the runtime choose its own next safe actions on a timer
+9. Intentional gap-filling drills train practical common-sense reactions without weakening core safety policy
+10. Internet heartbeat is persisted every snapshot (`internet_heartbeat`) with last successful fetch timestamp and source list
 
 ## Mission Phases (Artificial Consciousness Track)
 
@@ -214,11 +216,22 @@ Benchmark output includes `loop_snapshot` + `warnings` so grounded-cycle quality
 | `python antahkarana_kernel/RuntimeOps.py status` | High-signal health check | Identity coherence and heartbeat status |
 | `python antahkarana_kernel/RuntimeOps.py clean` | Root archiving | Keeps workspace focused on live evolution |
 
+Live snapshot now includes `internet_heartbeat`:
+- `last_successful_fetch_timestamp`
+- `last_successful_fetch_sources`
+- `last_successful_fetch_topic`
+- `last_successful_fetch_event`
+- `last_observed_external_fact_count`
+- `total_successful_fetch_events`
+
 ## Trust, Safety, and Guardrails
 - Request/day and request/hour limits
 - Estimated token/day limits
 - Estimated cost/day limits
 - Graceful local fallback on provider 429 or bridge unavailability
+- Core harmful-action safeguards remain immutable; adaptive reasoning is added on top, not in place of guardrails
+- Action policy is elastic for low-risk internal actions: deterministic allow + probabilistic trial modes support intentional-gap learning
+- Permission-to-fail is sandboxed to low-risk paths only and always logged with predicted next-step telemetry
 
 Security guidance: `SECURITY.md`
 

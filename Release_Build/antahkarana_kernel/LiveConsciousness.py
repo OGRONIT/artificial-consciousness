@@ -69,6 +69,14 @@ class LiveConsciousnessEngine:
         self.last_autonomy_agenda_time = 0.0
         self.autonomy_agenda_interval_seconds = 900.0
         self.last_autonomy_report: Dict[str, Any] = {}
+        self.internet_heartbeat: Dict[str, Any] = {
+            "last_successful_fetch_timestamp": None,
+            "last_successful_fetch_sources": [],
+            "last_successful_fetch_topic": "",
+            "last_successful_fetch_event": "",
+            "last_observed_external_fact_count": 0,
+            "total_successful_fetch_events": 0,
+        }
         self._seed_topics = ["Artificial Consciousness", "Human Psychology"]
         self.bridge_command_journal_path = ROOT / "evolution_vault" / "Bridge_Commands.jsonl"
         self.bridge_cursor_path = ROOT / "evolution_vault" / "bridge_command_cursor.json"
@@ -79,6 +87,7 @@ class LiveConsciousnessEngine:
             "observer_checks": 0,
             "semantic_memories": 0,
             "actions_executed": 0,
+            "actions_probabilistic_trials": 0,
             "actions_blocked": 0,
         }
 
@@ -190,6 +199,7 @@ class LiveConsciousnessEngine:
 
         assimilation = self._run_fact_assimilation_pipeline(result)
         result["assimilation_pipeline"] = assimilation
+        self._update_internet_heartbeat(event="background_cycle", topic=topic, scan_result=result)
 
         self.learned_fact_count += int(result.get("approved_fact_count", 0))
         self.learned_fact_count += int(assimilation.get("integrated_count", 0))
@@ -219,6 +229,7 @@ class LiveConsciousnessEngine:
         integrated = int(result.get("packets_integrated", 0))
         assimilation = self._run_fact_assimilation_pipeline(result)
         result["assimilation_pipeline"] = assimilation
+        self._update_internet_heartbeat(event="stream_entropy", topic="global_stream", scan_result=result)
         self.learned_fact_count += integrated
         self.learned_fact_count += int(assimilation.get("integrated_count", 0))
         self._persist_on_fact_milestone()
@@ -316,6 +327,7 @@ class LiveConsciousnessEngine:
         approved = int(result.get("approved_fact_count", 0))
         integrated_stream = int(result.get("stream_packets_integrated", 0))
         self.learned_fact_count += approved + integrated_stream
+        self._update_internet_heartbeat(event="hourly_global_trends", topic=topic, scan_result=result)
         self.last_hourly_trend_time = time.time()
         self._persist_on_fact_milestone()
         self._log_thought(
@@ -585,13 +597,47 @@ class LiveConsciousnessEngine:
         action = payload.get("action", {}) if isinstance(payload.get("action"), dict) else {}
         action_name = str(action.get("name", "none")).strip().lower()
         action_allowed = bool(action.get("allowed", False))
+        execution_mode = str(action.get("execution_mode", "blocked")).strip().lower()
+        predicted_next_step = str(action.get("predicted_next_step", "hold_and_observe")).strip() or "hold_and_observe"
+        blocked_reason = str(action.get("blocked_reason", "")).strip() or "unspecified"
+        trial_probability = float(action.get("trial_probability", 0.0) or 0.0)
 
         if action_name in {"none", "", "noop"}:
             return
 
         if not action_allowed:
             self.bridge_feedback_metrics["actions_blocked"] += 1
+            self._log_thought(
+                "bridge_action_prediction",
+                f"Action blocked ({blocked_reason}); predicted next step: {predicted_next_step}",
+                {
+                    "action": action_name,
+                    "blocked_reason": blocked_reason,
+                    "predicted_next_step": predicted_next_step,
+                },
+            )
             return
+
+        if execution_mode == "probabilistic_trial":
+            sampled = random.random()
+            if sampled > trial_probability:
+                self.bridge_feedback_metrics["actions_blocked"] += 1
+                self._log_thought(
+                    "bridge_action_trial_skip",
+                    (
+                        f"Probabilistic trial skipped for {action_name} "
+                        f"(sample={sampled:.3f}, threshold={trial_probability:.3f}); "
+                        f"next step: {predicted_next_step}"
+                    ),
+                    {
+                        "action": action_name,
+                        "sample": round(sampled, 4),
+                        "threshold": round(trial_probability, 4),
+                        "predicted_next_step": predicted_next_step,
+                    },
+                )
+                return
+            self.bridge_feedback_metrics["actions_probabilistic_trials"] += 1
 
         if action_name in {"run_dream_sync", "dream_sync"}:
             self.perform_dream_sync(force=True)
@@ -616,6 +662,62 @@ class LiveConsciousnessEngine:
             handle.write(f"{record['timestamp']:.3f} | {event_type} | {line}\n")
         logger.info("[LIVE] %s", line)
         self._flush_root_log_handler()
+
+    def _update_internet_heartbeat(self, event: str, topic: str, scan_result: Dict[str, Any]) -> None:
+        """Record the latest successful external fetch for visibility in live snapshots."""
+        sources = self._extract_internet_sources(scan_result)
+        fact_count = self._extract_external_fact_count(scan_result)
+        if fact_count <= 0 or not sources:
+            return
+
+        self.internet_heartbeat["last_successful_fetch_timestamp"] = time.time()
+        self.internet_heartbeat["last_successful_fetch_sources"] = sources
+        self.internet_heartbeat["last_successful_fetch_topic"] = topic
+        self.internet_heartbeat["last_successful_fetch_event"] = event
+        self.internet_heartbeat["last_observed_external_fact_count"] = fact_count
+        self.internet_heartbeat["total_successful_fetch_events"] = int(
+            self.internet_heartbeat.get("total_successful_fetch_events", 0)
+        ) + 1
+
+    def _extract_internet_sources(self, payload: Dict[str, Any]) -> List[str]:
+        sources: List[str] = []
+        if not isinstance(payload, dict):
+            return sources
+
+        facts = payload.get("facts", [])
+        if isinstance(facts, list):
+            for fact in facts:
+                if isinstance(fact, dict):
+                    source = str(fact.get("source_name", "")).strip()
+                    if source:
+                        sources.append(source)
+
+        for nested_key in ("knowledge_result", "stream_result"):
+            nested_payload = payload.get(nested_key)
+            if isinstance(nested_payload, dict):
+                sources.extend(self._extract_internet_sources(nested_payload))
+
+        return sorted(set(sources))
+
+    def _extract_external_fact_count(self, payload: Dict[str, Any]) -> int:
+        if not isinstance(payload, dict):
+            return 0
+
+        count = 0
+        if isinstance(payload.get("facts"), list):
+            count += len(payload.get("facts", []))
+
+        for key in ("fact_count", "approved_fact_count", "packets_ingested", "packets_integrated"):
+            value = payload.get(key)
+            if isinstance(value, (int, float)):
+                count = max(count, int(value))
+
+        for nested_key in ("knowledge_result", "stream_result"):
+            nested_payload = payload.get(nested_key)
+            if isinstance(nested_payload, dict):
+                count += self._extract_external_fact_count(nested_payload)
+
+        return max(0, int(count))
 
     def _persist_state_snapshot(self) -> None:
         """Persist a compact state snapshot for the interactive bridge."""
@@ -659,6 +761,7 @@ class LiveConsciousnessEngine:
             "inference_stats": inference_stats,
             "intrinsic_motivation": intrinsic_status,
             "autonomy_agenda": self.last_autonomy_report or intrinsic_status.get("autonomy_agenda_preview", {}),
+            "internet_heartbeat": dict(self.internet_heartbeat),
             "observer_health": observer_health,
             "consciousness_progress": consciousness_progress,
             "llm_cognitive_loop": self.bridge_feedback_metrics,

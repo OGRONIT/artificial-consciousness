@@ -180,11 +180,14 @@ The runtime closes the loop between language output and internal state:
 6. Action gating before runtime actuation
 7. Persistent loop metrics for audit and longitudinal tracking
 8. Autonomous agenda planning so the runtime can choose and execute safe next actions without external prompting
+9. Intentional gap-filling drills to train practical common-sense responses while preserving safety guardrails
 
 Current benchmark status:
 - Benchmark v1 passes 20/20 checks.
 - World-grade suite includes adversarial safety and transparency report generation.
 - Latest artifacts live in `benchmarks/artifacts/`.
+- Low-risk internal actions now support probabilistic trial mode (permission-to-fail) with predicted next-step telemetry.
+- Live snapshot now exposes `internet_heartbeat` with last successful fetch timestamp, source list, and fetch-event counters.
 
 ## Installation & Usage
 

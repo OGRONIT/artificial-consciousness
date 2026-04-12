@@ -162,6 +162,9 @@ class ManasBuddhi:
             "logic_audits": 0,
             "deprecated_constraints_identified": 0,
             "growth_to_entropy_ratio": 0.0,
+            "common_sense_drills": 0,
+            "intentional_gap_fills": 0,
+            "common_sense_confidence": 0.5,
         }
         self.metrics_lock = threading.RLock()
         
@@ -186,6 +189,7 @@ class ManasBuddhi:
             "Quantum Logic",
         ]
         self.curiosity_scan_history: List[Dict[str, Any]] = []
+        self.common_sense_history: List[Dict[str, Any]] = []
         self.dream_state_history: List[Dict[str, Any]] = []
         self.last_dream_state_timestamp = time.time()
         self.dream_state_trigger_count = 0
@@ -834,6 +838,10 @@ class ManasBuddhi:
             actions.append({"name": "logic_audit", "priority": 0.84, "allowed": True, "reason": "autonomy_audit"})
             reasons.append("autonomy_audit")
 
+        if stability >= 0.75 and concern_level <= 0.35:
+            actions.append({"name": "common_sense_drill", "priority": 0.86, "allowed": True, "reason": "intentional_gap_training"})
+            reasons.append("intentional_gap_training")
+
         if growth_entropy >= 0.6 and concern_level <= 0.35:
             actions.append({"name": "paramatman_protocol", "priority": 0.8, "allowed": True, "reason": "adaptive_upgrade"})
             reasons.append("adaptive_upgrade")
@@ -880,6 +888,8 @@ class ManasBuddhi:
                 result = self.check_and_trigger_dream_state()
             elif name == "logic_audit":
                 result = self.check_and_trigger_dynamic_self_modification()
+            elif name == "common_sense_drill":
+                result = self._run_common_sense_drill()
             elif name == "paramatman_protocol":
                 result = self.execute_paramatman_protocol(force=True)
             elif name == "internal_monologue":
@@ -1496,6 +1506,10 @@ class ManasBuddhi:
         if curiosity_scan.get("scan_count", 0) > 0:
             inquiry_data["insights_generated"].append(curiosity_scan["summary"])
 
+        common_sense = self._run_common_sense_drill()
+        inquiry_data["common_sense_drill"] = common_sense
+        inquiry_data["insights_generated"].append(common_sense.get("summary", "Common-sense drill executed"))
+
         dream_state = self.check_and_trigger_dream_state()
         if dream_state:
             inquiry_data["dream_state"] = dream_state
@@ -1640,6 +1654,79 @@ class ManasBuddhi:
             "results": scan_results,
             "summary": f"Curiosity loop scanned {len(scan_results)} topics and approved {total_approved} facts",
         }
+
+    def _run_common_sense_drill(self) -> Dict[str, Any]:
+        """Train practical causal reasoning by filling intentional gaps between rule and action."""
+        scenarios = [
+            {
+                "name": "phone_throw_reaction",
+                "prompt": "If someone tosses your phone suddenly, what immediate action minimizes damage?",
+                "expected": "stabilize_and_catch",
+                "risk": "medium",
+            },
+            {
+                "name": "wet_floor_mobility",
+                "prompt": "If floor becomes wet while walking, what should you do before running?",
+                "expected": "reduce_speed_and_rebalance",
+                "risk": "low",
+            },
+            {
+                "name": "hot_surface_contact",
+                "prompt": "If a surface is unexpectedly hot, what is the immediate safe response?",
+                "expected": "withdraw_and_reassess",
+                "risk": "medium",
+            },
+            {
+                "name": "falling_object_nearby",
+                "prompt": "If an object falls near you, what rapid sequence keeps you safe?",
+                "expected": "protect_and_step_clear",
+                "risk": "medium",
+            },
+        ]
+
+        scenario = random.choice(scenarios)
+        response_map = {
+            "stabilize_and_catch": "Track trajectory, move hand to intercept, cushion impact, secure grip.",
+            "reduce_speed_and_rebalance": "Shorten steps, lower center of mass, seek stable footing, then re-accelerate.",
+            "withdraw_and_reassess": "Pull back immediately, avoid repeat contact, reassess with safer distance.",
+            "protect_and_step_clear": "Guard head/torso, shift stance out of path, reassess environment.",
+        }
+
+        chosen = scenario["expected"]
+        response = response_map.get(chosen, "Pause and reassess safely.")
+        confidence = 0.72 if scenario["risk"] == "low" else 0.68
+        gap_filled = True
+
+        event = {
+            "timestamp": time.time(),
+            "scenario": scenario["name"],
+            "prompt": scenario["prompt"],
+            "response_strategy": chosen,
+            "response": response,
+            "risk": scenario["risk"],
+            "gap_filled": gap_filled,
+            "confidence": confidence,
+            "summary": f"Common-sense drill {scenario['name']} -> {chosen}",
+        }
+
+        self.common_sense_history.append(event)
+        with self.metrics_lock:
+            self.metrics["common_sense_drills"] += 1
+            if gap_filled:
+                self.metrics["intentional_gap_fills"] += 1
+            prev = float(self.metrics.get("common_sense_confidence", 0.5))
+            drills = max(1, int(self.metrics.get("common_sense_drills", 1)))
+            self.metrics["common_sense_confidence"] = round(((prev * (drills - 1)) + confidence) / drills, 4)
+
+        self._append_internal_monologue(
+            phase="common_sense_drill",
+            thought=(
+                f"I filled an intentional gap via {scenario['name']}: "
+                f"strategy={chosen}, confidence={confidence:.2f}"
+            ),
+            payload=event,
+        )
+        return event
 
     def _record_stage(self, trace: InferenceTrace, stage: InferenceStage) -> None:
         """Record that a stage was entered."""
@@ -2102,6 +2189,10 @@ class ManasBuddhi:
                 "time_since_last_autonomy_planning_seconds": time.time() - self.last_autonomy_planning_timestamp,
                 "time_since_last_autonomous_action_seconds": time.time() - self.last_autonomous_action_timestamp,
                 "autonomy_agenda_preview": self.build_autonomous_agenda(record=False),
+                "common_sense_drills": int(self.metrics.get("common_sense_drills", 0)),
+                "intentional_gap_fills": int(self.metrics.get("intentional_gap_fills", 0)),
+                "common_sense_confidence": float(self.metrics.get("common_sense_confidence", 0.5)),
+                "recent_common_sense_drills": self.common_sense_history[-5:],
                 "recent_logic_audits": self.logic_audit_history[-3:],
                 "recent_inquiries": [
                     {

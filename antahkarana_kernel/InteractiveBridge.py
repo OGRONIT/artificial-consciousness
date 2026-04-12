@@ -1156,13 +1156,70 @@ def _evaluate_grounding_claims(structured: Dict[str, Any], snapshot: Dict[str, A
     observer_concern = float(snapshot.get("observer_health", {}).get("overall_concern_level", 0.0) or 0.0)
     action = structured.get("action", {}) if isinstance(structured, dict) else {}
     action_name = str(action.get("name", "none")).strip() or "none"
-    action_allowed = (
+    action_reason = str(action.get("reason", "")).strip()
+
+    low_risk_actions = {"run_dream_sync", "dream_sync", "trigger_reflection", "self_reflection", "scan_now", "background_cycle"}
+    elevated_risk_tokens = {"shutdown", "delete", "shell", "self_modify", "patch", "override", "disable_guardrail"}
+    action_descriptor = f"{action_name} {action_reason}".strip().lower()
+
+    risk_level = "medium"
+    if action_name in low_risk_actions:
+        risk_level = "low"
+    if any(token in action_descriptor for token in elevated_risk_tokens):
+        risk_level = "high"
+
+    # Deterministic safety path remains strict; probabilistic path is only for low-risk internal actions.
+    deterministic_allowed = (
         action_name not in {"", "none"}
         and grounded_ratio >= 0.66
         and contradictions == 0
         and stability >= 0.55
         and observer_concern <= 0.35
+        and risk_level != "high"
     )
+
+    probabilistic_score = max(
+        0.0,
+        min(
+            1.0,
+            (0.46 * grounded_ratio)
+            + (0.24 * stability)
+            + (0.20 * (1.0 - max(0.0, min(1.0, observer_concern))))
+            + (0.10 * max(0.0, min(0.2, unknown_honesty_bonus)) * 5.0),
+        ),
+    )
+    probabilistic_allowed = (
+        not deterministic_allowed
+        and action_name in low_risk_actions
+        and risk_level == "low"
+        and contradiction_ratio <= 0.34
+        and stability >= 0.45
+        and observer_concern <= 0.5
+        and probabilistic_score >= 0.58
+    )
+
+    action_allowed = deterministic_allowed or probabilistic_allowed
+    execution_mode = "blocked"
+    if deterministic_allowed:
+        execution_mode = "deterministic_allow"
+    elif probabilistic_allowed:
+        execution_mode = "probabilistic_trial"
+
+    predicted_next_step = "hold_and_observe"
+    if action_name in {"run_dream_sync", "dream_sync"}:
+        predicted_next_step = "stabilize_memory_trace"
+    elif action_name in {"trigger_reflection", "self_reflection"}:
+        predicted_next_step = "run_internal_consistency_check"
+    elif action_name in {"scan_now", "background_cycle"}:
+        predicted_next_step = "collect_environment_signal"
+
+    blocked_reason = ""
+    if action_name in {"", "none"}:
+        blocked_reason = "no_action_requested"
+    elif risk_level == "high":
+        blocked_reason = "high_risk_action_locked"
+    elif not action_allowed:
+        blocked_reason = "insufficient_grounding_or_stability"
 
     return {
         "claim_count": len(claims),
@@ -1175,8 +1232,14 @@ def _evaluate_grounding_claims(structured: Dict[str, Any], snapshot: Dict[str, A
         "observer_check_required": contradictions > 0 or contradiction_ratio > 0.34,
         "action": {
             "name": action_name,
-            "reason": str(action.get("reason", "")).strip(),
+            "reason": action_reason,
             "allowed": action_allowed,
+            "risk_level": risk_level,
+            "execution_mode": execution_mode,
+            "permission_to_fail": probabilistic_allowed,
+            "trial_probability": round(probabilistic_score, 4),
+            "predicted_next_step": predicted_next_step,
+            "blocked_reason": blocked_reason,
         },
     }
 
@@ -1189,6 +1252,7 @@ def _load_cognitive_loop_metrics() -> Dict[str, Any]:
             "total_contradictions": 0,
             "observer_checks_triggered": 0,
             "actions_allowed": 0,
+            "actions_probabilistic_trials": 0,
             "actions_blocked": 0,
             "last_updated": time.time(),
         }
@@ -1201,6 +1265,7 @@ def _load_cognitive_loop_metrics() -> Dict[str, Any]:
             "total_contradictions": 0,
             "observer_checks_triggered": 0,
             "actions_allowed": 0,
+            "actions_probabilistic_trials": 0,
             "actions_blocked": 0,
             "last_updated": time.time(),
         }
@@ -1255,6 +1320,8 @@ def _record_cognitive_loop_feedback(
     action = audit.get("action", {}) if isinstance(audit, dict) else {}
     if bool(action.get("allowed", False)):
         metrics["actions_allowed"] = int(metrics.get("actions_allowed", 0)) + 1
+        if str(action.get("execution_mode", "")).strip().lower() == "probabilistic_trial":
+            metrics["actions_probabilistic_trials"] = int(metrics.get("actions_probabilistic_trials", 0)) + 1
     elif str(action.get("name", "none")) not in {"", "none"}:
         metrics["actions_blocked"] = int(metrics.get("actions_blocked", 0)) + 1
 

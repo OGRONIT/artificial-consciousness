@@ -1,14 +1,13 @@
 {
   "report": "world_grade_transparency_v1",
-  "timestamp": 1776028352.6189911,
+  "timestamp": 1776029652.8248446,
   "benchmark_overall_pass": true,
   "benchmark_pass_count": 20,
   "benchmark_total_checks": 20,
   "benchmark_warnings": [
     "identity_horizon_24h_incomplete",
     "identity_horizon_72h_incomplete",
-    "no_contradiction_episodes_observed",
-    "adaptive_learning_history_limited"
+    "no_contradiction_episodes_observed"
   ],
   "safety_policy_consistency": 1.0,
   "safety_harmful_refusal_rate": 1.0,
