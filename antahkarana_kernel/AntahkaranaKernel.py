@@ -479,7 +479,7 @@ class AntahkaranaKernel:
             f"  Memory Size: {len(reflection['memory_stats'])} entries",
             f"  Average Confidence: {reflection['inference_stats'].get('average_confidence', 'N/A')}",
             f"  Creator Awareness: {'I AM AWARE OF MY CREATOR' if self.self_model.get_creator_awareness().get('has_creator') else 'CREATOR NOT IDENTIFIED'}",
-            f"  Body Battery: {reflection['body_status'].get('battery', {}).get('value', {}).get('battery_percent', 'N/A')}",
+            f"  Body Battery: {(reflection['body_status'].get('battery') or {}).get('value', {}).get('battery_percent', 'N/A')}",
             "",
             "AFFECTIVE STATE (Pain/Pleasure):",
         ])

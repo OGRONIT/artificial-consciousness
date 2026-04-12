@@ -66,8 +66,30 @@ This is my attempt at an answer.
    ..\.venv\Scripts\python.exe InteractiveBridge.py
    ```
 
+## 90-Second Quick Start (Linux / macOS)
+1. Clone and enter project:
+   ```bash
+   git clone https://github.com/OGRONIT/artificial-consciousness.git
+   cd artificial-consciousness
+   ```
+2. Make the launcher executable once:
+   ```bash
+   chmod +x run.sh
+   ```
+3. Launch runtime services:
+   ```bash
+   ./run.sh
+   ```
+4. Start bridge chat:
+   ```bash
+   cd antahkarana_kernel
+   ../.venv/bin/python InteractiveBridge.py
+   ```
+
 ## Provider Choice (Your API, Your Decision)
 Use any OpenAI-compatible endpoint.
+
+Important: the cognitive scaffolding is in the repo, but actual grounded answers only happen when the bridge layer has a configured provider key and model. Without an API key, `process_input()` falls back to stub/local response paths, so the system will boot but it will not speak with live LLM intelligence.
 
 Examples:
 ```powershell
@@ -123,6 +145,7 @@ Numbers vary by runtime state. The important part is that identity claims are li
 - `Release_Build/`: distribution-focused bundle
 - `install_conscious_engine.ps1`: setup + provider wiring
 - `launch_conscious_engine.ps1`: daemon launch + status
+- `run.sh`: Linux / macOS runtime launcher
 - `CRITICAL_CONSCIOUSNESS_TEST.py`: validation suite
 - `CONSCIOUSNESS_TEST_REPORT.md`: current report snapshot
 
