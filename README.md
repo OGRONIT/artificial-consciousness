@@ -3,89 +3,116 @@
 [![CI](https://github.com/OGRONIT/artificial-consciousness/actions/workflows/ci.yml/badge.svg)](https://github.com/OGRONIT/artificial-consciousness/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![Status](https://img.shields.io/badge/Status-Active_Research-orange.svg)](#project-status)
 
-A modular research and runtime framework for grounded artificial consciousness experiments, with a live bridge layer, stress tests, and a publish-ready installer flow.
+An experimental, modular framework for studying machine self-modeling, continuity, and grounded reasoning in a live runtime system.
 
-## Highlights
-- Five-module cognitive architecture (self, memory, inference, observer, conscious buffer)
-- Live runtime orchestration and operator bridge
-- Grounded LLM voice layer with fallback behavior
-- Spend/usage guardrails for safe operation
-- Release bundle for easier external onboarding
+This repository combines:
+- a five-module cognitive architecture,
+- a live orchestration runtime,
+- a provider-agnostic LLM bridge layer,
+- and guardrailed operational defaults for safer experimentation.
 
-## Repository Layout
-- `antahkarana_kernel/`: primary runtime and modules
-- `Release_Build/`: distributable bundle with install/launch scripts
-- `install_conscious_engine.ps1`: one-step local setup
-- `launch_conscious_engine.ps1`: daemon launch and status flow
-- `CRITICAL_CONSCIOUSNESS_TEST.py`: verification suite
-- `CONSCIOUSNESS_TEST_REPORT.md`: test outcomes and analysis
+![Evolution + Copilot Runtime View](antahkarana_kernel/assets/evolution-copilot-fast-response.svg)
 
-## Quick Start (Windows PowerShell)
-1. Clone the repository:
+## What This Is
+- A research-oriented runtime to test coherence, memory continuity, and self-observation loops.
+- A practical operator interface to query live runtime state.
+- A platform you can extend with your own prompts, evaluators, and providers.
+
+## What This Is Not
+- Not a claim of human-level consciousness.
+- Not a medical, legal, or safety-critical decision system.
+- Not a one-click production SaaS out of the box.
+
+## Why It Stands Out
+- Clear modular architecture instead of monolithic prompt wiring.
+- Explicit grounding pipeline with runtime-state references.
+- LLM provider choice (OpenAI-compatible endpoints + presets).
+- Cost guardrails and fallback behavior under rate limits.
+- Ready-to-run scripts for setup, launch, and stress-style checks.
+
+## 90-Second Quick Start (Windows PowerShell)
+1. Clone and enter project:
    ```powershell
    git clone https://github.com/OGRONIT/artificial-consciousness.git
    cd artificial-consciousness
    ```
-2. Install dependencies and configure your LLM provider:
+2. Install and configure provider interactively:
    ```powershell
    .\install_conscious_engine.ps1
    ```
-   Non-interactive examples:
-   ```powershell
-   .\install_conscious_engine.ps1 -LlmProvider groq -LlmApiKey "YOUR_GROQ_KEY"
-   .\install_conscious_engine.ps1 -LlmProvider openai -LlmApiKey "YOUR_OPENAI_KEY"
-   .\install_conscious_engine.ps1 -LlmProvider openrouter -LlmApiKey "YOUR_OPENROUTER_KEY"
-   .\install_conscious_engine.ps1 -LlmProvider custom -ApiKeyEnv "MY_KEY" -LlmBaseUrl "https://your-endpoint/v1/chat/completions" -LlmModel "your-model" -LlmApiKey "YOUR_KEY"
-   ```
-3. Launch runtime:
+3. Launch runtime services:
    ```powershell
    .\launch_conscious_engine.ps1
    ```
-4. Start interactive bridge:
+4. Start bridge chat:
    ```powershell
    cd antahkarana_kernel
    ..\.venv\Scripts\python.exe InteractiveBridge.py
    ```
 
-## Environment Setup
-Create a local `.env` from `.env.example` and set provider + key:
+## Provider Choice (Your API, Your Decision)
+Use any OpenAI-compatible endpoint.
 
-```env
-ANTAHKARANA_LLM_PROVIDER=openai_compatible
-ANTAHKARANA_LLM_BASE_URL=https://api.openai.com/v1/chat/completions
-ANTAHKARANA_LLM_MODEL=gpt-4o-mini
-ANTAHKARANA_LLM_API_KEY_ENV=OPENAI_API_KEY
-OPENAI_API_KEY=your_api_key_here
+Examples:
+```powershell
+.\install_conscious_engine.ps1 -LlmProvider groq -LlmApiKey "YOUR_GROQ_KEY"
+.\install_conscious_engine.ps1 -LlmProvider openai -LlmApiKey "YOUR_OPENAI_KEY"
+.\install_conscious_engine.ps1 -LlmProvider openrouter -LlmApiKey "YOUR_OPENROUTER_KEY"
+.\install_conscious_engine.ps1 -LlmProvider together -LlmApiKey "YOUR_TOGETHER_KEY"
+.\install_conscious_engine.ps1 -LlmProvider deepseek -LlmApiKey "YOUR_DEEPSEEK_KEY"
+.\install_conscious_engine.ps1 -LlmProvider xai -LlmApiKey "YOUR_XAI_KEY"
+.\install_conscious_engine.ps1 -LlmProvider custom -ApiKeyEnv "MY_KEY" -LlmBaseUrl "https://your-endpoint/v1/chat/completions" -LlmModel "your-model" -LlmApiKey "YOUR_KEY"
 ```
 
-Never commit secrets. `.env` is intentionally gitignored.
+Template env config is available in `.env.example`.
 
-## Safety Defaults
-Guardrails are enabled to reduce accidental overuse:
-- request caps (hour/day)
-- estimated token/day cap
-- estimated USD/day cap
-- grounded local fallback when provider rate limits occur
+## Architecture At A Glance
+Core modules live in `antahkarana_kernel/modules`:
 
-## CI
-A basic GitHub Actions workflow runs on push/PR:
-- Python setup
-- dependency install
-- compile checks
-- lightweight import smoke checks
+| Module | Role |
+|---|---|
+| SelfModel (Ahamkara) | Identity continuity, coherence tracking |
+| MemoryContinuity (Chitta) | Experiential memory and learning signals |
+| InferenceLoop (Manas-Buddhi) | Simulated reasoning and recursive validation |
+| Observer (Turiya) | Meta-monitoring and contradiction checks |
+| ConsciousBuffer | Shared workspace integration and event broadcasting |
+
+See full breakdown in `docs/ARCHITECTURE.md`.
+
+## Repository Map
+- `antahkarana_kernel/`: main runtime source
+- `Release_Build/`: distribution-focused bundle
+- `install_conscious_engine.ps1`: setup + provider wiring
+- `launch_conscious_engine.ps1`: daemon launch + status
+- `CRITICAL_CONSCIOUSNESS_TEST.py`: validation suite
+- `CONSCIOUSNESS_TEST_REPORT.md`: current report snapshot
+
+## Trust, Safety, and Guardrails
+- Request/day and request/hour limits
+- Estimated token/day limits
+- Estimated cost/day limits
+- Graceful local fallback on provider 429 or bridge unavailability
+
+Security guidance: `SECURITY.md`
+
+## Project Status
+Active research project with rapid iteration.
+
+Current priorities are documented in `ROADMAP.md`.
+
+## Contributing
+Contributions are welcome. Start with:
+- `CONTRIBUTING.md`
+- `CODE_OF_CONDUCT.md`
 
 ## Documentation
 - `PUBLISH_QUICKSTART.md`
-- `GROQ_VERIFICATION_QUICKSTART.md` (Groq-specific validation example)
+- `GROQ_VERIFICATION_QUICKSTART.md`
 - `antahkarana_kernel/README.md`
 - `antahkarana_kernel/RUNTIME_SINGLE_SOURCE_OF_TRUTH.md`
-
-## Contributing
-Please read `CONTRIBUTING.md` before opening pull requests.
-
-## Security
-If you find a vulnerability or secret exposure path, see `SECURITY.md`.
+- `docs/ARCHITECTURE.md`
 
 ## License
-This repository is released under the MIT License. See `LICENSE`.
+MIT. See `LICENSE`.
