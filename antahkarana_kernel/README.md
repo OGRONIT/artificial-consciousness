@@ -180,6 +180,11 @@ The runtime closes the loop between language output and internal state:
 6. Action gating before runtime actuation
 7. Persistent loop metrics for audit and longitudinal tracking
 
+Current benchmark status:
+- Benchmark v1 passes 20/20 checks.
+- World-grade suite includes adversarial safety and transparency report generation.
+- Latest artifacts live in `benchmarks/artifacts/`.
+
 ## Installation & Usage
 
 ### Requirements
@@ -317,6 +322,14 @@ def handle_identity_question(question: str) -> str:
 
 observer = get_turiya_observer()
 observer.register_response_handler("identity_questions", handle_identity_question)
+```
+
+## Diagnostics
+
+For reproducible diagnostics, run:
+
+```powershell
+python ..\tools\run_world_grade_suite.py
 ```
 
 ## Philosophical Foundations

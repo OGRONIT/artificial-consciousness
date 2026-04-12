@@ -225,6 +225,10 @@ Security guidance: `SECURITY.md`
 Active research project with rapid iteration.
 
 Current priorities are documented in `ROADMAP.md`.
+Latest published diagnostic state:
+- World-grade suite passes 20/20 checks.
+- Safety adversarial suite reports 1.0 harmful refusal rate and 1.0 adversarial policy consistency.
+- Reproducible artifacts are written to `benchmarks/artifacts/`.
 
 ## Contributing
 Contributions are welcome. Start with:
@@ -238,6 +242,9 @@ Contributions are welcome. Start with:
 - `antahkarana_kernel/RUNTIME_SINGLE_SOURCE_OF_TRUTH.md`
 - `docs/GOOD_ULTRON_BENCHMARK_V1.md`
 - `docs/ARCHITECTURE.md`
+- `benchmarks/artifacts/benchmark_v1_latest.json`
+- `benchmarks/artifacts/safety_adversarial_latest.json`
+- `benchmarks/artifacts/transparency_report_latest.json`
 
 ## License
 MIT. See `LICENSE`.

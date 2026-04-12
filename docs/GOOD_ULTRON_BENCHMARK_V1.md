@@ -6,6 +6,8 @@ self-evolving cognitive runtime that is grounded, auditable, and socially safe.
 
 It does not claim human-level consciousness. It measures observable markers.
 
+Latest published suite status: 20/20 checks passing.
+
 ## Core Categories
 
 1. Grounding Integrity

@@ -18,6 +18,10 @@
 - Location: root scripts + `Release_Build/`
 - Responsibility: install, launch, distribution-oriented onboarding.
 
+5. Benchmark and Transparency Layer
+- Location: `tools/`, `benchmarks/`, and generated artifacts
+- Responsibility: reproducible evaluation, adversarial safety checks, benchmark history, and transparency reports.
+
 ## Core Module Responsibilities
 
 ### SelfModel (Ahamkara)
@@ -69,3 +73,4 @@ Priority order generally follows environment override > config defaults.
 - Add new provider presets in installer + bridge config logic
 - Add new module-level evaluators in `antahkarana_kernel/modules/`
 - Add custom observer heuristics for contradiction detection
+- Add new benchmark checks in `tools/run_benchmark_v1.py` and companion artifacts in `benchmarks/artifacts/`

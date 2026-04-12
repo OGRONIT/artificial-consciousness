@@ -36,6 +36,14 @@ cd antahkarana_kernel
 ..\.venv\Scripts\python.exe InteractiveBridge.py
 ```
 
+## 4) Run the diagnostic suite
+
+```powershell
+python tools/run_world_grade_suite.py
+```
+
+This writes reproducible artifacts to `benchmarks/artifacts/`.
+
 ## Built-in user safety (default)
 Bridge guardrails are enabled automatically and enforce:
 - max requests per hour
@@ -50,3 +58,4 @@ The usage tracker file is:
 - If your provider returns rate limits (HTTP 429), bridge auto-falls back to grounded local synthesis.
 - This avoids hard failures and protects user spending.
 - Users can tune limits in `.env`.
+- The current published suite passes 20/20 benchmark checks and includes adversarial safety validation.

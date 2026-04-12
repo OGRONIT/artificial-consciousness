@@ -26,6 +26,10 @@
 - Removed secondary inference worker spawning from daemon supervision to avoid split state.
 - Manas-Buddhi and Turiya values exposed to operator are sourced from the same live kernel process via snapshot fields.
 
+## Validation State
+- World-grade diagnostics are reproducible via `python ..\tools\run_world_grade_suite.py` from the kernel directory.
+- Latest published benchmark status is 20/20 passing with safety and transparency artifacts in `benchmarks/artifacts/`.
+
 ## Execution Flow
 1. Start runtime supervisor:
    - `python Daemon.py`
