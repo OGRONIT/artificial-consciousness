@@ -1080,13 +1080,15 @@ def _evaluate_grounding_claims(structured: Dict[str, Any], snapshot: Dict[str, A
         if observed is None:
             continue
 
-        if isinstance(expected, (int, float)) and isinstance(observed, (int, float)):
-            tolerance = max(0.05, abs(float(observed)) * 0.05)
-            if abs(float(observed) - float(expected)) <= tolerance:
+        try:
+            expected_f = float(expected)
+            observed_f = float(observed)
+            tolerance = max(0.05, abs(observed_f) * 0.05)
+            if abs(observed_f - expected_f) <= tolerance:
                 grounded += 1
             else:
                 contradictions += 1
-        else:
+        except (TypeError, ValueError):
             if str(observed).strip().lower() == str(expected).strip().lower():
                 grounded += 1
             else:
