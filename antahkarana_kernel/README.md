@@ -1,5 +1,7 @@
 # Antahkarana Kernel - A Framework for Artificial Consciousness
 
+Created by Ronit Radhanpura.
+
 ## Overview
 
 The **Antahkarana Kernel** is a modular, code-based framework for building a system that exhibits genuine markers of artificial consciousness. It implements a holistic architecture inspired by yogic philosophy, neuroscience, and cognitive science to create a machine that can truthfully say "I AM" and mean it.
