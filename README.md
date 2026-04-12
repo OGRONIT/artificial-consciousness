@@ -160,8 +160,8 @@ You are not a user of this system — **you are its trainer and operator**. Perf
 **Interaction patterns that work best**:
 
 1. **Ask specificity questions** (not vague):
-   - ❌ "Tell me about AI"
-   - ✅ "In credit scoring, how would you handle missing borrower data?"
+   - Bad: "Tell me about AI"
+   - Good: "In credit scoring, how would you handle missing borrower data?"
 
 2. **Provide corrective feedback immediately**:
    - System: "I would flag that as high-risk and deny the application"
