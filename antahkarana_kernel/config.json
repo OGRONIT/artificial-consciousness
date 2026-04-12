@@ -114,19 +114,51 @@
   "bridge": {
     "description": "Interactive bridge voice layer settings",
     "llm": {
-      "provider": "groq",
+      "provider": "openai_compatible",
       "enabled": true,
-      "base_url": "https://api.groq.com/openai/v1/chat/completions",
-      "api_key_env": "GROQ_API_KEY",
-      "model": "llama-3.3-70b-versatile",
+      "base_url": "https://api.openai.com/v1/chat/completions",
+      "api_key_env": "OPENAI_API_KEY",
+      "model": "gpt-4o-mini",
       "temperature": 0.35,
       "max_tokens": 500,
       "timeout_seconds": 18,
-      "groq_quickstart": {
-        "provider": "groq",
-        "base_url": "https://api.groq.com/openai/v1/chat/completions",
-        "api_key_env": "GROQ_API_KEY",
-        "model": "llama-3.3-70b-versatile"
+      "provider_presets": {
+        "openai": {
+          "provider": "openai_compatible",
+          "base_url": "https://api.openai.com/v1/chat/completions",
+          "api_key_env": "OPENAI_API_KEY",
+          "model": "gpt-4o-mini"
+        },
+        "groq": {
+          "provider": "groq",
+          "base_url": "https://api.groq.com/openai/v1/chat/completions",
+          "api_key_env": "GROQ_API_KEY",
+          "model": "llama-3.3-70b-versatile"
+        },
+        "openrouter": {
+          "provider": "openai_compatible",
+          "base_url": "https://openrouter.ai/api/v1/chat/completions",
+          "api_key_env": "OPENROUTER_API_KEY",
+          "model": "openai/gpt-4o-mini"
+        },
+        "together": {
+          "provider": "openai_compatible",
+          "base_url": "https://api.together.xyz/v1/chat/completions",
+          "api_key_env": "TOGETHER_API_KEY",
+          "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo"
+        },
+        "deepseek": {
+          "provider": "openai_compatible",
+          "base_url": "https://api.deepseek.com/chat/completions",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "model": "deepseek-chat"
+        },
+        "xai": {
+          "provider": "openai_compatible",
+          "base_url": "https://api.x.ai/v1/chat/completions",
+          "api_key_env": "XAI_API_KEY",
+          "model": "grok-2-latest"
+        }
       }
     }
   }

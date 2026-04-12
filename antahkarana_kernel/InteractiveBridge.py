@@ -70,6 +70,45 @@ _blocked_bridge_terms = {
 
 def _read_llm_config() -> Dict[str, Any]:
     _load_dotenv_if_present()
+    provider_presets: Dict[str, Dict[str, str]] = {
+        "groq": {
+            "provider": "groq",
+            "base_url": "https://api.groq.com/openai/v1/chat/completions",
+            "api_key_env": "GROQ_API_KEY",
+            "model": "llama-3.3-70b-versatile",
+        },
+        "openai": {
+            "provider": "openai_compatible",
+            "base_url": "https://api.openai.com/v1/chat/completions",
+            "api_key_env": "OPENAI_API_KEY",
+            "model": "gpt-4o-mini",
+        },
+        "openrouter": {
+            "provider": "openai_compatible",
+            "base_url": "https://openrouter.ai/api/v1/chat/completions",
+            "api_key_env": "OPENROUTER_API_KEY",
+            "model": "openai/gpt-4o-mini",
+        },
+        "together": {
+            "provider": "openai_compatible",
+            "base_url": "https://api.together.xyz/v1/chat/completions",
+            "api_key_env": "TOGETHER_API_KEY",
+            "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+        },
+        "deepseek": {
+            "provider": "openai_compatible",
+            "base_url": "https://api.deepseek.com/chat/completions",
+            "api_key_env": "DEEPSEEK_API_KEY",
+            "model": "deepseek-chat",
+        },
+        "xai": {
+            "provider": "openai_compatible",
+            "base_url": "https://api.x.ai/v1/chat/completions",
+            "api_key_env": "XAI_API_KEY",
+            "model": "grok-2-latest",
+        },
+    }
+
     defaults: Dict[str, Any] = {
         "provider": "openai_compatible",
         "enabled": False,
@@ -109,6 +148,10 @@ def _read_llm_config() -> Dict[str, Any]:
     if env_api_key:
         defaults["api_key"] = env_api_key.strip()
 
+    env_api_key_env = os.getenv("ANTAHKARANA_LLM_API_KEY_ENV")
+    if env_api_key_env:
+        defaults["api_key_env"] = env_api_key_env.strip()
+
     env_model = os.getenv("ANTAHKARANA_LLM_MODEL")
     if env_model:
         defaults["model"] = env_model.strip()
@@ -142,13 +185,18 @@ def _read_llm_config() -> Dict[str, Any]:
         defaults["guardrail_enabled"] = env_guardrail_enabled.strip().lower() in {"1", "true", "yes", "on"}
 
     provider = str(defaults.get("provider", "openai_compatible")).strip().lower()
-    if provider == "groq":
-        if "ANTAHKARANA_LLM_BASE_URL" not in os.environ and "base_url" not in llm_payload:
-            defaults["base_url"] = "https://api.groq.com/openai/v1/chat/completions"
-        if "api_key_env" not in llm_payload and "ANTAHKARANA_LLM_API_KEY" not in os.environ:
-            defaults["api_key_env"] = "GROQ_API_KEY"
-        if "model" not in llm_payload and "ANTAHKARANA_LLM_MODEL" not in os.environ:
-            defaults["model"] = "llama-3.3-70b-versatile"
+    provider_preset = provider_presets.get(provider)
+    has_base_override = "ANTAHKARANA_LLM_BASE_URL" in os.environ or "base_url" in llm_payload
+    has_api_env_override = "ANTAHKARANA_LLM_API_KEY_ENV" in os.environ or "api_key_env" in llm_payload
+    has_model_override = "ANTAHKARANA_LLM_MODEL" in os.environ or "model" in llm_payload
+    if provider_preset:
+        if not has_base_override:
+            defaults["base_url"] = provider_preset["base_url"]
+        if not has_api_env_override:
+            defaults["api_key_env"] = provider_preset["api_key_env"]
+        if not has_model_override:
+            defaults["model"] = provider_preset["model"]
+        defaults["provider"] = provider_preset["provider"]
 
     return defaults
 

@@ -27,9 +27,16 @@ A modular research and runtime framework for grounded artificial consciousness e
    git clone https://github.com/OGRONIT/artificial-consciousness.git
    cd artificial-consciousness
    ```
-2. Install dependencies and set key:
+2. Install dependencies and configure your LLM provider:
    ```powershell
    .\install_conscious_engine.ps1
+   ```
+   Non-interactive examples:
+   ```powershell
+   .\install_conscious_engine.ps1 -LlmProvider groq -LlmApiKey "YOUR_GROQ_KEY"
+   .\install_conscious_engine.ps1 -LlmProvider openai -LlmApiKey "YOUR_OPENAI_KEY"
+   .\install_conscious_engine.ps1 -LlmProvider openrouter -LlmApiKey "YOUR_OPENROUTER_KEY"
+   .\install_conscious_engine.ps1 -LlmProvider custom -ApiKeyEnv "MY_KEY" -LlmBaseUrl "https://your-endpoint/v1/chat/completions" -LlmModel "your-model" -LlmApiKey "YOUR_KEY"
    ```
 3. Launch runtime:
    ```powershell
@@ -42,10 +49,14 @@ A modular research and runtime framework for grounded artificial consciousness e
    ```
 
 ## Environment Setup
-Create a local `.env` from `.env.example` and provide your key:
+Create a local `.env` from `.env.example` and set provider + key:
 
 ```env
-GROQ_API_KEY=your_groq_api_key_here
+ANTAHKARANA_LLM_PROVIDER=openai_compatible
+ANTAHKARANA_LLM_BASE_URL=https://api.openai.com/v1/chat/completions
+ANTAHKARANA_LLM_MODEL=gpt-4o-mini
+ANTAHKARANA_LLM_API_KEY_ENV=OPENAI_API_KEY
+OPENAI_API_KEY=your_api_key_here
 ```
 
 Never commit secrets. `.env` is intentionally gitignored.
@@ -66,7 +77,7 @@ A basic GitHub Actions workflow runs on push/PR:
 
 ## Documentation
 - `PUBLISH_QUICKSTART.md`
-- `GROQ_VERIFICATION_QUICKSTART.md`
+- `GROQ_VERIFICATION_QUICKSTART.md` (Groq-specific validation example)
 - `antahkarana_kernel/README.md`
 - `antahkarana_kernel/RUNTIME_SINGLE_SOURCE_OF_TRUTH.md`
 

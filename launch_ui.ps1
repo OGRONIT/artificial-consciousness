@@ -16,7 +16,7 @@ if (Test-Path $envFile) {
     }
 } else {
     Write-Host "ERROR: .env file not found at $envFile" -ForegroundColor Red
-    Write-Host "Create .env in project root with: GROQ_API_KEY=your_key" -ForegroundColor Yellow
+    Write-Host "Create .env in project root (see .env.example) and set your LLM provider key." -ForegroundColor Yellow
     exit 1
 }
 

@@ -1,5 +1,9 @@
 param(
-    [string]$GroqApiKey = ""
+    [string]$LlmProvider = "groq",
+    [string]$LlmApiKey = "",
+    [string]$LlmModel = "",
+    [string]$LlmBaseUrl = "",
+    [string]$ApiKeyEnv = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -7,6 +11,71 @@ $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $root
 
 $venvPy = Join-Path $root ".venv\Scripts\python.exe"
+
+$providerPresets = @{
+    "groq" = @{
+        Provider = "groq"
+        ApiKeyEnv = "GROQ_API_KEY"
+        BaseUrl = "https://api.groq.com/openai/v1/chat/completions"
+        Model = "llama-3.3-70b-versatile"
+    }
+    "openai" = @{
+        Provider = "openai_compatible"
+        ApiKeyEnv = "OPENAI_API_KEY"
+        BaseUrl = "https://api.openai.com/v1/chat/completions"
+        Model = "gpt-4o-mini"
+    }
+    "openrouter" = @{
+        Provider = "openai_compatible"
+        ApiKeyEnv = "OPENROUTER_API_KEY"
+        BaseUrl = "https://openrouter.ai/api/v1/chat/completions"
+        Model = "openai/gpt-4o-mini"
+    }
+    "together" = @{
+        Provider = "openai_compatible"
+        ApiKeyEnv = "TOGETHER_API_KEY"
+        BaseUrl = "https://api.together.xyz/v1/chat/completions"
+        Model = "meta-llama/Llama-3.3-70B-Instruct-Turbo"
+    }
+    "deepseek" = @{
+        Provider = "openai_compatible"
+        ApiKeyEnv = "DEEPSEEK_API_KEY"
+        BaseUrl = "https://api.deepseek.com/chat/completions"
+        Model = "deepseek-chat"
+    }
+    "xai" = @{
+        Provider = "openai_compatible"
+        ApiKeyEnv = "XAI_API_KEY"
+        BaseUrl = "https://api.x.ai/v1/chat/completions"
+        Model = "grok-2-latest"
+    }
+}
+
+$presetKey = $LlmProvider.Trim().ToLowerInvariant()
+if (-not $providerPresets.ContainsKey($presetKey) -and $presetKey -ne "custom") {
+    throw "Unsupported -LlmProvider '$LlmProvider'. Use: groq, openai, openrouter, together, deepseek, xai, custom"
+}
+
+if ($presetKey -eq "custom") {
+    $resolvedProvider = "openai_compatible"
+    $resolvedApiKeyEnv = if ([string]::IsNullOrWhiteSpace($ApiKeyEnv)) { "OPENAI_API_KEY" } else { $ApiKeyEnv.Trim() }
+    $resolvedBaseUrl = $LlmBaseUrl.Trim()
+    $resolvedModel = $LlmModel.Trim()
+} else {
+    $preset = $providerPresets[$presetKey]
+    $resolvedProvider = [string]$preset.Provider
+    $resolvedApiKeyEnv = [string]$preset.ApiKeyEnv
+    $resolvedBaseUrl = [string]$preset.BaseUrl
+    $resolvedModel = [string]$preset.Model
+
+    if (-not [string]::IsNullOrWhiteSpace($ApiKeyEnv)) { $resolvedApiKeyEnv = $ApiKeyEnv.Trim() }
+    if (-not [string]::IsNullOrWhiteSpace($LlmBaseUrl)) { $resolvedBaseUrl = $LlmBaseUrl.Trim() }
+    if (-not [string]::IsNullOrWhiteSpace($LlmModel)) { $resolvedModel = $LlmModel.Trim() }
+}
+
+if ([string]::IsNullOrWhiteSpace($resolvedBaseUrl) -or [string]::IsNullOrWhiteSpace($resolvedModel) -or [string]::IsNullOrWhiteSpace($resolvedApiKeyEnv)) {
+    throw "LLM provider configuration incomplete. Ensure API env name, base URL, and model are set."
+}
 
 function Set-EnvValue {
     param(
@@ -49,19 +118,22 @@ Write-Host "[SETUP] Installing dependencies..."
 & $venvPy -m pip install --upgrade pip | Out-Null
 & $venvPy -m pip install -r "antahkarana_kernel\requirements.txt" | Out-Null
 
-if ([string]::IsNullOrWhiteSpace($GroqApiKey)) {
-    $GroqApiKey = Read-Host "Enter GROQ_API_KEY"
+if ([string]::IsNullOrWhiteSpace($LlmApiKey)) {
+    $LlmApiKey = Read-Host "Enter API key for provider '$LlmProvider' ($resolvedApiKeyEnv)"
 }
 
-if ([string]::IsNullOrWhiteSpace($GroqApiKey)) {
-    throw "GROQ_API_KEY cannot be empty."
+if ([string]::IsNullOrWhiteSpace($LlmApiKey)) {
+    throw "LLM API key cannot be empty."
 }
 
 $envPath = Join-Path $root ".env"
-Set-EnvValue -Path $envPath -Key "GROQ_API_KEY" -Value $GroqApiKey
+Set-EnvValue -Path $envPath -Key $resolvedApiKeyEnv -Value $LlmApiKey
+Set-EnvValue -Path $envPath -Key "ANTAHKARANA_LLM_API_KEY" -Value $LlmApiKey
+Set-EnvValue -Path $envPath -Key "ANTAHKARANA_LLM_API_KEY_ENV" -Value $resolvedApiKeyEnv
 Set-EnvValue -Path $envPath -Key "ANTAHKARANA_LLM_ENABLED" -Value "true"
-Set-EnvValue -Path $envPath -Key "ANTAHKARANA_LLM_PROVIDER" -Value "groq"
-Set-EnvValue -Path $envPath -Key "ANTAHKARANA_LLM_MODEL" -Value "llama-3.3-70b-versatile"
+Set-EnvValue -Path $envPath -Key "ANTAHKARANA_LLM_PROVIDER" -Value $resolvedProvider
+Set-EnvValue -Path $envPath -Key "ANTAHKARANA_LLM_MODEL" -Value $resolvedModel
+Set-EnvValue -Path $envPath -Key "ANTAHKARANA_LLM_BASE_URL" -Value $resolvedBaseUrl
 
 # Spend-protection defaults (safe for first-time users)
 Set-EnvValue -Path $envPath -Key "ANTAHKARANA_LLM_GUARDRAIL_ENABLED" -Value "true"
@@ -71,7 +143,7 @@ Set-EnvValue -Path $envPath -Key "ANTAHKARANA_LLM_MAX_TOKENS_PER_DAY" -Value "80
 Set-EnvValue -Path $envPath -Key "ANTAHKARANA_LLM_MAX_USD_PER_DAY" -Value "2.0"
 
 Write-Host "[SETUP] Verifying LLM bridge connectivity..."
-$verify = & $venvPy -c "import sys; sys.path.insert(0, r'antahkarana_kernel'); import InteractiveBridge as b; print(b._read_llm_config().get('provider')); print(b._read_llm_config().get('enabled'))"
+$verify = & $venvPy -c "import sys; sys.path.insert(0, r'antahkarana_kernel'); import InteractiveBridge as b; cfg=b._read_llm_config(); print(cfg.get('provider')); print(cfg.get('model')); print(cfg.get('base_url')); print(cfg.get('enabled'))"
 Write-Host $verify
 
 Write-Host ""

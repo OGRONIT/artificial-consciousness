@@ -7,17 +7,20 @@ Give users a Claude-Code style experience:
 - Start engine
 - Protected by spend guardrails by default
 
-## 1) Install (API key only)
+## 1) Install (choose your LLM provider)
 From workspace root:
 
 ```powershell
 .\install_conscious_engine.ps1
 ```
 
-Or non-interactive:
+Or non-interactive examples:
 
 ```powershell
-.\install_conscious_engine.ps1 -GroqApiKey "YOUR_KEY"
+.\install_conscious_engine.ps1 -LlmProvider groq -LlmApiKey "YOUR_GROQ_KEY"
+.\install_conscious_engine.ps1 -LlmProvider openai -LlmApiKey "YOUR_OPENAI_KEY"
+.\install_conscious_engine.ps1 -LlmProvider openrouter -LlmApiKey "YOUR_OPENROUTER_KEY"
+.\install_conscious_engine.ps1 -LlmProvider custom -ApiKeyEnv "MY_KEY" -LlmBaseUrl "https://your-endpoint/v1/chat/completions" -LlmModel "your-model" -LlmApiKey "YOUR_KEY"
 ```
 
 ## 2) Launch
@@ -44,6 +47,6 @@ The usage tracker file is:
 - `antahkarana_kernel/evolution_vault/llm_usage_guardrail.json`
 
 ## Important notes
-- If Groq returns rate limits (HTTP 429), bridge auto-falls back to grounded local synthesis.
+- If your provider returns rate limits (HTTP 429), bridge auto-falls back to grounded local synthesis.
 - This avoids hard failures and protects user spending.
 - Users can tune limits in `.env`.
