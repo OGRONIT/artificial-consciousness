@@ -127,6 +127,15 @@ def main() -> None:
         "pass_count": passed,
         "total_checks": total,
         "overall_pass": passed == total,
+        "loop_snapshot": {
+            "total_cycles": total_cycles,
+            "grounded_cycles": grounded_cycles,
+            "fallback_or_other_cycles": max(0, total_cycles - grounded_cycles),
+            "total_contradictions": contradictions,
+        },
+        "warnings": [
+            "grounded_cycles_zero_under_rate_limit"
+        ] if total_cycles > 0 and grounded_cycles == 0 else [],
         "checks": checks,
     }
 

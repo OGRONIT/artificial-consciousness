@@ -65,3 +65,5 @@ The runner prints JSON with:
 ## Interpretation
 - `overall_pass=true`: minimum benchmark bar reached
 - `overall_pass=false`: inspect failed checks and iterate architecture/runtime policy
+- Check `loop_snapshot` in runner output to see grounded vs fallback cycle mix.
+- If `warnings` includes `grounded_cycles_zero_under_rate_limit`, rerun after provider cooldown for a stronger grounded-signal window.

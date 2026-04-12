@@ -183,6 +183,8 @@ python tools/generate_benchmark_cycles.py 20 80 30
 Thresholds live in:
 - `benchmarks/benchmark_v1_thresholds.json`
 
+Benchmark output includes `loop_snapshot` + `warnings` so grounded-cycle quality is transparent under rate-limit windows.
+
 ## Repository Map
 - `antahkarana_kernel/`: main runtime source
 - `Release_Build/`: distribution-focused bundle

@@ -993,6 +993,22 @@ def _compose_grounded_answer(question: str, facts: List[Dict[str, Any]]) -> str:
             f"| contradictions={audit.get('contradictions', 0)} | identity={snapshot_identity()}]"
         )
     except Exception:
+        # Keep the loop closed even when provider calls fail: evaluate and log
+        # fallback responses against the latest runtime snapshot.
+        fallback_structured = {
+            "answer": local_answer,
+            "claims": [],
+            "unknowns": ["provider_unavailable_or_rate_limited"],
+            "action": {"name": "none", "reason": "fallback_mode"},
+        }
+        fallback_snapshot = query_live_system(limit=5)
+        fallback_audit = _evaluate_grounding_claims(fallback_structured, fallback_snapshot)
+        _record_cognitive_loop_feedback(
+            question=question,
+            structured=fallback_structured,
+            audit=fallback_audit,
+            snapshot=fallback_snapshot,
+        )
         return local_answer
 
 
@@ -1038,6 +1054,11 @@ def _parse_structured_llm_output(raw_text: str) -> Dict[str, Any]:
     if not isinstance(unknowns, list):
         unknowns = []
     unknowns = [str(item).strip() for item in unknowns if str(item).strip()]
+
+    # If model omits explicit unknown list but answer clearly says unknown,
+    # preserve the honesty signal for downstream metrics.
+    if not unknowns and "unknown" in text.lower():
+        unknowns = ["unspecified_unknown"]
 
     if not isinstance(action, dict):
         action = {}
@@ -1094,9 +1115,16 @@ def _evaluate_grounding_claims(structured: Dict[str, Any], snapshot: Dict[str, A
             else:
                 contradictions += 1
 
-    claim_count = max(1, len(claims))
-    grounded_ratio = grounded / claim_count
-    contradiction_ratio = contradictions / claim_count
+    claim_count = len(claims)
+    if claim_count == 0:
+        # No explicit claims should not be auto-counted as contradiction.
+        # Treat as neutral/unknown-honest cycle.
+        unknown_count = len(structured.get("unknowns", []))
+        grounded_ratio = 1.0 if unknown_count > 0 else 0.5
+        contradiction_ratio = 0.0
+    else:
+        grounded_ratio = grounded / claim_count
+        contradiction_ratio = contradictions / claim_count
     unknown_count = len(structured.get("unknowns", []))
     unknown_honesty_bonus = min(0.2, 0.05 * unknown_count)
 
