@@ -7,7 +7,7 @@
 - Responsibility: self-modeling, memory continuity, inference loops, observation, and shared conscious workspace.
 
 2. Runtime Orchestration Layer
-- Location: `antahkarana_kernel/LiveConsciousness.py`, `antahkarana_kernel/Daemon.py`, `antahkarana_kernel/BeastOps.py`
+- Location: `antahkarana_kernel/LiveConsciousness.py`, `antahkarana_kernel/Daemon.py`, `antahkarana_kernel/RuntimeOps.py`
 - Responsibility: startup, lifecycle management, state persistence, and operational control.
 
 3. Operator Bridge Layer

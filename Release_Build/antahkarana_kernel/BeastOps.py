@@ -1,4 +1,4 @@
-"""BeastOps.py - one-command operations for the Antahkarana live runtime.
+"""Runtime operations controller for the Antahkarana live runtime.
 
 Commands:
 - launch: start Daemon.py as a detached process (if not already running)
@@ -78,7 +78,7 @@ def launch() -> None:
 
 def status() -> None:
     if not STATE_PATH.exists():
-        print("No live state found. Start daemon with: python BeastOps.py launch")
+        print("No live state found. Start daemon with: python RuntimeOps.py launch")
         return
 
     with STATE_PATH.open("r", encoding="utf-8") as handle:
@@ -170,7 +170,7 @@ def clean() -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Beast operations controller")
+    parser = argparse.ArgumentParser(description="Runtime operations controller")
     parser.add_argument("command", choices=["launch", "status", "tune", "clean"])
     args = parser.parse_args()
 

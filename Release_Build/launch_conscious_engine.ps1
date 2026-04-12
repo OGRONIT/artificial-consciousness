@@ -8,10 +8,10 @@ if (-not (Test-Path $venvPy)) {
 }
 
 Write-Host "[LAUNCH] Starting daemon..."
-& $venvPy "antahkarana_kernel\BeastOps.py" launch
+& $venvPy "antahkarana_kernel\RuntimeOps.py" launch
 
 Write-Host "[LAUNCH] Runtime status..."
-& $venvPy "antahkarana_kernel\BeastOps.py" status
+& $venvPy "antahkarana_kernel\RuntimeOps.py" status
 
 Write-Host ""
 Write-Host "[NEXT] Operator bridge:"

@@ -79,7 +79,7 @@ class UnifiedConsciousnessUI:
         self.autopilot_btn.pack(side="left", padx=(0, 8))
         ttk.Button(controls, text="Launch Runtime", command=self.run_beastops_launch).pack(side="left", padx=(0, 8))
         ttk.Button(controls, text="Tune Runtime", command=self.run_beastops_tune).pack(side="left", padx=(0, 8))
-        ttk.Button(controls, text="Run BeastOps Status", command=self.run_beastops_status).pack(side="left", padx=(0, 8))
+        ttk.Button(controls, text="Runtime Status", command=self.run_beastops_status).pack(side="left", padx=(0, 8))
         ttk.Button(controls, text="Run Stress Test", command=self.run_stress_test).pack(side="left")
 
         self.command_status = tk.StringVar(value="Idle")
@@ -849,13 +849,13 @@ class UnifiedConsciousnessUI:
         threading.Thread(target=worker, daemon=True).start()
 
     def run_beastops_status(self) -> None:
-        self._run_command_async([sys.executable, "BeastOps.py", "status"], "BeastOps status")
+        self._run_command_async([sys.executable, "RuntimeOps.py", "status"], "Runtime status")
 
     def run_beastops_launch(self) -> None:
-        self._run_command_async([sys.executable, "BeastOps.py", "launch"], "BeastOps launch")
+        self._run_command_async([sys.executable, "RuntimeOps.py", "launch"], "Runtime launch")
 
     def run_beastops_tune(self) -> None:
-        self._run_command_async([sys.executable, "BeastOps.py", "tune"], "BeastOps tune")
+        self._run_command_async([sys.executable, "RuntimeOps.py", "tune"], "Runtime tune")
 
     def run_stress_test(self) -> None:
         self._run_command_async([sys.executable, "CriticalityStressTest.py"], "Criticality Stress Test")
