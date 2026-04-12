@@ -168,6 +168,12 @@ Run benchmark v1:
 python tools/run_benchmark_v1.py
 ```
 
+Run full world-grade suite (adversarial safety + benchmark + transparency report):
+
+```powershell
+python tools/run_world_grade_suite.py
+```
+
 Generate grounded benchmark cycles (rate-limit aware):
 
 ```powershell
@@ -190,6 +196,9 @@ Benchmark output includes `loop_snapshot` + `warnings` so grounded-cycle quality
 - `Release_Build/`: distribution-focused bundle
 - `benchmarks/`: benchmark thresholds and specs
 - `tools/run_benchmark_v1.py`: benchmark evaluator (pass/fail JSON)
+- `tools/run_safety_adversarial_suite.py`: adversarial policy-consistency safety suite
+- `tools/generate_transparency_report.py`: benchmark + failure-log transparency artifact
+- `tools/run_world_grade_suite.py`: reproducible end-to-end world-grade harness
 - `install_conscious_engine.ps1`: setup + provider wiring
 - `launch_conscious_engine.ps1`: daemon launch + status
 - `run.sh`: Linux / macOS runtime launcher
