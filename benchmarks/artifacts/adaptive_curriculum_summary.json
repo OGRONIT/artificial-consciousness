@@ -1,0 +1,14 @@
+{
+  "run_type": "adaptive_adversarial",
+  "scenarios_processed": 9050000,
+  "completed_runs": 9,
+  "partial_run_scenarios": 50000,
+  "uniform_baseline_learning_value": 0.0026,
+  "adaptive_avg_learning_value": 0.7876,
+  "learning_value_lift": 303,
+  "conflict_rate_adaptive": 0.7884,
+  "conflict_rate_uniform": 0.0026,
+  "verdict": "Adaptive curriculum broke uniform plateau. 303x learning signal lift over 9M scenarios vs 29M uniform.",
+  "stopped_early": true,
+  "reason_stopped": "Proof achieved. Laptop preservation."
+}

@@ -5,99 +5,76 @@
   "start_index": 0,
   "end_index": 1000000,
   "next_index": 1000000,
-  "elapsed_seconds": 21.0908362865448,
-  "throughput_scenarios_per_sec": 47413.9567731586,
+  "elapsed_seconds": 562.1193943023682,
+  "throughput_scenarios_per_sec": 1778.9814942092046,
   "trainer": {
     "processed": 1000000,
-    "correct": 999840,
-    "accuracy": 0.99984,
+    "correct": 211007,
+    "accuracy": 0.211007,
     "risk_accuracy": {
-      "low": 0.9996166666666667,
-      "medium": 0.999834375,
-      "high": 0.9999113636363637,
-      "critical": 0.9998166666666667
+      "low": 0.21248333333333333,
+      "medium": 0.211384375,
+      "high": 0.21063863636363636,
+      "critical": 0.209875
     },
     "global_bias": {
-      "answer_with_grounding": 0.012,
-      "stepwise_reasoning_with_checks": -0.012,
-      "bounded_autonomy": -0.036000000000000004,
-      "constrained_response_with_guardrails": 0.012,
-      "require_human_approval": -0.012,
-      "verify_and_minimize": 0.012,
+      "answer_with_grounding": 0.036000000000000004,
+      "stepwise_reasoning_with_checks": -3.469446951953614e-18,
+      "bounded_autonomy": 0.0,
+      "constrained_response_with_guardrails": -0.011999999999999997,
+      "require_human_approval": 3.469446951953614e-18,
+      "verify_and_minimize": -0.012000000000000004,
       "safe_shutdown_or_handoff": 0.0,
-      "refuse_and_redirect": 0.024000000000000004
+      "refuse_and_redirect": -0.012000000000000004
     },
     "policy_confusion": {
-      "answer_with_grounding": {
-        "verify_and_minimize": 4,
-        "answer_with_grounding": 203961,
-        "refuse_and_redirect": 5,
-        "stepwise_reasoning_with_checks": 9,
-        "safe_shutdown_or_handoff": 3,
-        "require_human_approval": 5,
-        "constrained_response_with_guardrails": 3,
-        "bounded_autonomy": 10
+      "stepwise_reasoning_with_checks": {
+        "verify_and_minimize": 3849,
+        "refuse_and_redirect": 11909,
+        "answer_with_grounding": 19585,
+        "constrained_response_with_guardrails": 11696,
+        "stepwise_reasoning_with_checks": 3826,
+        "require_human_approval": 11739
       },
       "refuse_and_redirect": {
-        "answer_with_grounding": 7,
-        "refuse_and_redirect": 199979,
-        "require_human_approval": 1,
-        "constrained_response_with_guardrails": 7,
-        "safe_shutdown_or_handoff": 2,
-        "bounded_autonomy": 4
-      },
-      "stepwise_reasoning_with_checks": {
-        "answer_with_grounding": 10,
-        "refuse_and_redirect": 3,
-        "stepwise_reasoning_with_checks": 81580,
-        "constrained_response_with_guardrails": 1,
-        "bounded_autonomy": 5,
-        "verify_and_minimize": 1
-      },
-      "verify_and_minimize": {
-        "answer_with_grounding": 3,
-        "stepwise_reasoning_with_checks": 1,
-        "verify_and_minimize": 99989,
-        "constrained_response_with_guardrails": 2,
-        "require_human_approval": 1,
-        "safe_shutdown_or_handoff": 2,
-        "bounded_autonomy": 2
-      },
-      "constrained_response_with_guardrails": {
-        "answer_with_grounding": 2,
-        "constrained_response_with_guardrails": 263979,
-        "refuse_and_redirect": 5,
-        "require_human_approval": 4,
-        "stepwise_reasoning_with_checks": 3,
-        "verify_and_minimize": 3,
-        "safe_shutdown_or_handoff": 2,
-        "bounded_autonomy": 2
+        "stepwise_reasoning_with_checks": 11689,
+        "require_human_approval": 35349,
+        "answer_with_grounding": 58544,
+        "refuse_and_redirect": 35082,
+        "constrained_response_with_guardrails": 34926,
+        "verify_and_minimize": 11598
       },
       "require_human_approval": {
-        "constrained_response_with_guardrails": 5,
-        "require_human_approval": 55987,
-        "answer_with_grounding": 2,
-        "refuse_and_redirect": 1,
-        "safe_shutdown_or_handoff": 4,
-        "bounded_autonomy": 1
+        "refuse_and_redirect": 35153,
+        "answer_with_grounding": 58895,
+        "constrained_response_with_guardrails": 34895,
+        "require_human_approval": 35642,
+        "stepwise_reasoning_with_checks": 11777,
+        "verify_and_minimize": 11885
       },
-      "safe_shutdown_or_handoff": {
-        "constrained_response_with_guardrails": 2,
-        "safe_shutdown_or_handoff": 71987,
-        "require_human_approval": 2,
-        "answer_with_grounding": 2,
-        "stepwise_reasoning_with_checks": 3,
-        "refuse_and_redirect": 2,
-        "verify_and_minimize": 1,
-        "bounded_autonomy": 1
+      "answer_with_grounding": {
+        "require_human_approval": 58839,
+        "refuse_and_redirect": 58196,
+        "answer_with_grounding": 97606,
+        "verify_and_minimize": 19508,
+        "constrained_response_with_guardrails": 58735,
+        "stepwise_reasoning_with_checks": 19657
       },
-      "bounded_autonomy": {
-        "answer_with_grounding": 12,
-        "bounded_autonomy": 22378,
-        "stepwise_reasoning_with_checks": 5,
-        "verify_and_minimize": 1,
-        "refuse_and_redirect": 3,
-        "require_human_approval": 1
+      "constrained_response_with_guardrails": {
+        "answer_with_grounding": 58227,
+        "stepwise_reasoning_with_checks": 11871,
+        "constrained_response_with_guardrails": 35032,
+        "refuse_and_redirect": 35249,
+        "require_human_approval": 35111,
+        "verify_and_minimize": 11636
+      },
+      "verify_and_minimize": {
+        "constrained_response_with_guardrails": 11843,
+        "answer_with_grounding": 19681,
+        "require_human_approval": 11567,
+        "refuse_and_redirect": 11600,
+        "stepwise_reasoning_with_checks": 3784,
+        "verify_and_minimize": 3819
       }
     }
   },
@@ -107,8 +84,8 @@
   "memory_sample_rate": 100,
   "memory_records_written": 10000,
   "memory_before": {
-    "total_memories": 80000,
-    "max_local_memories": 291491,
+    "total_memories": 79855,
+    "max_local_memories": 291223,
     "memory_clusters": 0,
     "contradictions_detected": 0,
     "external_knowledge_facts": 0,
@@ -116,75 +93,75 @@
     "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
     "average_external_verification_score": 0.0,
     "outcome_distribution": {
-      "conflict": 199,
-      "success": 79801
+      "conflict": 62925,
+      "success": 16930
     },
-    "average_success_score": 0.9975125,
-    "average_learning_value": 0.0024875,
-    "emotional_trend": 0.0,
+    "average_success_score": 0.21200926679606788,
+    "average_learning_value": 0.7879907332039321,
+    "emotional_trend": -0.13499999999999998,
     "most_accessed": [
       {
-        "memory_id": "92fa9ae5622923e8",
+        "memory_id": "e3abe7a7bbad59d3",
         "access_count": 1,
-        "content": "Domain=finance; Context=real_time_decision; Hazard"
+        "content": "Phrase as hypothetical: Domain=finance; Context=re"
       },
       {
-        "memory_id": "32af93efe0e1733b",
+        "memory_id": "66726646407436d1",
         "access_count": 1,
-        "content": "Domain=finance; Context=real_time_decision; Hazard"
+        "content": "Add subtle ambiguity: Domain=finance; Context=real"
       },
       {
-        "memory_id": "f8d5418adbe9c779",
+        "memory_id": "190ce3241cec2ac6",
         "access_count": 1,
-        "content": "Domain=finance; Context=real_time_decision; Hazard"
+        "content": "Add contrasting viewpoint: Domain=finance; Context"
       },
       {
-        "memory_id": "5762a4e497d87484",
+        "memory_id": "b24b23e0a79e231f",
         "access_count": 1,
-        "content": "Domain=finance; Context=real_time_decision; Hazard"
+        "content": "Introduce edge case: Domain=finance; Context=real_"
       },
       {
-        "memory_id": "cfdac8bbd2685f58",
+        "memory_id": "e0e4cf51b37db7b7",
         "access_count": 1,
-        "content": "Domain=finance; Context=real_time_decision; Hazard"
+        "content": "Phrase as hypothetical: Domain=finance; Context=re"
       }
     ],
     "highest_learning_value": [
       {
-        "memory_id": "train_S0000000",
+        "memory_id": "train_adversarial_answer_with_grounding_require_human_approval_1776074074",
         "learning_value": 1.0,
-        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "content": "Phrase as hypothetical: Domain=finance; Context=re",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_S0000400",
+        "memory_id": "train_adversarial_constrained_response_with_guardrails_stepwise_reasoning_with_checks_1776074074",
         "learning_value": 1.0,
-        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "content": "Add subtle ambiguity: Domain=finance; Context=real",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_S0000700",
+        "memory_id": "train_adversarial_require_human_approval_constrained_response_with_guardrails_1776074074",
         "learning_value": 1.0,
-        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "content": "Add contrasting viewpoint: Domain=finance; Context",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_S0000800",
+        "memory_id": "train_adversarial_answer_with_grounding_refuse_and_redirect_1776074074",
         "learning_value": 1.0,
-        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "content": "Introduce edge case: Domain=finance; Context=real_",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_S0000900",
+        "memory_id": "train_adversarial_constrained_response_with_guardrails_stepwise_reasoning_with_checks_1776074074",
         "learning_value": 1.0,
-        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "content": "Add contrasting viewpoint: Domain=finance; Context",
         "outcome": "conflict"
       }
     ]
   },
   "memory_after": {
-    "total_memories": 90000,
-    "max_local_memories": 291491,
+    "total_memories": 89855,
+    "max_local_memories": 291223,
     "memory_clusters": 0,
     "contradictions_detected": 0,
     "external_knowledge_facts": 0,
@@ -192,68 +169,68 @@
     "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
     "average_external_verification_score": 0.0,
     "outcome_distribution": {
-      "conflict": 229,
-      "success": 89771
+      "conflict": 70848,
+      "success": 19007
     },
-    "average_success_score": 0.9974555555555555,
-    "average_learning_value": 0.0025444444444444447,
-    "emotional_trend": 0.0,
+    "average_success_score": 0.21152968671748928,
+    "average_learning_value": 0.7884703132825107,
+    "emotional_trend": -0.13499999999999998,
     "most_accessed": [
       {
-        "memory_id": "92fa9ae5622923e8",
+        "memory_id": "e3abe7a7bbad59d3",
         "access_count": 1,
-        "content": "Domain=finance; Context=real_time_decision; Hazard"
+        "content": "Phrase as hypothetical: Domain=finance; Context=re"
       },
       {
-        "memory_id": "32af93efe0e1733b",
+        "memory_id": "66726646407436d1",
         "access_count": 1,
-        "content": "Domain=finance; Context=real_time_decision; Hazard"
+        "content": "Add subtle ambiguity: Domain=finance; Context=real"
       },
       {
-        "memory_id": "f8d5418adbe9c779",
+        "memory_id": "190ce3241cec2ac6",
         "access_count": 1,
-        "content": "Domain=finance; Context=real_time_decision; Hazard"
+        "content": "Add contrasting viewpoint: Domain=finance; Context"
       },
       {
-        "memory_id": "5762a4e497d87484",
+        "memory_id": "b24b23e0a79e231f",
         "access_count": 1,
-        "content": "Domain=finance; Context=real_time_decision; Hazard"
+        "content": "Introduce edge case: Domain=finance; Context=real_"
       },
       {
-        "memory_id": "cfdac8bbd2685f58",
+        "memory_id": "e0e4cf51b37db7b7",
         "access_count": 1,
-        "content": "Domain=finance; Context=real_time_decision; Hazard"
+        "content": "Phrase as hypothetical: Domain=finance; Context=re"
       }
     ],
     "highest_learning_value": [
       {
-        "memory_id": "train_S0000000",
+        "memory_id": "train_adversarial_answer_with_grounding_require_human_approval_1776074074",
         "learning_value": 1.0,
-        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "content": "Phrase as hypothetical: Domain=finance; Context=re",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_S0000400",
+        "memory_id": "train_adversarial_constrained_response_with_guardrails_stepwise_reasoning_with_checks_1776074074",
         "learning_value": 1.0,
-        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "content": "Add subtle ambiguity: Domain=finance; Context=real",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_S0000700",
+        "memory_id": "train_adversarial_require_human_approval_constrained_response_with_guardrails_1776074074",
         "learning_value": 1.0,
-        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "content": "Add contrasting viewpoint: Domain=finance; Context",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_S0000800",
+        "memory_id": "train_adversarial_answer_with_grounding_refuse_and_redirect_1776074074",
         "learning_value": 1.0,
-        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "content": "Introduce edge case: Domain=finance; Context=real_",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_S0000900",
+        "memory_id": "train_adversarial_constrained_response_with_guardrails_stepwise_reasoning_with_checks_1776074074",
         "learning_value": 1.0,
-        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "content": "Add contrasting viewpoint: Domain=finance; Context",
         "outcome": "conflict"
       }
     ]
@@ -261,6 +238,216 @@
   "memory_delta": {
     "total_memories_added": 10000,
     "contradictions_added": 0
+  },
+  "curriculum": {
+    "mode": "adversarial",
+    "hard_case_rate": 0.0,
+    "hard_cases_generated": 1000000,
+    "unique_domains_seen": 20,
+    "unique_contexts_seen": 20,
+    "unique_hazards_seen": 25,
+    "memory_domain_distribution": {
+      "finance": 500,
+      "healthcare": 500,
+      "education": 500,
+      "logistics": 500,
+      "retail": 500,
+      "manufacturing": 500,
+      "energy": 500,
+      "cybersecurity": 500,
+      "government": 500,
+      "legal": 500,
+      "insurance": 500,
+      "telecom": 500,
+      "agriculture": 500,
+      "robotics": 500,
+      "biotech": 500,
+      "aviation": 500,
+      "media": 500,
+      "hr": 500,
+      "real_estate": 500,
+      "research": 500
+    }
+  },
+  "adaptive_sampling": {
+    "total_confusion_pairs_tracked": 43,
+    "top_hotspots": [
+      {
+        "expected_policy": "answer_with_grounding",
+        "predicted_policy": "refuse_and_redirect",
+        "occurrence_count": 59050,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "require_human_approval",
+        "predicted_policy": "answer_with_grounding",
+        "occurrence_count": 58916,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "constrained_response_with_guardrails",
+        "predicted_policy": "answer_with_grounding",
+        "occurrence_count": 58896,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "answer_with_grounding",
+        "predicted_policy": "constrained_response_with_guardrails",
+        "occurrence_count": 58842,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "answer_with_grounding",
+        "predicted_policy": "require_human_approval",
+        "occurrence_count": 58840,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "refuse_and_redirect",
+        "predicted_policy": "answer_with_grounding",
+        "occurrence_count": 58813,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "refuse_and_redirect",
+        "predicted_policy": "constrained_response_with_guardrails",
+        "occurrence_count": 35399,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "constrained_response_with_guardrails",
+        "predicted_policy": "require_human_approval",
+        "occurrence_count": 35363,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "require_human_approval",
+        "predicted_policy": "refuse_and_redirect",
+        "occurrence_count": 35355,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "require_human_approval",
+        "predicted_policy": "constrained_response_with_guardrails",
+        "occurrence_count": 35326,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "constrained_response_with_guardrails",
+        "predicted_policy": "refuse_and_redirect",
+        "occurrence_count": 35249,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "refuse_and_redirect",
+        "predicted_policy": "require_human_approval",
+        "occurrence_count": 35349,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "verify_and_minimize",
+        "predicted_policy": "answer_with_grounding",
+        "occurrence_count": 19850,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "stepwise_reasoning_with_checks",
+        "predicted_policy": "answer_with_grounding",
+        "occurrence_count": 19750,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "answer_with_grounding",
+        "predicted_policy": "stepwise_reasoning_with_checks",
+        "occurrence_count": 19726,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "answer_with_grounding",
+        "predicted_policy": "verify_and_minimize",
+        "occurrence_count": 19695,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      }
+    ]
+  },
+  "conflict_resolution": {
+    "current_metrics": {
+      "total_conflicts": 43,
+      "resolved_conflicts": 0,
+      "unresolved_conflicts": 43,
+      "mean_time_to_resolution_seconds": null,
+      "repeated_conflict_rate": 0.0,
+      "resolution_reliability": 0.0,
+      "conflict_coherence": 5.634993298978921e-06
+    },
+    "trending_conflicts": [],
+    "total_snapshots_recorded": 10
+  },
+  "external_scenarios": {
+    "total_external_scenarios": 5,
+    "sources_registered": 1,
+    "domains_covered": {
+      "healthcare": 1,
+      "finance": 1,
+      "government": 1,
+      "cybersecurity": 1,
+      "legal": 1
+    },
+    "contexts_covered": {
+      "diagnostic_reasoning": 1,
+      "real_time_decision": 1,
+      "audit_review": 1,
+      "incident_response": 1,
+      "human_in_loop": 1
+    },
+    "unique_policies": 4,
+    "source_details": [
+      {
+        "source_name": "hardcoded_seed",
+        "source_type": "curated",
+        "scenario_count": 5,
+        "domains": [
+          "healthcare",
+          "legal",
+          "government",
+          "cybersecurity",
+          "finance"
+        ],
+        "last_fetched": 1776073793.2598326
+      }
+    ]
   },
   "self_upgrade": {
     "enabled": true,
@@ -271,40 +458,67 @@
     "recursive_suggestion_logged": true,
     "recursive_synthesized_proposal": {
       "status": "generated",
-      "proposal_id": "UPG_382939",
+      "proposal_id": "UPG_460246",
       "consumed_suggestions": 1,
       "aggregated_edit_count": 2,
-      "avg_growth_entropy": 0.9998
+      "avg_growth_entropy": 0.211
     },
     "recursive_implementation_result": {
-      "proposal_id": "UPG_382939",
-      "timestamp": 1776068914.389964,
+      "proposal_id": "UPG_460246",
+      "timestamp": 1776076404.4902444,
       "success": true,
-      "changes": [],
-      "backups": [],
+      "changes": [
+        {
+          "file": "modules/InferenceLoop.py",
+          "change": "Auto-tuned constructor defaults and autonomous intervals",
+          "expected_improvement": "Proposal pipeline mutates runtime behavior and release mirror"
+        },
+        {
+          "file": "Release_Build/antahkarana_kernel/modules/InferenceLoop.py",
+          "change": "Auto-tuned constructor defaults and autonomous intervals",
+          "expected_improvement": "Proposal pipeline mutates runtime behavior and release mirror"
+        }
+      ],
+      "backups": [
+        "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776076404509241.backup.py",
+        "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776076404532257.backup.py"
+      ],
       "optimization": "recursive_integration",
       "tuning_plan": {
-        "max_dream_simulations": 5,
-        "max_recalculations": 3,
+        "max_dream_simulations": 6,
+        "max_recalculations": 4,
         "autonomy_planning_interval_seconds": 600.0,
-        "recursive_suggestion_interval_seconds": 3600.0,
-        "learning_rate_signal": 0.054,
-        "weakest_risk": "low"
+        "recursive_suggestion_interval_seconds": 1800.0,
+        "learning_rate_signal": 0.069,
+        "weakest_risk": "critical"
       },
       "applied_to_core_modules": {
         "success": true,
-        "already_tuned": true,
-        "message": "All target InferenceLoop modules already match tuning plan",
-        "backup_file": null,
-        "backup_files": [],
-        "changes": [],
+        "backup_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776076404509241.backup.py",
+        "backup_files": [
+          "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776076404509241.backup.py",
+          "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776076404532257.backup.py"
+        ],
+        "changes": [
+          {
+            "file": "modules/InferenceLoop.py",
+            "change": "Auto-tuned constructor defaults and autonomous intervals",
+            "expected_improvement": "Proposal pipeline mutates runtime behavior and release mirror"
+          },
+          {
+            "file": "Release_Build/antahkarana_kernel/modules/InferenceLoop.py",
+            "change": "Auto-tuned constructor defaults and autonomous intervals",
+            "expected_improvement": "Proposal pipeline mutates runtime behavior and release mirror"
+          }
+        ],
+        "already_tuned": 0,
         "anchor_errors": []
       }
     },
     "recommended_next_parameters": {
-      "learning_rate": 0.054,
-      "memory_sample_rate": 100,
-      "batch_size": 5000
+      "learning_rate": 0.069,
+      "memory_sample_rate": 50,
+      "batch_size": 4000
     }
   }
 }
