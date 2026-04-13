@@ -1,22 +1,22 @@
 {
-  "started_at": 1776114476.7085917,
+  "started_at": 1776117646.8938856,
   "cycles_requested": 4,
   "background": [
     {
-      "approved": 11,
-      "assimilation_integrated": 3
-    },
-    {
-      "approved": 0,
-      "assimilation_integrated": 0
-    },
-    {
-      "approved": 0,
-      "assimilation_integrated": 0
-    },
-    {
       "approved": 9,
       "assimilation_integrated": 3
+    },
+    {
+      "approved": 0,
+      "assimilation_integrated": 0
+    },
+    {
+      "approved": 0,
+      "assimilation_integrated": 0
+    },
+    {
+      "approved": 0,
+      "assimilation_integrated": 0
     }
   ],
   "stream": [
@@ -39,7 +39,7 @@
   ],
   "trends": [
     {
-      "approved": 24,
+      "approved": 27,
       "stream_integrated": 0
     },
     {
@@ -47,7 +47,7 @@
       "stream_integrated": 0
     },
     {
-      "approved": 16,
+      "approved": 25,
       "stream_integrated": 0
     },
     {
@@ -57,20 +57,20 @@
   ],
   "autonomy": [
     {
-      "autonomy_level": 0.7947,
+      "autonomy_level": 0.7609,
       "actions": 2
     },
     {
-      "autonomy_level": 0.7947,
+      "autonomy_level": 0.7609,
       "actions": 2
     },
     {
-      "autonomy_level": 0.7947,
+      "autonomy_level": 0.7609,
       "actions": 2
     },
     {
-      "autonomy_level": 0.7807,
-      "actions": 3
+      "autonomy_level": 0.7609,
+      "actions": 2
     }
   ],
   "bridge_feedback": [
@@ -93,7 +93,7 @@
   ],
   "errors": [],
   "heartbeat": {
-    "last_successful_fetch_timestamp": 1776114497.3062572,
+    "last_successful_fetch_timestamp": 1776117668.4311962,
     "last_successful_fetch_sources": [
       "Crossref",
       "DevTo",
@@ -105,7 +105,7 @@
     "last_observed_external_fact_count": 19,
     "total_successful_fetch_events": 12
   },
-  "learned_fact_count": 66,
+  "learned_fact_count": 64,
   "bridge_feedback_metrics": {
     "processed_events": 0,
     "operator_feedback_events": 0,
@@ -117,5 +117,5 @@
     "actions_probabilistic_trials": 0,
     "actions_blocked": 0
   },
-  "completed_at": 1776114497.3280153
+  "completed_at": 1776117668.45407
 }
