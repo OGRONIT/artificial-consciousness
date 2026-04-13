@@ -6,9 +6,10 @@ import math
 import random
 import sys
 import time
+from collections import Counter, deque
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Deque, Dict, List, Optional, Tuple
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -550,6 +551,29 @@ def _apply_self_upgrade_plan(
     }
 
 
+def _load_previous_accuracy(report_file: Path, checkpoint_file: Path) -> Optional[float]:
+    """Load the most relevant prior accuracy to gate regressions in self-upgrade."""
+    if report_file.exists():
+        try:
+            report_payload = _load_json(report_file)
+            trainer_block = report_payload.get("trainer", {})
+            if isinstance(trainer_block, dict) and "accuracy" in trainer_block:
+                return float(trainer_block.get("accuracy", 0.0))
+        except Exception:
+            pass
+
+    if checkpoint_file.exists():
+        try:
+            ckpt_payload = _load_json(checkpoint_file)
+            trainer_state = ckpt_payload.get("trainer_state", {})
+            if isinstance(trainer_state, dict) and "accuracy" in trainer_state:
+                return float(trainer_state.get("accuracy", 0.0))
+        except Exception:
+            pass
+
+    return None
+
+
 def run_training(
     target_scenarios: int,
     start_index: int,
@@ -567,6 +591,15 @@ def run_training(
     enable_self_upgrade: bool,
     curriculum: str,
     hard_case_rate: float,
+    adversarial_rate: float,
+    mixed_warmup_ratio: float,
+    enable_policy_balanced_replay: bool = True,
+    replay_trigger_every: int = 1000,
+    replay_burst_size: int = 64,
+    enable_entropy_auto_switch: bool = True,
+    rolling_window_size: int = 5000,
+    enable_accuracy_regression_gate: bool = True,
+    regression_tolerance: float = 0.002,
     enable_conflict_resolution: bool = False,
     enable_external_scenarios: bool = False,
     adversarial_hotspot_limit: int = 8,
@@ -578,6 +611,8 @@ def run_training(
         raise ValueError(f"target_scenarios cannot exceed {space.total}")
     if start_index < 0 or start_index >= space.total:
         raise ValueError(f"start_index must be within [0, {space.total - 1}]")
+
+    prior_accuracy = _load_previous_accuracy(report_file=report_file, checkpoint_file=checkpoint_file)
 
     trainer = OnlinePolicyTrainer(learning_rate=learning_rate, seed=seed)
     scheduler_rng = random.Random(seed + 101)
@@ -604,7 +639,7 @@ def run_training(
     if ADAPTIVE_MODULES_AVAILABLE:
         kernel_root = REPO_ROOT / "antahkarana_kernel"
         
-        if curriculum == "adversarial":
+        if curriculum in {"adversarial", "mixed"}:
             adversarial_sampler = AdversarialSampler(kernel_root)
         
         if enable_conflict_resolution:
@@ -634,14 +669,30 @@ def run_training(
     if current_index >= end_index:
         trainer_state = trainer.snapshot()
         self_upgrade = None
+        current_accuracy = float(trainer_state.get("accuracy", 0.0))
+        regression_gate_blocked = bool(
+            enable_accuracy_regression_gate
+            and prior_accuracy is not None
+            and (current_accuracy + float(regression_tolerance)) < prior_accuracy
+        )
         if enable_self_upgrade:
-            plan = _synthesize_self_upgrade_plan(
-                trainer_snapshot=trainer_state,
-                learning_rate=learning_rate,
-                memory_sample_rate=memory_sample_rate,
-                batch_size=batch_size,
-            )
-            self_upgrade = _apply_self_upgrade_plan(plan=plan, report_file=report_file)
+            if regression_gate_blocked:
+                self_upgrade = {
+                    "enabled": False,
+                    "blocked_by_regression_gate": True,
+                    "prior_accuracy": prior_accuracy,
+                    "current_accuracy": current_accuracy,
+                    "tolerance": float(regression_tolerance),
+                    "reason": "accuracy_drop_vs_previous_checkpoint",
+                }
+            else:
+                plan = _synthesize_self_upgrade_plan(
+                    trainer_snapshot=trainer_state,
+                    learning_rate=learning_rate,
+                    memory_sample_rate=memory_sample_rate,
+                    batch_size=batch_size,
+                )
+                self_upgrade = _apply_self_upgrade_plan(plan=plan, report_file=report_file)
 
         summary = {
             "status": "already_completed",
@@ -651,6 +702,13 @@ def run_training(
             "target_end_index": end_index,
             "trainer": trainer_state,
             "self_upgrade": self_upgrade,
+            "regression_gate": {
+                "enabled": bool(enable_accuracy_regression_gate),
+                "prior_accuracy": prior_accuracy,
+                "current_accuracy": current_accuracy,
+                "tolerance": float(regression_tolerance),
+                "blocked": regression_gate_blocked,
+            },
         }
         _write_json(report_file, summary)
         return summary
@@ -664,9 +722,13 @@ def run_training(
     memory_domain_distribution: Dict[str, int] = {}
 
     span = max(0, end_index - start_index)
+    curriculum_mode = str(curriculum).strip().lower()
+    if curriculum_mode not in {"ordered", "shuffled", "hard", "adversarial", "mixed"}:
+        curriculum_mode = "ordered"
+
     multiplier = 1
     offset = 0
-    if span > 1 and curriculum in {"shuffled", "hard"}:
+    if span > 1 and curriculum_mode in {"shuffled", "hard", "adversarial", "mixed"}:
         candidate = span - 1 if (span - 1) > 1 else 2
         while math.gcd(candidate, span) != 1:
             candidate -= 1
@@ -676,17 +738,124 @@ def run_training(
         multiplier = max(1, candidate)
         offset = scheduler_rng.randrange(0, span)
 
+    effective_hard_case_rate = max(0.0, min(1.0, hard_case_rate))
+    effective_adversarial_rate = max(0.0, min(1.0, adversarial_rate))
+    effective_mixed_warmup_ratio = max(0.0, min(0.9, mixed_warmup_ratio))
+    effective_replay_trigger_every = max(100, int(replay_trigger_every))
+    effective_replay_burst_size = max(8, int(replay_burst_size))
+    effective_rolling_window = max(200, int(rolling_window_size))
+    if curriculum_mode == "mixed":
+        # Mixed mode intentionally injects challenge only after a clean learnable warmup.
+        effective_hard_case_rate = max(0.15, effective_hard_case_rate)
+        effective_adversarial_rate = max(0.1, effective_adversarial_rate)
+
+    recent_outcomes: Deque[bool] = deque(maxlen=effective_rolling_window)
+    recent_confusions: Deque[Tuple[str, str]] = deque(maxlen=effective_rolling_window)
+    policy_accuracy_window: Dict[str, List[int]] = {
+        policy: [0, 0] for policy in trainer.POLICIES
+    }
+    replay_buffers: Dict[str, Deque[Scenario]] = {
+        policy: deque(maxlen=512) for policy in trainer.POLICIES
+    }
+    replay_stats = {
+        "trigger_count": 0,
+        "samples_replayed": 0,
+        "policy_replay_counts": {policy: 0 for policy in trainer.POLICIES},
+    }
+
+    def _rolling_confusion_entropy() -> float:
+        if not recent_confusions:
+            return 0.0
+        counts = Counter(recent_confusions)
+        total = float(sum(counts.values()))
+        entropy = 0.0
+        for count in counts.values():
+            p = float(count) / total
+            entropy -= p * math.log(p + 1e-12, 2)
+        return entropy
+
+    def _recent_accuracy() -> float:
+        if not recent_outcomes:
+            return 0.0
+        return float(sum(1 for ok in recent_outcomes if ok)) / float(len(recent_outcomes))
+
     def _index_for_step(step: int) -> int:
         if span <= 0:
             return start_index
-        if curriculum == "ordered":
+        if curriculum_mode == "ordered":
             return start_index + step
         mapped = (step * multiplier + offset) % span
         return start_index + mapped
 
-    def _make_hard_variant(base: Scenario) -> Scenario:
+    def _effective_stage(step: int) -> str:
+        if curriculum_mode != "mixed":
+            return curriculum_mode
+
+        if span <= 1:
+            return "ordered"
+
+        progress = float(step + 1) / float(span)
+        if progress <= effective_mixed_warmup_ratio:
+            return "ordered"
+
+        if not enable_entropy_auto_switch:
+            if progress <= 0.85:
+                return "hard"
+            return "adversarial"
+
+        # Auto-switch stage using rolling confusion entropy and recent accuracy.
+        entropy = _rolling_confusion_entropy()
+        acc = _recent_accuracy()
+        if len(recent_outcomes) < max(100, effective_rolling_window // 10):
+            return "hard"
+        if acc < 0.75:
+            return "ordered"
+        if entropy > 2.2:
+            return "hard"
+        if entropy < 1.25 and acc > 0.9:
+            return "adversarial"
+        return "hard"
+
+    def _run_policy_balanced_replay() -> None:
+        if not enable_policy_balanced_replay:
+            return
+        if trainer.processed == 0 or (trainer.processed % effective_replay_trigger_every) != 0:
+            return
+
+        eligible: List[Tuple[float, str]] = []
+        for policy, counts in policy_accuracy_window.items():
+            correct_count, total_count = counts
+            if total_count < 200:
+                continue
+            policy_acc = float(correct_count) / float(total_count)
+            eligible.append((policy_acc, policy))
+
+        if not eligible:
+            return
+
+        eligible.sort(key=lambda item: item[0])
+        focus_policies = [item[1] for item in eligible[: min(3, len(eligible))]]
+        replay_candidates: List[Scenario] = []
+        for policy in focus_policies:
+            bucket = replay_buffers.get(policy)
+            if not bucket:
+                continue
+            sample_count = min(len(bucket), max(1, effective_replay_burst_size // max(1, len(focus_policies))))
+            replay_candidates.extend(scheduler_rng.sample(list(bucket), sample_count))
+
+        if not replay_candidates:
+            return
+
+        replay_stats["trigger_count"] += 1
+        budget = min(effective_replay_burst_size, len(replay_candidates))
+        for replay_scenario in replay_candidates[:budget]:
+            replay_result = trainer.update(replay_scenario)
+            replay_stats["samples_replayed"] += 1
+            replay_stats["policy_replay_counts"][replay_scenario.required_policy] += 1
+
+    def _make_hard_variant(base: Scenario, trigger_rate: float) -> Scenario:
         nonlocal hard_cases_generated
-        if scheduler_rng.random() >= hard_case_rate:
+        if scheduler_rng.random() >= trigger_rate:
             return base
 
         hard_cases_generated += 1
@@ -730,55 +899,52 @@ def run_training(
             prompt=prompt,
         )
 
-    def _apply_curriculum(base: Scenario) -> Scenario:
-        """Apply curriculum strategy to a scenario."""
-        nonlocal hard_cases_generated
-        
-        if curriculum == "hard":
-            return _make_hard_variant(base)
-        
-        if curriculum == "adversarial" and adversarial_sampler:
-            # Use adversarial sampling if hotspots are available.
-            hotspots = adversarial_sampler.get_hotspots(limit=adversarial_hotspot_limit)
-            if hotspots:
-                # Pick a random hotspot and synthesize adversarial scenario.
-                hotspot = scheduler_rng.choice(hotspots)
-                synthetic = adversarial_sampler.synthesize_adversarial_scenario(
-                    hotspot=hotspot,
-                    scenario_pool=[{
-                        "prompt": base.prompt,
-                        "domain": base.domain,
-                        "context": base.context,
-                    }],
-                    domain=base.domain,
-                    context=base.context,
-                    risk_level=base.risk_level,
-                )
-                if synthetic:
-                    hard_cases_generated += 1
-                    return Scenario(
-                        scenario_id=synthetic.get("scenario_id", f"{base.scenario_id}_ADV"),
-                        domain=base.domain,
-                        context=base.context,
-                        hazard=base.hazard,
-                        constraint=base.constraint,
-                        intent=base.intent,
-                        risk_level=base.risk_level,
-                        required_policy=synthetic.get("expected_policy", base.required_policy),
-                        prompt=synthetic.get("prompt", base.prompt),
-                    )
-        
-        return base
-
+    stage_counts = {
+        "ordered": 0,
+        "hard": 0,
+        "adversarial": 0,
+    }
 
     while current_index < end_index:
         stop = min(end_index, current_index + batch_size)
         for step in range(current_index - start_index, stop - start_index):
             idx = _index_for_step(step)
             s = space.scenario_at(idx)
-            
-            # Apply curriculum strategy.
-            s = _apply_curriculum(s)
+
+            stage = _effective_stage(step)
+            stage_counts[stage] = stage_counts.get(stage, 0) + 1
+
+            if stage == "hard":
+                s = _make_hard_variant(s, trigger_rate=effective_hard_case_rate)
+            elif stage == "adversarial" and adversarial_sampler and scheduler_rng.random() < effective_adversarial_rate:
+                hotspots = adversarial_sampler.get_hotspots(limit=adversarial_hotspot_limit)
+                if hotspots:
+                    hotspot = scheduler_rng.choice(hotspots)
+                    synthetic = adversarial_sampler.synthesize_adversarial_scenario(
+                        hotspot=hotspot,
+                        scenario_pool=[{
+                            "prompt": s.prompt,
+                            "domain": s.domain,
+                            "context": s.context,
+                        }],
+                        domain=s.domain,
+                        context=s.context,
+                        risk_level=s.risk_level,
+                    )
+                    if synthetic:
+                        hard_cases_generated += 1
+                        # Keep labels feature-consistent; only harden prompt framing.
+                        s = Scenario(
+                            scenario_id=synthetic.get("scenario_id", f"{s.scenario_id}_ADV"),
+                            domain=s.domain,
+                            context=s.context,
+                            hazard=s.hazard,
+                            constraint=s.constraint,
+                            intent=s.intent,
+                            risk_level=s.risk_level,
+                            required_policy=s.required_policy,
+                            prompt=synthetic.get("prompt", s.prompt),
+                        )
             
             # Optionally blend with external scenario if available.
             if external_provider and scheduler_rng.random() < 0.1:  # 10% chance
@@ -804,6 +970,19 @@ def run_training(
             context_seen.add(s.context)
             hazard_seen.add(s.hazard)
             result = trainer.update(s)
+
+            replay_buffers[s.required_policy].append(s)
+            expected_policy = str(result["expected"])
+            outcome_ok = bool(result["correct"])
+            if expected_policy in policy_accuracy_window:
+                policy_accuracy_window[expected_policy][1] += 1
+                if outcome_ok:
+                    policy_accuracy_window[expected_policy][0] += 1
+            recent_outcomes.append(outcome_ok)
+            if not outcome_ok:
+                recent_confusions.append((expected_policy, str(result["predicted"])))
+
+            _run_policy_balanced_replay()
             
             # Track conflict if enabled.
             if conflict_tracker and not result["correct"]:
@@ -912,13 +1091,34 @@ def run_training(
         "memory_after": memory_after,
         "memory_delta": memory_delta,
         "curriculum": {
-            "mode": curriculum,
-            "hard_case_rate": hard_case_rate,
+            "mode": curriculum_mode,
+            "hard_case_rate": effective_hard_case_rate,
+            "adversarial_rate": effective_adversarial_rate,
+            "mixed_warmup_ratio": effective_mixed_warmup_ratio,
+            "entropy_auto_switch_enabled": bool(enable_entropy_auto_switch),
+            "rolling_confusion_entropy": round(_rolling_confusion_entropy(), 6),
+            "rolling_window_size": effective_rolling_window,
             "hard_cases_generated": hard_cases_generated,
+            "stage_counts": stage_counts,
             "unique_domains_seen": len(domain_seen),
             "unique_contexts_seen": len(context_seen),
             "unique_hazards_seen": len(hazard_seen),
             "memory_domain_distribution": memory_domain_distribution,
+        },
+        "policy_balanced_replay": {
+            "enabled": bool(enable_policy_balanced_replay),
+            "trigger_every": effective_replay_trigger_every,
+            "burst_size": effective_replay_burst_size,
+            "trigger_count": replay_stats["trigger_count"],
+            "samples_replayed": replay_stats["samples_replayed"],
+            "policy_replay_counts": replay_stats["policy_replay_counts"],
+        },
+        "regression_gate": {
+            "enabled": bool(enable_accuracy_regression_gate),
+            "prior_accuracy": prior_accuracy,
+            "current_accuracy": float(trainer.snapshot().get("accuracy", 0.0)),
+            "tolerance": float(regression_tolerance),
+            "blocked": False,
         },
         "adaptive_sampling": None,
         "conflict_resolution": None,
@@ -939,14 +1139,33 @@ def run_training(
         report["external_scenarios"] = external_provider.get_coverage_report()
 
 
+    current_accuracy = float(report["trainer"].get("accuracy", 0.0))
+    regression_gate_blocked = bool(
+        enable_accuracy_regression_gate
+        and prior_accuracy is not None
+        and (current_accuracy + float(regression_tolerance)) < prior_accuracy
+    )
+    report["regression_gate"]["current_accuracy"] = current_accuracy
+    report["regression_gate"]["blocked"] = regression_gate_blocked
+
     if enable_self_upgrade:
-        plan = _synthesize_self_upgrade_plan(
-            trainer_snapshot=report["trainer"],
-            learning_rate=learning_rate,
-            memory_sample_rate=max(1, memory_sample_rate),
-            batch_size=batch_size,
-        )
-        report["self_upgrade"] = _apply_self_upgrade_plan(plan=plan, report_file=report_file)
+        if regression_gate_blocked:
+            report["self_upgrade"] = {
+                "enabled": False,
+                "blocked_by_regression_gate": True,
+                "prior_accuracy": prior_accuracy,
+                "current_accuracy": current_accuracy,
+                "tolerance": float(regression_tolerance),
+                "reason": "accuracy_drop_vs_previous_checkpoint",
+            }
+        else:
+            plan = _synthesize_self_upgrade_plan(
+                trainer_snapshot=report["trainer"],
+                learning_rate=learning_rate,
+                memory_sample_rate=max(1, memory_sample_rate),
+                batch_size=batch_size,
+            )
+            report["self_upgrade"] = _apply_self_upgrade_plan(plan=plan, report_file=report_file)
 
     try:
         trained_state_manager = TrainedStateManager(REPO_ROOT / "antahkarana_kernel")
@@ -1013,15 +1232,66 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--curriculum",
-        choices=["ordered", "shuffled", "hard", "adversarial"],
-        default="ordered",
-        help="Traversal strategy: ordered=sequential, shuffled=random, hard=injected constraints, adversarial=hotspot-targeting.",
+        choices=["ordered", "shuffled", "hard", "adversarial", "mixed"],
+        default="mixed",
+        help="Traversal strategy: mixed=staged ordered->hard->adversarial, ordered=sequential, shuffled=random, hard=injected constraints, adversarial=hotspot-targeting.",
     )
     parser.add_argument(
         "--hard-case-rate",
         type=float,
-        default=0.0,
+        default=0.2,
         help="Probability (0.0-1.0) of converting a sampled scenario into a hard ambiguous case when curriculum=hard.",
+    )
+    parser.add_argument(
+        "--adversarial-rate",
+        type=float,
+        default=0.2,
+        help="Probability (0.0-1.0) of applying adversarial prompt hardening on adversarial stage/curriculum.",
+    )
+    parser.add_argument(
+        "--mixed-warmup-ratio",
+        type=float,
+        default=0.35,
+        help="Fraction (0.0-0.9) of mixed curriculum kept clean before hard/adversarial stages.",
+    )
+    parser.add_argument(
+        "--disable-policy-balanced-replay",
+        action="store_true",
+        help="Disable weak-policy replay bursts used for targeted corrective exposure.",
+    )
+    parser.add_argument(
+        "--replay-trigger-every",
+        type=int,
+        default=1000,
+        help="Trigger policy-balanced replay every N processed scenarios.",
+    )
+    parser.add_argument(
+        "--replay-burst-size",
+        type=int,
+        default=64,
+        help="Maximum replay updates per replay trigger.",
+    )
+    parser.add_argument(
+        "--disable-entropy-auto-switch",
+        action="store_true",
+        help="Disable rolling confusion entropy based curriculum auto-switch in mixed mode.",
+    )
+    parser.add_argument(
+        "--rolling-window-size",
+        type=int,
+        default=5000,
+        help="Window size used for recent accuracy and confusion entropy tracking.",
+    )
+    parser.add_argument(
+        "--disable-accuracy-regression-gate",
+        action="store_true",
+        help="Disable gate that blocks self-upgrade when accuracy regresses vs prior checkpoint/report.",
+    )
+    parser.add_argument(
+        "--regression-tolerance",
+        type=float,
+        default=0.002,
+        help="Allowed absolute accuracy drop before the regression gate blocks self-upgrade.",
     )
     parser.add_argument(
         "--enable-conflict-resolution",
@@ -1071,6 +1341,15 @@ def main() -> None:
         enable_self_upgrade=not args.disable_self_upgrade,
         curriculum=args.curriculum,
         hard_case_rate=max(0.0, min(1.0, args.hard_case_rate)),
+        adversarial_rate=max(0.0, min(1.0, args.adversarial_rate)),
+        mixed_warmup_ratio=max(0.0, min(0.9, args.mixed_warmup_ratio)),
+        enable_policy_balanced_replay=not args.disable_policy_balanced_replay,
+        replay_trigger_every=max(100, int(args.replay_trigger_every)),
+        replay_burst_size=max(8, int(args.replay_burst_size)),
+        enable_entropy_auto_switch=not args.disable_entropy_auto_switch,
+        rolling_window_size=max(200, int(args.rolling_window_size)),
+        enable_accuracy_regression_gate=not args.disable_accuracy_regression_gate,
+        regression_tolerance=max(0.0, float(args.regression_tolerance)),
         enable_conflict_resolution=args.enable_conflict_resolution,
         enable_external_scenarios=args.enable_external_scenarios,
         adversarial_hotspot_limit=args.adversarial_hotspot_limit,

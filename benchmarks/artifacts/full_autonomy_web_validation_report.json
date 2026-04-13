@@ -1,89 +1,256 @@
 {
-  "generated_at": 1776079901.6019554,
+  "generated_at": 1776096885.3142488,
   "validation_scope": {
-    "million_runs": 1,
-    "target_scenarios_per_run": 20000,
-    "total_target_scenarios": 20000
+    "million_runs": 5,
+    "target_scenarios_per_run": 120000,
+    "total_target_scenarios": 600000
   },
   "training_summary": {
-    "total_processed": 20000,
-    "average_accuracy": 0.2122,
-    "average_learning_value": 0.76,
-    "implementation_success_runs": 1,
+    "total_processed": 640324,
+    "average_accuracy": 0.9986116403546168,
+    "average_learning_value": 0.00046527777777777784,
+    "implementation_success_runs": 5,
     "curriculum": {
-      "mode": "adversarial",
-      "hard_case_rate": 0.0
+      "mode": "mixed",
+      "hard_case_rate": 0.2,
+      "adversarial_rate": 0.2,
+      "mixed_warmup_ratio": 0.35
     },
     "runs": [
       {
         "run_id": 1,
         "seed": 42,
-        "elapsed_seconds_wall": 13.37372088432312,
-        "processed": 20000,
-        "accuracy": 0.2122,
-        "throughput_scenarios_per_sec": 1521.560001819645,
-        "memory_records_written": 200,
+        "elapsed_seconds_wall": 32.10342812538147,
+        "processed": 128065,
+        "accuracy": 0.9985944637488775,
+        "throughput_scenarios_per_sec": 4097.38732796926,
+        "memory_records_written": 2400,
         "self_upgrade_enabled": true,
-        "recursive_proposal": "UPG_828912",
+        "recursive_proposal": "UPG_107331",
         "implementation_success": true,
-        "avg_learning_value": 0.76,
+        "avg_learning_value": 0.0004166666666666667,
         "curriculum": {
-          "mode": "adversarial",
-          "hard_case_rate": 0.0,
-          "hard_cases_generated": 20000,
-          "unique_domains_seen": 1,
-          "unique_contexts_seen": 8,
+          "mode": "mixed",
+          "hard_case_rate": 0.2,
+          "adversarial_rate": 0.2,
+          "mixed_warmup_ratio": 0.35,
+          "entropy_auto_switch_enabled": true,
+          "rolling_confusion_entropy": 5.188719,
+          "rolling_window_size": 5000,
+          "hard_cases_generated": 15660,
+          "stage_counts": {
+            "ordered": 42000,
+            "hard": 78000,
+            "adversarial": 0
+          },
+          "unique_domains_seen": 3,
+          "unique_contexts_seen": 20,
           "unique_hazards_seen": 25,
           "memory_domain_distribution": {
-            "finance": 200
+            "education": 400,
+            "healthcare": 1000,
+            "finance": 1000
           }
         },
-        "implemented_files": [
-          "modules/InferenceLoop.py",
-          "Release_Build/antahkarana_kernel/modules/InferenceLoop.py"
-        ],
+        "implemented_files": [],
         "artifact_report": "benchmarks\\artifacts\\full_web_run_1_report.json"
+      },
+      {
+        "run_id": 2,
+        "seed": 43,
+        "elapsed_seconds_wall": 31.783337354660034,
+        "processed": 128065,
+        "accuracy": 0.9986491234919768,
+        "throughput_scenarios_per_sec": 4106.922517011113,
+        "memory_records_written": 2400,
+        "self_upgrade_enabled": true,
+        "recursive_proposal": "UPG_965601",
+        "implementation_success": true,
+        "avg_learning_value": 0.0004166666666666667,
+        "curriculum": {
+          "mode": "mixed",
+          "hard_case_rate": 0.2,
+          "adversarial_rate": 0.2,
+          "mixed_warmup_ratio": 0.35,
+          "entropy_auto_switch_enabled": true,
+          "rolling_confusion_entropy": 5.155752,
+          "rolling_window_size": 5000,
+          "hard_cases_generated": 15771,
+          "stage_counts": {
+            "ordered": 42000,
+            "hard": 78000,
+            "adversarial": 0
+          },
+          "unique_domains_seen": 3,
+          "unique_contexts_seen": 20,
+          "unique_hazards_seen": 25,
+          "memory_domain_distribution": {
+            "healthcare": 1000,
+            "finance": 1000,
+            "education": 400
+          }
+        },
+        "implemented_files": [],
+        "artifact_report": "benchmarks\\artifacts\\full_web_run_2_report.json"
+      },
+      {
+        "run_id": 3,
+        "seed": 44,
+        "elapsed_seconds_wall": 36.493407011032104,
+        "processed": 128065,
+        "accuracy": 0.9986335064225198,
+        "throughput_scenarios_per_sec": 3618.927406953539,
+        "memory_records_written": 2400,
+        "self_upgrade_enabled": true,
+        "recursive_proposal": "UPG_108600",
+        "implementation_success": true,
+        "avg_learning_value": 0.0005555555555555556,
+        "curriculum": {
+          "mode": "mixed",
+          "hard_case_rate": 0.2,
+          "adversarial_rate": 0.2,
+          "mixed_warmup_ratio": 0.35,
+          "entropy_auto_switch_enabled": true,
+          "rolling_confusion_entropy": 5.208383,
+          "rolling_window_size": 5000,
+          "hard_cases_generated": 15591,
+          "stage_counts": {
+            "ordered": 42000,
+            "hard": 78000,
+            "adversarial": 0
+          },
+          "unique_domains_seen": 3,
+          "unique_contexts_seen": 20,
+          "unique_hazards_seen": 25,
+          "memory_domain_distribution": {
+            "education": 400,
+            "healthcare": 1000,
+            "finance": 1000
+          }
+        },
+        "implemented_files": [],
+        "artifact_report": "benchmarks\\artifacts\\full_web_run_3_report.json"
+      },
+      {
+        "run_id": 4,
+        "seed": 45,
+        "elapsed_seconds_wall": 39.80322790145874,
+        "processed": 128064,
+        "accuracy": 0.9986100699650174,
+        "throughput_scenarios_per_sec": 3304.5378757198423,
+        "memory_records_written": 2400,
+        "self_upgrade_enabled": true,
+        "recursive_proposal": "UPG_155714",
+        "implementation_success": true,
+        "avg_learning_value": 0.0005208333333333333,
+        "curriculum": {
+          "mode": "mixed",
+          "hard_case_rate": 0.2,
+          "adversarial_rate": 0.2,
+          "mixed_warmup_ratio": 0.35,
+          "entropy_auto_switch_enabled": true,
+          "rolling_confusion_entropy": 5.176058,
+          "rolling_window_size": 5000,
+          "hard_cases_generated": 15529,
+          "stage_counts": {
+            "ordered": 42000,
+            "hard": 78000,
+            "adversarial": 0
+          },
+          "unique_domains_seen": 3,
+          "unique_contexts_seen": 20,
+          "unique_hazards_seen": 25,
+          "memory_domain_distribution": {
+            "finance": 1000,
+            "education": 400,
+            "healthcare": 1000
+          }
+        },
+        "implemented_files": [],
+        "artifact_report": "benchmarks\\artifacts\\full_web_run_4_report.json"
+      },
+      {
+        "run_id": 5,
+        "seed": 46,
+        "elapsed_seconds_wall": 36.773077964782715,
+        "processed": 128065,
+        "accuracy": 0.9985710381446922,
+        "throughput_scenarios_per_sec": 3606.316030466556,
+        "memory_records_written": 2400,
+        "self_upgrade_enabled": true,
+        "recursive_proposal": "UPG_885285",
+        "implementation_success": true,
+        "avg_learning_value": 0.0004166666666666667,
+        "curriculum": {
+          "mode": "mixed",
+          "hard_case_rate": 0.2,
+          "adversarial_rate": 0.2,
+          "mixed_warmup_ratio": 0.35,
+          "entropy_auto_switch_enabled": true,
+          "rolling_confusion_entropy": 5.158631,
+          "rolling_window_size": 5000,
+          "hard_cases_generated": 15500,
+          "stage_counts": {
+            "ordered": 42000,
+            "hard": 78000,
+            "adversarial": 0
+          },
+          "unique_domains_seen": 3,
+          "unique_contexts_seen": 20,
+          "unique_hazards_seen": 25,
+          "memory_domain_distribution": {
+            "healthcare": 1000,
+            "finance": 1000,
+            "education": 400
+          }
+        },
+        "implemented_files": [],
+        "artifact_report": "benchmarks\\artifacts\\full_web_run_5_report.json"
       }
     ]
   },
   "live_runtime_summary": {
     "background_cycles": [
       {
-        "approved_fact_count": 3,
+        "approved_fact_count": 9,
         "integrated": 3,
         "sources": []
       },
       {
-        "approved_fact_count": 3,
-        "integrated": 3,
+        "approved_fact_count": 0,
+        "integrated": 0,
         "sources": []
       }
     ],
     "stream_cycles": [
       {
-        "packets_ingested": 32,
-        "packets_integrated": 19
+        "packets_ingested": 8,
+        "packets_integrated": 0
       }
     ],
     "trend_cycles": [
       {
-        "approved_fact_count": 10,
-        "stream_packets_integrated": 10
+        "approved_fact_count": 17,
+        "stream_packets_integrated": 0
       }
     ],
     "autonomy_cycles": [
       {
-        "autonomy_level": 0.5361,
+        "autonomy_level": 0.8744,
         "executed_actions": [
           "dream_state_refresh",
-          "logic_audit"
+          "common_sense_drill",
+          "logic_audit",
+          "paramatman_protocol"
         ]
       },
       {
-        "autonomy_level": 0.5361,
+        "autonomy_level": 0.8744,
         "executed_actions": [
           "dream_state_refresh",
-          "logic_audit"
+          "common_sense_drill",
+          "logic_audit",
+          "paramatman_protocol"
         ]
       }
     ],
@@ -91,37 +258,43 @@
       {
         "status": "executed",
         "heuristics": {
-          "status": "updated",
-          "growth_entropy": 0.5714,
-          "aggression": 1.1905,
-          "max_dream_simulations": 6,
-          "max_recalculations": 4,
-          "logic_audit_interval_seconds": 3024.02,
-          "patch_generation_interval_seconds": 2016.02,
-          "monologue_interval_seconds": 5.04
+          "status": "skipped",
+          "reason": "interval_not_elapsed"
         },
-        "audit_id": "audit_1776079901477"
+        "audit_id": "audit_1776096885059"
+      }
+    ],
+    "bridge_feedback_cycles": [
+      {
+        "processed_events": 0,
+        "operator_feedback_events": 0
+      },
+      {
+        "processed_events": 0,
+        "operator_feedback_events": 0
       }
     ],
     "errors": [],
     "internet_heartbeat": {
-      "last_successful_fetch_timestamp": 1776079897.4687004,
+      "last_successful_fetch_timestamp": 1776096878.0232801,
       "last_successful_fetch_sources": [
         "Crossref",
         "DevTo",
         "GitHub",
         "GoogleNews",
         "HackerNews",
-        "RedditTech"
+        "RedditTech",
+        "arXiv"
       ],
-      "last_successful_fetch_topic": "artificial intelligence",
+      "last_successful_fetch_topic": "Artificial Consciousness",
       "last_successful_fetch_event": "hourly_global_trends",
-      "last_observed_external_fact_count": 70,
+      "last_observed_external_fact_count": 57,
       "total_successful_fetch_events": 4
     },
-    "learned_fact_count": 54,
+    "learned_fact_count": 29,
     "bridge_feedback_metrics": {
       "processed_events": 0,
+      "operator_feedback_events": 0,
       "coherence_rewards": 0,
       "coherence_pain": 0,
       "observer_checks": 0,
@@ -134,16 +307,15 @@
   "self_modification_summary": {
     "core_files_changed": [
       "antahkarana_kernel\\modules\\InferenceLoop.py",
-      "Release_Build\\antahkarana_kernel\\modules\\InferenceLoop.py",
       "antahkarana_kernel\\config.json",
       "antahkarana_kernel\\evolution_vault\\training_autonomy_policy.json"
     ],
-    "proposal_count_before": 101,
-    "proposal_count_after": 103,
-    "backup_count_before": 19,
-    "backup_count_after": 21,
-    "new_proposals_generated": 2,
-    "new_backups_generated": 2,
+    "proposal_count_before": 112,
+    "proposal_count_after": 118,
+    "backup_count_before": 25,
+    "backup_count_after": 25,
+    "new_proposals_generated": 6,
+    "new_backups_generated": 0,
     "latest_proposals_after": [
       "UPG_965749.json",
       "UPG_976560.json",
@@ -152,11 +324,11 @@
       "UPG_990483.json"
     ],
     "latest_backups_after": [
-      "InferenceLoop_1776075496638086.backup.py",
-      "InferenceLoop_1776076404509241.backup.py",
-      "InferenceLoop_1776076404532257.backup.py",
-      "InferenceLoop_1776079851835914.backup.py",
-      "InferenceLoop_1776079851840914.backup.py"
+      "InferenceLoop_1776079851840914.backup.py",
+      "InferenceLoop_1776080423331051.backup.py",
+      "InferenceLoop_1776080423343094.backup.py",
+      "InferenceLoop_1776091892551620.backup.py",
+      "InferenceLoop_1776091892561632.backup.py"
     ]
   }
 }

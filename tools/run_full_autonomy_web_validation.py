@@ -58,6 +58,8 @@ def _training_run(
     seed: int,
     curriculum: str,
     hard_case_rate: float,
+    adversarial_rate: float,
+    mixed_warmup_ratio: float,
     enable_conflict_resolution: bool = False,
     enable_external_scenarios: bool = False,
     adversarial_hotspot_limit: int = 8,
@@ -85,6 +87,8 @@ def _training_run(
         enable_self_upgrade=True,
         curriculum=curriculum,
         hard_case_rate=hard_case_rate,
+        adversarial_rate=adversarial_rate,
+        mixed_warmup_ratio=mixed_warmup_ratio,
         enable_conflict_resolution=enable_conflict_resolution,
         enable_external_scenarios=enable_external_scenarios,
         adversarial_hotspot_limit=adversarial_hotspot_limit,
@@ -245,6 +249,8 @@ def run_full_validation(
     memory_sample_rate: int,
     curriculum: str,
     hard_case_rate: float,
+    adversarial_rate: float,
+    mixed_warmup_ratio: float,
     enable_conflict_resolution: bool = False,
     enable_external_scenarios: bool = False,
     adversarial_hotspot_limit: int = 8,
@@ -263,6 +269,8 @@ def run_full_validation(
                 seed=42 + i,
                 curriculum=curriculum,
                 hard_case_rate=hard_case_rate,
+                adversarial_rate=adversarial_rate,
+                mixed_warmup_ratio=mixed_warmup_ratio,
                 enable_conflict_resolution=enable_conflict_resolution,
                 enable_external_scenarios=enable_external_scenarios,
                 adversarial_hotspot_limit=adversarial_hotspot_limit,
@@ -298,6 +306,8 @@ def run_full_validation(
             "curriculum": {
                 "mode": curriculum,
                 "hard_case_rate": hard_case_rate,
+                "adversarial_rate": adversarial_rate,
+                "mixed_warmup_ratio": mixed_warmup_ratio,
             },
             "runs": runs,
         },
@@ -329,8 +339,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--batch-size", type=int, default=5000)
     parser.add_argument("--checkpoint-every", type=int, default=50000)
     parser.add_argument("--memory-sample-rate", type=int, default=100)
-    parser.add_argument("--curriculum", choices=["ordered", "shuffled", "hard", "adversarial"], default="ordered")
-    parser.add_argument("--hard-case-rate", type=float, default=0.0)
+    parser.add_argument("--curriculum", choices=["ordered", "shuffled", "hard", "adversarial", "mixed"], default="mixed")
+    parser.add_argument("--hard-case-rate", type=float, default=0.2)
+    parser.add_argument("--adversarial-rate", type=float, default=0.2)
+    parser.add_argument("--mixed-warmup-ratio", type=float, default=0.35)
     parser.add_argument("--adversarial-hotspot-limit", type=int, default=8)
     parser.add_argument("--enable-conflict-resolution", action="store_true")
     parser.add_argument("--enable-external-scenarios", action="store_true")
@@ -347,6 +359,8 @@ def main() -> None:
         memory_sample_rate=args.memory_sample_rate,
         curriculum=args.curriculum,
         hard_case_rate=max(0.0, min(1.0, args.hard_case_rate)),
+        adversarial_rate=max(0.0, min(1.0, args.adversarial_rate)),
+        mixed_warmup_ratio=max(0.0, min(0.9, args.mixed_warmup_ratio)),
         enable_conflict_resolution=args.enable_conflict_resolution,
         enable_external_scenarios=args.enable_external_scenarios,
         adversarial_hotspot_limit=args.adversarial_hotspot_limit,

@@ -3,22 +3,32 @@
     "autogen_1776067965_00": {
       "family": "generic",
       "status": "active",
-      "updated_at": 1776093314.8927636
+      "updated_at": 1776096884.7171614
     },
     "planner_1776068417_01": {
       "family": "planner",
       "status": "active",
-      "updated_at": 1776093314.8927636
+      "updated_at": 1776096884.7174814
     },
     "planner_1776068590_02": {
       "family": "planner",
       "status": "active",
-      "updated_at": 1776093314.8927636
+      "updated_at": 1776096884.7174814
     },
     "monitor_1776068970_03": {
       "family": "monitor",
       "status": "active",
-      "updated_at": 1776093314.8927636
+      "updated_at": 1776096884.7174814
+    },
+    "monitor_1776096329_04": {
+      "family": "monitor",
+      "status": "active",
+      "updated_at": 1776096884.7174814
+    },
+    "planner_1776096884_05": {
+      "family": "planner",
+      "status": "active",
+      "updated_at": 1776096884.7174814
     }
   },
   "edges": [
@@ -75,7 +85,43 @@
       "to": "monitor_1776068970_03",
       "relation": "guides",
       "weight": 0.6
+    },
+    {
+      "from": "planner_1776068590_02",
+      "to": "monitor_1776096329_04",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "planner_1776096884_05",
+      "to": "autogen_1776067965_00",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "planner_1776096884_05",
+      "to": "planner_1776068417_01",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "planner_1776096884_05",
+      "to": "planner_1776068590_02",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "planner_1776096884_05",
+      "to": "monitor_1776068970_03",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "planner_1776096884_05",
+      "to": "monitor_1776096329_04",
+      "relation": "guides",
+      "weight": 0.6
     }
   ],
-  "last_updated": 1776093314.8927636
+  "last_updated": 1776096884.7174814
 }

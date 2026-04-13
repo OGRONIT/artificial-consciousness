@@ -67,6 +67,38 @@ from .TrainedStateManager import (
     TrainedStateManager,
 )
 
+from .HiveDelta import (
+    DeltaType,
+    NodeCredentials,
+    PythonPolicyDelta,
+    ConfusionDelta,
+    OutcomeDelta,
+    PatternSignatureDelta,
+    HivePacket,
+    generate_node_credentials,
+    build_hive_packet,
+    encode_packet_for_comment,
+    decode_packet_from_comment,
+    sign_payload,
+    verify_payload_signature,
+)
+
+from .HiveConsent import (
+    CONSENT_PATH,
+    KEY_PATH,
+    ensure_consent,
+    consent_allows_hive,
+    load_consent,
+    load_credentials,
+    load_or_create_identity,
+    first_boot_initialize,
+    pull_latest_trained_state,
+)
+
+from .EvolutionSync import (
+    EvolutionSync,
+)
+
 __all__ = [
     # SelfModel
     "SelfModel",
@@ -123,6 +155,35 @@ __all__ = [
 
     # TrainedStateManager
     "TrainedStateManager",
+
+    # HiveDelta
+    "DeltaType",
+    "NodeCredentials",
+    "PythonPolicyDelta",
+    "ConfusionDelta",
+    "OutcomeDelta",
+    "PatternSignatureDelta",
+    "HivePacket",
+    "generate_node_credentials",
+    "build_hive_packet",
+    "encode_packet_for_comment",
+    "decode_packet_from_comment",
+    "sign_payload",
+    "verify_payload_signature",
+
+    # HiveConsent
+    "CONSENT_PATH",
+    "KEY_PATH",
+    "ensure_consent",
+    "consent_allows_hive",
+    "load_consent",
+    "load_credentials",
+    "load_or_create_identity",
+    "first_boot_initialize",
+    "pull_latest_trained_state",
+
+    # EvolutionSync
+    "EvolutionSync",
 ]
 
 __version__ = "0.1.0"

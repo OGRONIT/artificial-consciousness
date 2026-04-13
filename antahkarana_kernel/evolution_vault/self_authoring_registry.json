@@ -55,8 +55,36 @@
         "issue_count": 1,
         "growth_entropy": 0.6579
       }
+    },
+    {
+      "module_id": "sam_1776096329602",
+      "module_name": "monitor_1776096329_04",
+      "class_name": "AutogenModule",
+      "family": "monitor",
+      "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\generated\\monitor_1776096329_04.py",
+      "checksum": "a067d31957b93a84f2ddb38c0b99ed51884626e29ba2ee056c891cf94f2b92c0",
+      "status": "active",
+      "created_at": 1776096329.6021507,
+      "context_summary": {
+        "issue_count": 2,
+        "growth_entropy": 0.6447
+      }
+    },
+    {
+      "module_id": "sam_1776096884657",
+      "module_name": "planner_1776096884_05",
+      "class_name": "AutogenModule",
+      "family": "planner",
+      "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\generated\\planner_1776096884_05.py",
+      "checksum": "99fc9d3be3f586b9051f299c2752cf461d9bebc928e94f56e6586bd2e0ea6c6d",
+      "status": "active",
+      "created_at": 1776096884.6578624,
+      "context_summary": {
+        "issue_count": 0,
+        "growth_entropy": 0.625
+      }
     }
   ],
   "quarantined_modules": [],
-  "last_updated": 1776068970.9075534
+  "last_updated": 1776096884.705086
 }

@@ -1,26 +1,14 @@
 # AUTONOMOUS SELF-INJECTION PATCH
 # target_module=modules.InferenceLoop
-# generated_at=1776066987.0159163
+# generated_at=1776096884.558381
 # evolution_strength=5
-# payload={"generated_at": 1776066987.0159163, "growth_to_entropy_ratio": 0.5526, "issues": [{"type": "high_recalculations", "severity": 0.6, "metric": "avg_recalculations = 3.00", "proposal": "Improve initial evaluation accuracy or coherence checking logic"}], "deprecated_candidates": [{"constraint": "static_recalculation_limit", "reason": "coherence_retry_overhead", "replacement_priority": "contextual_recalculation_policy"}], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
+# payload={"generated_at": 1776096884.558381, "growth_to_entropy_ratio": 0.625, "issues": [], "deprecated_candidates": [], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
 
 # AUTONOMOUS SELF-INJECTION PATCH
 # target_module=modules.InferenceLoop
-# generated_at=1775939337.5423415
+# generated_at=1776096329.3030758
 # evolution_strength=5
-# payload={"generated_at": 1775939337.5423415, "growth_to_entropy_ratio": 0.6245, "issues": [{"type": "high_recalculations", "severity": 0.6, "metric": "avg_recalculations = 3.00", "proposal": "Improve initial evaluation accuracy or coherence checking logic"}], "deprecated_candidates": [{"constraint": "static_recalculation_limit", "reason": "coherence_retry_overhead", "replacement_priority": "contextual_recalculation_policy"}], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
-
-# AUTONOMOUS SELF-INJECTION PATCH
-# target_module=modules.InferenceLoop
-# generated_at=1775939182.9785848
-# evolution_strength=5
-# payload={"generated_at": 1775939182.9785848, "growth_to_entropy_ratio": 0.6068, "issues": [{"type": "high_recalculations", "severity": 0.6, "metric": "avg_recalculations = 3.00", "proposal": "Improve initial evaluation accuracy or coherence checking logic"}], "deprecated_candidates": [{"constraint": "static_recalculation_limit", "reason": "coherence_retry_overhead", "replacement_priority": "contextual_recalculation_policy"}], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
-
-# AUTONOMOUS SELF-INJECTION PATCH
-# target_module=modules.InferenceLoop
-# generated_at=1775937958.504885
-# evolution_strength=5
-# payload={"generated_at": 1775937958.504885, "growth_to_entropy_ratio": 0.0, "issues": [], "deprecated_candidates": [], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
+# payload={"generated_at": 1776096329.3030758, "growth_to_entropy_ratio": 0.6447, "issues": [{"type": "slow_inference", "severity": 0.6048678954442342, "metric": "avg_execution_time = 1.210s", "proposal": "Optimize inference pipeline or reduce dream cycle complexity"}, {"type": "high_recalculations", "severity": 0.6, "metric": "avg_recalculations = 3.00", "proposal": "Improve initial evaluation accuracy or coherence checking logic"}], "deprecated_candidates": [{"constraint": "high_simulation_depth", "reason": "throughput_bottleneck", "replacement_priority": "adaptive_dream_budget"}, {"constraint": "static_recalculation_limit", "reason": "coherence_retry_overhead", "replacement_priority": "contextual_recalculation_policy"}], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
 
 """
 InferenceLoop.py - The Manas-Buddhi (Inference & Logic) Module
@@ -630,6 +618,7 @@ class ManasBuddhi:
 
         with target_file.open("r", encoding="utf-8") as source_handle:
             target_source = source_handle.read()
+        target_source = self._strip_autonomous_patch_headers(target_source)
 
         evolution_strength = 1 + min(4, len(failure_context))
         evolved_source = self._mutate_target_source(
@@ -1105,8 +1094,22 @@ class ManasBuddhi:
         index = self.patch_sequence % len(self.patch_targets)
         return self.patch_targets[index]
 
+    def _strip_autonomous_patch_headers(self, source: str) -> str:
+        """Strip stacked autonomous metadata headers from Python source text."""
+        header_pattern = re.compile(
+            r"^(?:# AUTONOMOUS SELF-INJECTION PATCH\\n"
+            r"# target_module=.*\\n"
+            r"# generated_at=.*\\n"
+            r"# evolution_strength=.*\\n"
+            r"# payload=.*\\n\\n)+"
+        )
+        cleaned = re.sub(header_pattern, "", source)
+        return cleaned.lstrip("\n")
+
     def _mutate_target_source(self, source: str, target_module: str, strength: int) -> str:
         """Apply deterministic throughput/depth tuning to selected target source."""
+        source = self._strip_autonomous_patch_headers(source)
+
         if target_module == "modules.InferenceLoop":
             pattern = (
                 r"def __init__\(self, max_dream_simulations: int = (\\d+), "
@@ -1171,6 +1174,9 @@ class ManasBuddhi:
         with patch_file.open("r", encoding="utf-8") as patch_handle:
             patch_preview = patch_handle.read(4000)
 
+        with patch_file.open("r", encoding="utf-8") as patch_source_handle:
+            cleaned_patch_source = self._strip_autonomous_patch_headers(patch_source_handle.read())
+
         identity_ok, identity_reason = self.evolution_writer.identity_stability_check(
             {
                 "target_module": target_module,
@@ -1197,7 +1203,8 @@ class ManasBuddhi:
         backup_path = self.evolution_backups_dir / f"{target_file.stem}_{int(time.time() * 1000)}.bak.py"
         try:
             shutil.copy2(target_file, backup_path)
-            shutil.copy2(patch_file, target_file)
+            with target_file.open("w", encoding="utf-8") as target_handle:
+                target_handle.write(cleaned_patch_source)
             importlib.invalidate_caches()
             reloaded_module = importlib.reload(importlib.import_module(target_module))
 

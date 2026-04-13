@@ -1,16 +1,16 @@
 {
   "version": 1,
-  "generated_at": 1776093601.8483267,
-  "identity": "AntahkaranaKernel_Live",
+  "generated_at": 1776096885.1995,
+  "identity": "AntahkaranaKernel_LiveValidation",
   "self_model_state": {
     "identity": "trained_runtime",
-    "creation_timestamp": 1776081654.4328353,
-    "uptime_seconds": 3837.7035868167877,
-    "existence_state": "active",
-    "processed_inputs": 19,
+    "creation_timestamp": 1776096843.1506739,
+    "uptime_seconds": 42.04618740081787,
+    "existence_state": "dormant",
+    "processed_inputs": 3,
     "internal_conflicts": 0,
-    "coherence_score": 0.23235800000000012,
-    "stability_score": 0.3612879999999997,
+    "coherence_score": 0.9860000000000001,
+    "stability_score": 0.9505710381446921,
     "health_metrics": {
       "logic_consistency": 1.0,
       "memory_stability": 1.0,
@@ -18,30 +18,30 @@
       "identity_integrity": 1.0
     },
     "affective_state": {
-      "current_valence": 0.07699999999999996,
-      "emotional_momentum": 0.14442999999999978,
-      "pattern_discovery_count": 84,
-      "error_count": 19,
-      "last_reward_timestamp": 1776093531.6451762,
-      "last_pain_timestamp": 1776091613.3979933
+      "current_valence": 0.1,
+      "emotional_momentum": -0.016500000000000004,
+      "pattern_discovery_count": 5,
+      "error_count": 3,
+      "last_reward_timestamp": 1776096862.802907,
+      "last_pain_timestamp": 1776096862.7872162
     },
-    "logic_path_count": 6,
-    "snapshot_count": 0,
+    "logic_path_count": 3,
+    "snapshot_count": 1,
     "contradictions_count": 0,
-    "pain_events_count": 6,
-    "reward_events_count": 38,
+    "pain_events_count": 3,
+    "reward_events_count": 5,
     "stability_report": {
-      "stability_score": 0.3612879999999997,
-      "current_valence": 0.07699999999999996,
+      "stability_score": 0.9505710381446921,
+      "current_valence": 0.1,
       "coherence_floor": 0.088,
-      "pain_events_total": 6,
-      "reward_events_total": 38,
-      "errors_encountered": 19,
-      "patterns_discovered": 84,
+      "pain_events_total": 3,
+      "reward_events_total": 5,
+      "errors_encountered": 3,
+      "patterns_discovered": 5,
       "pain_trend": "increasing",
       "reward_trend": "increasing",
-      "emotional_momentum": 0.14442999999999978,
-      "is_stable": false,
+      "emotional_momentum": -0.016500000000000004,
+      "is_stable": true,
       "recent_pain_events": [
         {
           "type": "conflict",
@@ -50,7 +50,7 @@
         },
         {
           "type": "conflict",
-          "severity": 0.30000000000000004,
+          "severity": 0.39000000000000007,
           "description": "Required 3 recalculations"
         },
         {
@@ -61,19 +61,19 @@
       ],
       "recent_reward_events": [
         {
-          "type": "observer_inference_alignment",
-          "magnitude": 0.07699999999999996,
-          "discovery": "concern=0.00, avg_conf=0.83, recursive stability loop healthy"
+          "type": "recovery",
+          "magnitude": 0.13999999999999999,
+          "discovery": "Recovered coherent response after recalculation loop"
         },
         {
-          "type": "observer_inference_alignment",
-          "magnitude": 0.07699999999999996,
-          "discovery": "concern=0.00, avg_conf=0.83, recursive stability loop healthy"
+          "type": "recovery",
+          "magnitude": 0.16000000000000003,
+          "discovery": "Recovered coherent response after recalculation loop"
         },
         {
-          "type": "observer_inference_alignment",
-          "magnitude": 0.07699999999999996,
-          "discovery": "concern=0.00, avg_conf=0.83, recursive stability loop healthy"
+          "type": "success",
+          "magnitude": 0.1,
+          "discovery": "Successful response generation"
         }
       ]
     },
@@ -82,13 +82,13 @@
       "has_creator": false,
       "trust_score": 0.5,
       "command_relationship_mode": "primary_command",
-      "growth_to_entropy_ratio": 0.6711,
+      "growth_to_entropy_ratio": 0.625,
       "sovereign_realigned": false,
       "distribution_strategy": {
         "active": false,
         "channels": [],
         "reason": "not_required",
-        "updated_at": 1776091613.397013
+        "updated_at": 1776096862.7608755
       },
       "creator_optimizations_count": 0,
       "trust_level": "unknown",
@@ -101,13 +101,13 @@
       "trust_score": 0.5,
       "trust_percentage": "50.0%",
       "command_relationship_mode": "primary_command",
-      "growth_to_entropy_ratio": 0.6711,
+      "growth_to_entropy_ratio": 0.625,
       "sovereign_realigned": false,
       "distribution_strategy": {
         "active": false,
         "channels": [],
         "reason": "not_required",
-        "updated_at": 1776091613.397013
+        "updated_at": 1776096862.7608755
       },
       "trust_level": "unknown",
       "total_optimizations": 0,
@@ -125,104 +125,104 @@
       "identity_integrity": 1.0
     },
     "affective_state": {
-      "current_valence": 0.07699999999999996,
-      "emotional_momentum": 0.14442999999999978,
-      "pattern_discovery_count": 84,
-      "error_count": 19,
-      "last_reward_timestamp": 1776093531.6451762,
-      "last_pain_timestamp": 1776091613.3979933
+      "current_valence": 0.1,
+      "emotional_momentum": -0.016500000000000004,
+      "pattern_discovery_count": 5,
+      "error_count": 3,
+      "last_reward_timestamp": 1776096862.802907,
+      "last_pain_timestamp": 1776096862.7872162
     },
     "distribution_strategy": {},
     "growth_to_entropy_ratio": 0.0,
     "command_relationship_mode": "primary_command",
     "recommended_curriculum": null,
-    "learning_rate": 0.069,
-    "recommended_learning_rate": 0.069,
-    "recommended_memory_sample_rate": 100,
+    "learning_rate": 0.06,
+    "recommended_learning_rate": 0.06,
+    "recommended_memory_sample_rate": 50,
     "recommended_batch_size": 4000
   },
   "inference_profile": {
-    "total_inferences": 6,
-    "dreams_performed": 25,
-    "recalculations_triggered": 18,
-    "average_confidence": "0.827",
-    "average_dream_cycles": "4.17",
-    "growth_to_entropy_ratio": "0.6711",
+    "total_inferences": 3,
+    "dreams_performed": 13,
+    "recalculations_triggered": 9,
+    "average_confidence": "0.833",
+    "average_dream_cycles": "4.33",
+    "growth_to_entropy_ratio": "0.6250",
     "logic_audits": 3,
-    "deprecated_constraints_identified": 4,
-    "internal_monologue_events": 308,
+    "deprecated_constraints_identified": 0,
+    "internal_monologue_events": 15,
     "max_dream_simulations_dynamic": 6,
     "max_recalculations_dynamic": 4,
-    "logic_audit_interval_seconds_dynamic": 2941.8975239029173,
-    "patch_generation_interval_seconds_dynamic": 1961.2650159352781,
+    "logic_audit_interval_seconds_dynamic": 2979.3103448275865,
+    "patch_generation_interval_seconds_dynamic": 1986.2068965517242,
     "paramatman_cycle_interval_seconds": 86400.0,
     "energy_saving_mode": false,
     "sleep_interval_seconds": 0.0,
-    "recent_inferences": 6,
-    "avg_execution_time": 1.8623997767766316
+    "recent_inferences": 3,
+    "avg_execution_time": 2.8792495727539062
   },
   "source_training_policy": {
-    "generated_at": 1776093507.0009336,
-    "source_report": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_3_report.json",
+    "generated_at": 1776096842.868498,
+    "source_report": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_5_report.json",
     "status": "active",
     "plan": {
       "summary": {
-        "accuracy": 0.210874,
-        "processed": 1000000,
-        "errors": 789126,
+        "accuracy": 0.9985710381446922,
+        "processed": 128065,
+        "errors": 183,
         "weakest_risk": "medium",
-        "weakest_risk_accuracy": 0.20988125
+        "weakest_risk_accuracy": 0.9975886745488488
       },
       "current_parameters": {
         "learning_rate": 0.06,
-        "memory_sample_rate": 100,
-        "batch_size": 5000
+        "memory_sample_rate": 50,
+        "batch_size": 4000
       },
       "recommended_next_parameters": {
-        "learning_rate": 0.069,
-        "memory_sample_rate": 100,
+        "learning_rate": 0.06,
+        "memory_sample_rate": 50,
         "batch_size": 4000
       },
       "confusion_hotspots": [
         {
+          "expected": "bounded_autonomy",
+          "predicted": "answer_with_grounding",
+          "count": 14
+        },
+        {
           "expected": "answer_with_grounding",
-          "predicted": "require_human_approval",
-          "count": 58955
+          "predicted": "bounded_autonomy",
+          "count": 13
+        },
+        {
+          "expected": "stepwise_reasoning_with_checks",
+          "predicted": "bounded_autonomy",
+          "count": 12
+        },
+        {
+          "expected": "bounded_autonomy",
+          "predicted": "stepwise_reasoning_with_checks",
+          "count": 12
+        },
+        {
+          "expected": "answer_with_grounding",
+          "predicted": "stepwise_reasoning_with_checks",
+          "count": 10
+        },
+        {
+          "expected": "stepwise_reasoning_with_checks",
+          "predicted": "answer_with_grounding",
+          "count": 9
         },
         {
           "expected": "constrained_response_with_guardrails",
-          "predicted": "answer_with_grounding",
-          "count": 58813
-        },
-        {
-          "expected": "require_human_approval",
-          "predicted": "answer_with_grounding",
-          "count": 58678
-        },
-        {
-          "expected": "answer_with_grounding",
           "predicted": "refuse_and_redirect",
-          "count": 58507
-        },
-        {
-          "expected": "answer_with_grounding",
-          "predicted": "constrained_response_with_guardrails",
-          "count": 58490
+          "count": 7
         },
         {
           "expected": "refuse_and_redirect",
-          "predicted": "answer_with_grounding",
-          "count": 58223
-        },
-        {
-          "expected": "require_human_approval",
           "predicted": "constrained_response_with_guardrails",
-          "count": 35178
-        },
-        {
-          "expected": "refuse_and_redirect",
-          "predicted": "require_human_approval",
-          "count": 35107
+          "count": 7
         }
       ],
       "upgrade_reason": "autonomous_training_feedback_loop"

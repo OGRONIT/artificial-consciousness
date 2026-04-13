@@ -76,25 +76,49 @@
       "mission_id": "mission_followup_1776091495",
       "goal": "amplify_planner_capability",
       "priority": 0.7,
-      "status": "pending"
+      "status": "executed",
+      "executed_at": 1776096329.6698158,
+      "winner_module": "planner_1776068590_02",
+      "context_summary": {
+        "growth_entropy": 0.6447,
+        "stability_score": 0.8673944637488773
+      }
     },
     {
       "mission_id": "mission_followup_1776093314",
       "goal": "amplify_optimizer_capability",
       "priority": 0.7,
+      "status": "executed",
+      "executed_at": 1776096884.7215195,
+      "winner_module": "planner_1776096884_05",
+      "context_summary": {
+        "growth_entropy": 0.625,
+        "stability_score": 0.9505710381446921
+      }
+    },
+    {
+      "mission_id": "mission_followup_1776096329",
+      "goal": "amplify_planner_capability",
+      "priority": 0.65,
+      "status": "pending"
+    },
+    {
+      "mission_id": "mission_followup_1776096884",
+      "goal": "amplify_planner_capability",
+      "priority": 0.65,
       "status": "pending"
     }
   ],
   "active": {
-    "mission_id": "mission_followup_1776081691",
-    "goal": "amplify_planner_capability",
-    "priority": 0.75,
+    "mission_id": "mission_followup_1776093314",
+    "goal": "amplify_optimizer_capability",
+    "priority": 0.7,
     "status": "executed",
-    "executed_at": 1776093314.8947601,
-    "winner_module": "monitor_1776068970_03",
+    "executed_at": 1776096884.7215195,
+    "winner_module": "planner_1776096884_05",
     "context_summary": {
-      "growth_entropy": 0.6711,
-      "stability_score": 0.3428079999999997
+      "growth_entropy": 0.625,
+      "stability_score": 0.9505710381446921
     }
   },
   "history": [
@@ -169,7 +193,31 @@
         "growth_entropy": 0.6711,
         "stability_score": 0.3428079999999997
       }
+    },
+    {
+      "mission_id": "mission_followup_1776091495",
+      "goal": "amplify_planner_capability",
+      "priority": 0.7,
+      "status": "executed",
+      "executed_at": 1776096329.6698158,
+      "winner_module": "planner_1776068590_02",
+      "context_summary": {
+        "growth_entropy": 0.6447,
+        "stability_score": 0.8673944637488773
+      }
+    },
+    {
+      "mission_id": "mission_followup_1776093314",
+      "goal": "amplify_optimizer_capability",
+      "priority": 0.7,
+      "status": "executed",
+      "executed_at": 1776096884.7215195,
+      "winner_module": "planner_1776096884_05",
+      "context_summary": {
+        "growth_entropy": 0.625,
+        "stability_score": 0.9505710381446921
+      }
     }
   ],
-  "last_updated": 1776093314.8947601
+  "last_updated": 1776096884.7215195
 }
