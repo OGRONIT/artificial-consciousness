@@ -1,5 +1,5 @@
 {
-  "started_at": 1776095122.0799882,
+  "started_at": 1776099292.1336315,
   "cycles_requested": 4,
   "background": [
     {
@@ -43,11 +43,11 @@
       "stream_integrated": 0
     },
     {
-      "approved": 31,
+      "approved": 24,
       "stream_integrated": 0
     },
     {
-      "approved": 16,
+      "approved": 0,
       "stream_integrated": 0
     },
     {
@@ -55,7 +55,24 @@
       "stream_integrated": 0
     }
   ],
-  "autonomy": [],
+  "autonomy": [
+    {
+      "autonomy_level": 0.6173,
+      "actions": 2
+    },
+    {
+      "autonomy_level": 0.6173,
+      "actions": 2
+    },
+    {
+      "autonomy_level": 0.6173,
+      "actions": 2
+    },
+    {
+      "autonomy_level": 0.6173,
+      "actions": 2
+    }
+  ],
   "bridge_feedback": [
     {
       "processed_events": 0,
@@ -74,26 +91,22 @@
       "operator_feedback_events": 0
     }
   ],
-  "errors": [
-    "autonomy_cycle: 'NoneType' object has no attribute 'get'",
-    "autonomy_cycle: 'NoneType' object has no attribute 'get'",
-    "autonomy_cycle: 'NoneType' object has no attribute 'get'",
-    "autonomy_cycle: 'NoneType' object has no attribute 'get'"
-  ],
+  "errors": [],
   "heartbeat": {
-    "last_successful_fetch_timestamp": 1776095150.6844063,
+    "last_successful_fetch_timestamp": 1776099314.2741187,
     "last_successful_fetch_sources": [
       "Crossref",
       "DevTo",
+      "GitHub",
       "GoogleNews",
       "HackerNews"
     ],
-    "last_successful_fetch_topic": "Human Psychology",
+    "last_successful_fetch_topic": "machine learning",
     "last_successful_fetch_event": "hourly_global_trends",
-    "last_observed_external_fact_count": 19,
+    "last_observed_external_fact_count": 21,
     "total_successful_fetch_events": 12
   },
-  "learned_fact_count": 87,
+  "learned_fact_count": 64,
   "bridge_feedback_metrics": {
     "processed_events": 0,
     "operator_feedback_events": 0,
@@ -105,5 +118,5 @@
     "actions_probabilistic_trials": 0,
     "actions_blocked": 0
   },
-  "completed_at": 1776095150.6977768
+  "completed_at": 1776099314.2958724
 }
