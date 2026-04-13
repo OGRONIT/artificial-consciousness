@@ -670,6 +670,9 @@ class EvolutionaryWriter:
         result["success"] = bool(apply_result.get("success"))
         if apply_result.get("backup_file"):
             result["backups"].append(apply_result["backup_file"])
+        for backup_path in apply_result.get("backup_files", []) or []:
+            if backup_path and backup_path not in result["backups"]:
+                result["backups"].append(backup_path)
         if apply_result.get("changes"):
             result["changes"].extend(apply_result["changes"])
         if not result["success"]:
@@ -710,62 +713,76 @@ class EvolutionaryWriter:
         }
 
     def _apply_inference_loop_tuning(self, tuning: Dict[str, Any]) -> Dict[str, Any]:
-        """Patch core `InferenceLoop.py` defaults/intervals using deterministic regex edits."""
-        target = self.kernel_root / "modules" / "InferenceLoop.py"
-        if not target.exists():
-            return {
-                "success": False,
-                "error": f"Core module not found: {target}",
-                "changes": [],
-            }
-
-        original = target.read_text(encoding="utf-8")
-        updated = original
-
-        updated = re.sub(
-            r"def __init__\(self, max_dream_simulations: int = \d+, max_recalculations: int = \d+, idle_threshold_seconds: float = 300\.0\):",
-            (
-                "def __init__(self, max_dream_simulations: int = "
-                f"{int(tuning['max_dream_simulations'])}, max_recalculations: int = "
-                f"{int(tuning['max_recalculations'])}, idle_threshold_seconds: float = 300.0):"
-            ),
-            updated,
-            count=1,
-        )
-
-        updated = re.sub(
-            r"self\.autonomy_planning_interval_seconds = [0-9.]+",
-            f"self.autonomy_planning_interval_seconds = {float(tuning['autonomy_planning_interval_seconds']):.1f}",
-            updated,
-            count=1,
-        )
-
-        updated = re.sub(
-            r"self\.recursive_suggestion_interval_seconds = [0-9.]+",
-            f"self.recursive_suggestion_interval_seconds = {float(tuning['recursive_suggestion_interval_seconds']):.1f}",
-            updated,
-            count=1,
-        )
-
-        if updated == original:
-            return {
-                "success": False,
-                "error": "No matching tuning anchors found in InferenceLoop.py",
-                "changes": [],
-            }
-
-        backup = self.backup_file(str(target), reason="recursive_integration_autotune")
-        target.write_text(updated, encoding="utf-8")
-        changes = [
-            {
-                "file": "modules/InferenceLoop.py",
-                "change": "Auto-tuned constructor defaults and autonomous intervals",
-                "expected_improvement": "Proposal pipeline now mutates core runtime behavior directly",
-            }
+        """Patch core `InferenceLoop.py` defaults/intervals in main + release module trees."""
+        targets = [
+            (self.kernel_root / "modules" / "InferenceLoop.py", "modules/InferenceLoop.py"),
+            (self.kernel_root.parent / "Release_Build" / "antahkarana_kernel" / "modules" / "InferenceLoop.py", "Release_Build/antahkarana_kernel/modules/InferenceLoop.py"),
         ]
+
+        changes: List[Dict[str, Any]] = []
+        backups: List[str] = []
+        touched = 0
+
+        for target, display_name in targets:
+            if not target.exists():
+                continue
+
+            original = target.read_text(encoding="utf-8")
+            updated = original
+
+            updated = re.sub(
+                r"def __init__\(self, max_dream_simulations: int = \d+, max_recalculations: int = \d+, idle_threshold_seconds: float = 300\.0\):",
+                (
+                    "def __init__(self, max_dream_simulations: int = "
+                    f"{int(tuning['max_dream_simulations'])}, max_recalculations: int = "
+                    f"{int(tuning['max_recalculations'])}, idle_threshold_seconds: float = 300.0):"
+                ),
+                updated,
+                count=1,
+            )
+
+            updated = re.sub(
+                r"self\.autonomy_planning_interval_seconds = [0-9.]+",
+                f"self.autonomy_planning_interval_seconds = {float(tuning['autonomy_planning_interval_seconds']):.1f}",
+                updated,
+                count=1,
+            )
+
+            updated = re.sub(
+                r"self\.recursive_suggestion_interval_seconds = [0-9.]+",
+                f"self.recursive_suggestion_interval_seconds = {float(tuning['recursive_suggestion_interval_seconds']):.1f}",
+                updated,
+                count=1,
+            )
+
+            if updated == original:
+                continue
+
+            backup = self.backup_file(str(target), reason="recursive_integration_autotune")
+            if backup:
+                backups.append(backup)
+            target.write_text(updated, encoding="utf-8")
+            touched += 1
+            changes.append(
+                {
+                    "file": display_name,
+                    "change": "Auto-tuned constructor defaults and autonomous intervals",
+                    "expected_improvement": "Proposal pipeline mutates runtime behavior and release mirror",
+                }
+            )
+
+        if touched == 0:
+            return {
+                "success": False,
+                "error": "No matching tuning anchors found in target InferenceLoop modules",
+                "changes": [],
+                "backups": [],
+            }
+
         return {
             "success": True,
-            "backup_file": backup,
+            "backup_file": backups[0] if backups else None,
+            "backup_files": backups,
             "changes": changes,
         }
 

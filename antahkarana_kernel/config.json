@@ -161,10 +161,10 @@
   "training_autonomy": {
     "enabled": true,
     "source": "run_million_scenario_training.py",
-    "last_upgrade_at": 1776066302.865245,
+    "last_upgrade_at": 1776066538.6752236,
     "policy_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\training_autonomy_policy.json",
     "recommended_next_parameters": {
-      "learning_rate": 0.094446,
+      "learning_rate": 0.108613,
       "memory_sample_rate": 100,
       "batch_size": 2048
     },

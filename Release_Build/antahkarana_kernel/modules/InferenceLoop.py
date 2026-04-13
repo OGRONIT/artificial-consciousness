@@ -123,7 +123,7 @@ class ManasBuddhi:
     - Recalculation: Adjust if contradictions found
     """
 
-    def __init__(self, max_dream_simulations: int = 5, max_recalculations: int = 3, idle_threshold_seconds: float = 300.0):
+    def __init__(self, max_dream_simulations: int = 6, max_recalculations: int = 3, idle_threshold_seconds: float = 300.0):
         """
         Initialize the inference and logic loop.
         
@@ -228,7 +228,7 @@ class ManasBuddhi:
         self.last_paramatman_cycle_timestamp = 0.0
         self.paramatman_cycle_interval_seconds = 86400.0
         self.last_autonomy_planning_timestamp = 0.0
-        self.autonomy_planning_interval_seconds = 900.0
+        self.autonomy_planning_interval_seconds = 600.0
         self.last_autonomous_action_timestamp = 0.0
         self.autonomy_agenda_history: List[Dict[str, Any]] = []
 
