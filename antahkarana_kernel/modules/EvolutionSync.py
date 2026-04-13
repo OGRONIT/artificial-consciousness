@@ -306,25 +306,25 @@ class EvolutionSync:
             self._write_json(self.last_outcome_snapshot_path, packets[2].to_dict() if len(packets) > 2 else {})
             self._write_json(self.last_signature_snapshot_path, packets[3].to_dict() if len(packets) > 3 else {})
 
-    def upload_packets_to_discussion(
+    def upload_packets_to_issue(
         self,
         packets: List[HivePacket],
         repo: Optional[str] = None,
-        discussion_number: Optional[int] = None,
+        issue_number: Optional[int] = None,
         token: Optional[str] = None,
     ) -> Dict[str, Any]:
         if not packets:
             return {"uploaded": False, "reason": "no_packets"}
 
         repo = repo or os.environ.get("HIVE_GITHUB_REPOSITORY") or os.environ.get("GITHUB_REPOSITORY")
-        discussion_number = discussion_number or int(os.environ.get("HIVE_GITHUB_DISCUSSION_NUMBER", "1"))
+        issue_number = issue_number or int(os.environ.get("HIVE_GITHUB_ISSUE_NUMBER", "1"))
         token = token or os.environ.get("HIVE_GITHUB_TOKEN") or os.environ.get("GITHUB_TOKEN")
 
         if not repo or not token:
             return {"uploaded": False, "reason": "missing_repo_or_token"}
 
         owner, repo_name = repo.split("/", 1)
-        endpoint = f"https://api.github.com/repos/{owner}/{repo_name}/discussions/{discussion_number}/comments"
+        endpoint = f"https://api.github.com/repos/{owner}/{repo_name}/issues/{issue_number}/comments"
 
         results = []
         for packet in packets:
@@ -364,7 +364,7 @@ class EvolutionSync:
         local_eval_metrics: Optional[Dict[str, float]] = None,
         publish: bool = False,
         repo: Optional[str] = None,
-        discussion_number: Optional[int] = None,
+        issue_number: Optional[int] = None,
         token: Optional[str] = None,
     ) -> Dict[str, Any]:
         summary = self._load_training_summary()
@@ -388,7 +388,7 @@ class EvolutionSync:
 
         result = {"synced": True, "queued_packets": [packet.packet_id for packet in packets]}
         if publish:
-            result["publish"] = self.upload_packets_to_discussion(packets, repo=repo, discussion_number=discussion_number, token=token)
+            result["publish"] = self.upload_packets_to_issue(packets, repo=repo, issue_number=issue_number, token=token)
         return result
 
 

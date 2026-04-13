@@ -36,7 +36,7 @@ jobs:
         env:
           HIVE_GITHUB_TOKEN: ${{ secrets.HIVE_BOT_TOKEN || github.token }}
           HIVE_GITHUB_REPOSITORY: ${{ github.repository }}
-          HIVE_GITHUB_DISCUSSION_NUMBER: ${{ vars.HIVE_DISCUSSION_NUMBER || '1' }}
+          HIVE_GITHUB_ISSUE_NUMBER: ${{ vars.HIVE_ISSUE_NUMBER || '1' }}
         run: |
           PUBLISH="${{ github.event.inputs.publish }}"
           if [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
@@ -52,7 +52,7 @@ jobs:
 
           python tools/run_hive_aggregator.py \
             --repo "$HIVE_GITHUB_REPOSITORY" \
-            --discussion-number "$HIVE_GITHUB_DISCUSSION_NUMBER" \
+            --issue-number "$HIVE_GITHUB_ISSUE_NUMBER" \
             $EXTRA_FLAGS \
             --output benchmarks/artifacts/hive_aggregator_report.json
 

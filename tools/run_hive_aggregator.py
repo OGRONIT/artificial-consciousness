@@ -28,7 +28,7 @@ QUEUE_PATH = EVOLUTION_VAULT / "hive_queue.jsonl"
 REPORT_PATH = ARTIFACT_DIR / "hive_aggregator_report.json"
 CURRENT_MANIFEST_PATH = TRAINED_STATE_DIR / "trained_state_manifest.json"
 CANARY_RESULT_PATH = ARTIFACT_DIR / "hive_aggregator_canary_result.json"
-DEFAULT_DISCUSSION_NUMBER = int(os.environ.get("HIVE_GITHUB_DISCUSSION_NUMBER", "1"))
+DEFAULT_ISSUE_NUMBER = int(os.environ.get("HIVE_GITHUB_ISSUE_NUMBER", "1"))
 
 
 def _read_json(path: Path, default: Any) -> Any:
@@ -114,7 +114,7 @@ def _extract_packet_blocks(body: str) -> List[str]:
     return blocks
 
 
-def _fetch_discussion_comments(repo: str, discussion_number: int, token: Optional[str], max_comments: int = 500) -> List[Dict[str, Any]]:
+def _fetch_issue_comments(repo: str, issue_number: int, token: Optional[str], max_comments: int = 500) -> List[Dict[str, Any]]:
     if not repo or not token:
         return []
 
@@ -124,7 +124,7 @@ def _fetch_discussion_comments(repo: str, discussion_number: int, token: Optiona
     page = 1
     while len(comments) < max_comments:
         endpoint = (
-            f"https://api.github.com/repos/{owner}/{repo_name}/discussions/{discussion_number}/comments"
+            f"https://api.github.com/repos/{owner}/{repo_name}/issues/{issue_number}/comments"
             f"?per_page={per_page}&page={page}"
         )
         request = urllib.request.Request(
@@ -401,11 +401,11 @@ def _reject_candidate(reason: str, suspicious_nodes: List[str]) -> Dict[str, Any
     return {"accepted": False, "reason": reason, "suspicious_nodes": suspicious_nodes}
 
 
-def run_aggregator(repo: Optional[str], discussion_number: int, token: Optional[str], publish: bool) -> Dict[str, Any]:
+def run_aggregator(repo: Optional[str], issue_number: int, token: Optional[str], publish: bool) -> Dict[str, Any]:
     repo = repo or os.environ.get("GITHUB_REPOSITORY")
     token = token or os.environ.get("HIVE_GITHUB_TOKEN") or os.environ.get("GITHUB_TOKEN")
 
-    comments = _fetch_discussion_comments(repo or "", discussion_number, token) if repo and token else []
+    comments = _fetch_issue_comments(repo or "", issue_number, token) if repo and token else []
     if not comments:
         comments = _fallback_comments()
 
@@ -516,7 +516,7 @@ def run_aggregator(repo: Optional[str], discussion_number: int, token: Optional[
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run the hive aggregator pipeline")
     parser.add_argument("--repo", default=os.environ.get("GITHUB_REPOSITORY"))
-    parser.add_argument("--discussion-number", type=int, default=DEFAULT_DISCUSSION_NUMBER)
+    parser.add_argument("--issue-number", type=int, default=DEFAULT_ISSUE_NUMBER)
     parser.add_argument("--publish", action="store_true")
     parser.add_argument("--token", default=os.environ.get("HIVE_GITHUB_TOKEN") or os.environ.get("GITHUB_TOKEN"))
     parser.add_argument("--output", default=str(REPORT_PATH))
@@ -525,7 +525,7 @@ def _parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = _parse_args()
-    report = run_aggregator(args.repo, args.discussion_number, args.token, args.publish)
+    report = run_aggregator(args.repo, args.issue_number, args.token, args.publish)
     output_path = Path(args.output)
     _write_json(output_path, report)
     print(json.dumps(report, indent=2, default=str))

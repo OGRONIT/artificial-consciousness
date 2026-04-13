@@ -95,13 +95,13 @@ Consent JSON records only the participation decision and the categories of data 
 - average learning value exceeds the configured threshold,
 - the last upload is older than the configured rate limit.
 
-It builds the four deltas from current repo state, signs packets, queues them to `evolution_vault/hive_queue.jsonl`, and optionally posts them to the GitHub Discussion relay.
+It builds the four deltas from current repo state, signs packets, queues them to `evolution_vault/hive_queue.jsonl`, and optionally posts them to the "Hive Delta Submissions" GitHub Issue relay.
 
 ## Aggregation Flow
 
 `run_hive_aggregator.py` runs hourly.
 
-1. Fetch the last discussion comments or fall back to the local queue.
+1. Fetch the last issue comments or fall back to the local queue.
 2. Extract `[HIVE_DELTA_v1]` blocks.
 3. Decode packets.
 4. Reject replayed nonces.
@@ -154,9 +154,9 @@ Optional integrity verification can be enabled by providing a trusted manifest v
 - `ANTAHKARANA_HIVE_REMOTE_BASE_URL`: raw URL for tracked state hydration.
 - `ANTAHKARANA_HIVE_MIN_AVG_LEARNING`: sync trigger threshold.
 - `ANTAHKARANA_HIVE_MIN_UPLOAD_INTERVAL_SECS`: sync rate limit.
-- `HIVE_GITHUB_REPOSITORY`: repository slug for discussion posting.
-- `HIVE_GITHUB_DISCUSSION_NUMBER`: discussion number used as the relay.
-- `HIVE_GITHUB_TOKEN`: token for discussion comments.
+- `HIVE_GITHUB_REPOSITORY`: repository slug for issue posting.
+- `HIVE_GITHUB_ISSUE_NUMBER`: GitHub Issue number (in "Hive Delta Submissions" issue) used as the relay.
+- `HIVE_GITHUB_TOKEN`: token for posting issue comments.
 
 ## Deployment Notes
 
