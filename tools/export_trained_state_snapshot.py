@@ -15,6 +15,7 @@ CONFLICT_METRICS_PATH = KERNEL_ROOT / "evolution_vault" / "conflict_resolution_m
 FULL_REPORT_PATH = REPO_ROOT / "benchmarks" / "artifacts" / "full_web_run_10_report.json"
 LIVE_STATE_PATH = REPO_ROOT / "live_engine_state.json"
 ATMAN_CORE_PATH = REPO_ROOT / "Atman_Core.json"
+MAX_EXPORTED_MEMORIES = 100000
 
 
 def _read_json(path: Path) -> dict:
@@ -82,11 +83,13 @@ def _generate_chitta_export() -> dict:
     conflict_count = sum(1 for item in records if str(item.get("outcome", "")).lower() == "conflict")
     conflict_ratio = (conflict_count / total) if total else 0.0
 
+    max_items = min(MAX_EXPORTED_MEMORIES, len(normalized))
+
     return {
         "version": 1,
         "generated_at": time.time(),
         "source_memory_count": len(records),
-        "loaded_memory_count": min(250, len(normalized)),
+        "loaded_memory_count": max_items,
         "memory_statistics": {
             "total_memories": len(records),
             "average_learning_value": avg_learning,
@@ -97,7 +100,7 @@ def _generate_chitta_export() -> dict:
             "conflict_ratio": conflict_ratio,
             "highest_learning_value": normalized[:5],
         },
-        "memories": normalized[:250],
+        "memories": normalized[:max_items],
     }
 
 

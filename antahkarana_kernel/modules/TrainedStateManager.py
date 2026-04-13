@@ -17,6 +17,8 @@ from .EvolutionaryWriter import get_evolutionary_writer
 class TrainedStateManager:
     """Export and load trained runtime state from a tracked directory."""
 
+    DEFAULT_MEMORY_TOP_N = 100000
+
     def __init__(self, kernel_root: Path):
         self.kernel_root = Path(kernel_root)
         self.repo_root = self.kernel_root.parent
@@ -62,7 +64,7 @@ class TrainedStateManager:
         self,
         kernel: Any,
         conflict_tracker: Any = None,
-        memory_top_n: int = 250,
+        memory_top_n: int = DEFAULT_MEMORY_TOP_N,
     ) -> Dict[str, Any]:
         """Export trained state from a live kernel object."""
         return self._export_impl(
@@ -79,7 +81,7 @@ class TrainedStateManager:
         memory_system: Any = None,
         conflict_tracker: Any = None,
         report: Optional[Dict[str, Any]] = None,
-        memory_top_n: int = 250,
+        memory_top_n: int = DEFAULT_MEMORY_TOP_N,
     ) -> Dict[str, Any]:
         """Export trained state from a standalone training run."""
         return self._export_impl(
