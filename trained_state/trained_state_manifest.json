@@ -1,0 +1,17 @@
+{
+  "generated_at": 1776078558.2073781,
+  "identity": "AntahkaranaKernel_Live",
+  "files": [
+    "chitta_memory_export.json",
+    "conflict_resolution_state.json",
+    "autonomy_policy.json",
+    "atman_core.json"
+  ],
+  "source_files": {
+    "shadow_memory": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
+    "conflict_metrics": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\conflict_resolution_metrics.json",
+    "live_state": "D:\\Artificial Consciousness\\live_engine_state.json",
+    "training_report": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_10_report.json",
+    "atman_core": "D:\\Artificial Consciousness\\Atman_Core.json"
+  }
+}

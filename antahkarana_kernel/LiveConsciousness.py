@@ -771,6 +771,11 @@ class LiveConsciousnessEngine:
 
         self._atomic_write_json(self.state_snapshot_path, snapshot)
 
+        try:
+            self.kernel.export_trained_state()
+        except Exception as exc:
+            logger.warning("[LIVE] Trained-state export skipped: %s", exc)
+
     def _compute_consciousness_progress(
         self,
         body_status: Dict[str, Any],

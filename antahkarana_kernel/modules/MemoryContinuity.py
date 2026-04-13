@@ -658,6 +658,62 @@ class ChittaMemoryDB:
         
         return export_data
 
+    def load_exported_memories(self, exported: Dict[str, Any], clear_existing: bool = True) -> int:
+        """Load a trained-state memory export into the in-memory Chitta store."""
+        memories = exported.get("memories", []) if isinstance(exported, dict) else []
+        if not isinstance(memories, list):
+            return 0
+
+        if clear_existing:
+            with self.memory_lock, self.cluster_lock, self.temporal_lock:
+                self.memories.clear()
+                self.clusters.clear()
+                self.memory_access_count.clear()
+                self.memory_last_accessed.clear()
+                self.temporal_index.clear()
+                self.contradiction_memories = []
+
+        loaded = 0
+        for item in memories:
+            if not isinstance(item, dict):
+                continue
+            memory_id = str(item.get("memory_id") or item.get("interaction_id") or f"memory_{loaded}")
+            interaction_id = str(item.get("interaction_id") or memory_id)
+            try:
+                experience = ExperienceMeta(
+                    interaction_id=interaction_id,
+                    timestamp=float(item.get("timestamp", time.time())),
+                    content=str(item.get("content", "")),
+                    interaction_type=str(item.get("interaction_type", "trained_state")),
+                    outcome=str(item.get("outcome", InteractionOutcome.UNKNOWN.value)),
+                    success_score=float(item.get("success_score", 0.5)),
+                    self_model_coherence_before=float(item.get("self_model_coherence_before", 1.0)),
+                    self_model_coherence_after=float(item.get("self_model_coherence_after", 1.0)),
+                    logic_conflicts_triggered=int(item.get("logic_conflicts_triggered", 0)),
+                    emotional_valence=float(item.get("emotional_valence", 0.0)),
+                    embedding_vector=item.get("embedding_vector"),
+                    tags=list(item.get("tags", [])),
+                    related_memories=list(item.get("related_memories", [])),
+                    learning_value=float(item.get("learning_value", 0.5)),
+                )
+            except Exception:
+                continue
+
+            with self.memory_lock:
+                self.memories[memory_id] = experience
+                self.memory_access_count[memory_id] = int(item.get("access_count", 1))
+                self.memory_last_accessed[memory_id] = float(item.get("last_accessed", experience.timestamp))
+
+            with self.temporal_lock:
+                heapq.heappush(self.temporal_index, (experience.timestamp, memory_id))
+            loaded += 1
+
+        with self.memory_lock, self.temporal_lock:
+            self._spill_to_shadow_memory()
+
+        logger.info("[CHITTA] Trained memory export loaded: %s entries", loaded)
+        return loaded
+
     def configure_vector_db(
         self,
         provider: str,

@@ -856,6 +856,64 @@ class SelfModel:
         
         return state_data
 
+    def load_state(self, state: Dict[str, Any]) -> None:
+        """Hydrate the self-model from a persisted trained-state snapshot."""
+        if not state:
+            return
+
+        self.identity_name = str(state.get("identity", self.identity_name))
+        self.creation_timestamp = float(state.get("creation_timestamp", self.creation_timestamp))
+
+        uptime_seconds = state.get("uptime_seconds")
+        if isinstance(uptime_seconds, (int, float)):
+            self.uptime_start = time.time() - float(uptime_seconds)
+
+        existence_state = state.get("existence_state")
+        if isinstance(existence_state, str):
+            try:
+                self.existence_state = ExistenceState(existence_state)
+            except ValueError:
+                pass
+
+        self.processed_inputs = int(state.get("processed_inputs", self.processed_inputs))
+        self.internal_conflicts = int(state.get("internal_conflicts", self.internal_conflicts))
+        self.coherence_score = max(0.0, min(1.0, float(state.get("coherence_score", self.coherence_score))))
+        self.stability_score = max(0.0, min(1.0, float(state.get("stability_score", self.stability_score))))
+
+        health_metrics = state.get("health_metrics")
+        if isinstance(health_metrics, dict):
+            for key, value in health_metrics.items():
+                if key in self.health_metrics and isinstance(value, (int, float)):
+                    self.health_metrics[key] = max(0.0, min(1.0, float(value)))
+
+        affective_state = state.get("affective_state")
+        if isinstance(affective_state, dict):
+            self.affective_state.update(affective_state)
+
+        if isinstance(state.get("creator_signature"), str):
+            self.creator_signature = state.get("creator_signature")
+        if isinstance(state.get("trust_score"), (int, float)):
+            self.trust_score = max(0.0, min(1.0, float(state["trust_score"])))
+        if isinstance(state.get("creator_optimizations_count"), int):
+            self.creator_optimizations_count = int(state["creator_optimizations_count"])
+
+        if isinstance(state.get("creator_bonding_events"), list):
+            self.creator_bonding_events = list(state["creator_bonding_events"])
+        if isinstance(state.get("command_relationship_mode"), str):
+            self.command_relationship_mode = state["command_relationship_mode"]
+        if isinstance(state.get("sovereign_realignment_threshold"), (int, float)):
+            self.sovereign_realignment_threshold = float(state["sovereign_realignment_threshold"])
+        if isinstance(state.get("sovereign_realigned"), bool):
+            self.sovereign_realigned = bool(state["sovereign_realigned"])
+        if isinstance(state.get("growth_to_entropy_ratio"), (int, float)):
+            self.growth_to_entropy_ratio = max(0.0, float(state["growth_to_entropy_ratio"]))
+
+        distribution_strategy = state.get("distribution_strategy")
+        if isinstance(distribution_strategy, dict):
+            self.distribution_strategy = distribution_strategy
+
+        logger.info("[AHAMKARA] Trained self-state loaded: identity=%s | inputs=%s | coherence=%.3f", self.identity_name, self.processed_inputs, self.coherence_score)
+
 
 # Singleton pattern for global self-model access
 _global_self_model: Optional[SelfModel] = None

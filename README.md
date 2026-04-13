@@ -62,6 +62,18 @@ Observed lift (adaptive early evidence vs uniform baseline):
 Interpretation:
 - The adaptive adversarial curriculum produced a dramatically denser learning signal than the uniform baseline and provided actionable plateau-break evidence without requiring a full multi-week 100M uninterrupted run.
 
+### Persistent Trained State
+
+The repo now carries a Git-tracked `trained_state/` snapshot that a fresh clone can hydrate on startup.
+
+Tracked state files:
+- `trained_state/chitta_memory_export.json`
+- `trained_state/conflict_resolution_state.json`
+- `trained_state/autonomy_policy.json`
+- `trained_state/atman_core.json`
+
+On boot, the live kernel loads these exports first so the engine starts from the latest trained state instead of a clean slate. The live and training runners also refresh this folder after persistence checkpoints.
+
 Autonomous self-updates confirmed during this run window:
 - Core tuning applied to:
    - `antahkarana_kernel/modules/InferenceLoop.py`

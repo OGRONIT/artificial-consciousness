@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "generated_at": 1776078558.1943812,
+  "identity": "AntahkaranaKernel_Live",
+  "self_model_state": {
+    "identity": "AntahkaranaKernel_Live",
+    "creation_timestamp": 1775898874.5852678,
+    "uptime_seconds": 0.0,
+    "existence_state": "active",
+    "processed_inputs": 0,
+    "internal_conflicts": 0,
+    "coherence_score": 1.0,
+    "stability_score": 1.0,
+    "health_metrics": {
+      "logic_consistency": 1.0,
+      "memory_stability": 1.0,
+      "response_coherence": 1.0,
+      "identity_integrity": 1.0
+    },
+    "affective_state": {
+      "current_valence": 0.0,
+      "emotional_momentum": "decreasing",
+      "pattern_discovery_count": 37,
+      "error_count": 0
+    },
+    "trust_score": 0.5,
+    "growth_to_entropy_ratio": 0.0,
+    "command_relationship_mode": "primary_command",
+    "distribution_strategy": {
+      "active": false,
+      "channels": []
+    }
+  },
+  "policy_weights": {
+    "recommended_curriculum": "adversarial",
+    "recommended_learning_rate": 0.054,
+    "recommended_memory_sample_rate": 100,
+    "recommended_batch_size": 5000,
+    "current_training_accuracy": 0.999829,
+    "current_training_learning_value": 8e-05
+  },
+  "inference_profile": {},
+  "source_training_report": {
+    "report_file": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_10_report.json",
+    "accuracy": 0.999829,
+    "memory_average_learning_value": 8e-05
+  }
+}

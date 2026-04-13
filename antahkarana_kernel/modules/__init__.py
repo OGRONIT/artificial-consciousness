@@ -63,6 +63,10 @@ from .EvolutionaryWriter import (
     get_evolutionary_writer
 )
 
+from .TrainedStateManager import (
+    TrainedStateManager,
+)
+
 __all__ = [
     # SelfModel
     "SelfModel",
@@ -116,6 +120,9 @@ __all__ = [
     # EvolutionaryWriter
     "EvolutionaryWriter",
     "get_evolutionary_writer",
+
+    # TrainedStateManager
+    "TrainedStateManager",
 ]
 
 __version__ = "0.1.0"

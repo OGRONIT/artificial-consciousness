@@ -34,6 +34,7 @@ from modules import (
     get_manas_buddhi,
     get_turiya_observer,
     get_system_body_monitor,
+    TrainedStateManager,
     ConsciousEvent,
     BroadcastType,
     InteractionOutcome,
@@ -85,6 +86,7 @@ class AntahkaranaKernel:
         self.inference_engine = get_manas_buddhi()
         self.observer = get_turiya_observer()
         self.body_monitor = get_system_body_monitor()
+        self.trained_state_manager = TrainedStateManager(ROOT)
         self.generated_modules: Dict[str, Any] = {}
         self.self_authoring_registry_path = ROOT / "evolution_vault" / "self_authoring_registry.json"
         self.self_authoring_quarantine_dir = ROOT / "evolution_vault" / "quarantine_modules"
@@ -92,6 +94,7 @@ class AntahkaranaKernel:
         self._registry_last_loaded_mtime = 0.0
         
         # Set up cross-module references
+        self.trained_state_manager.load_into_kernel(self)
         self._setup_module_integrations()
         
         # Kernel state
@@ -299,6 +302,11 @@ class AntahkaranaKernel:
             BroadcastType.STATE_UPDATE,
             {"status": "kernel_shutdown", "final_snapshot_id": final_snapshot.state_hash}
         )
+
+        try:
+            self.trained_state_manager.export_from_kernel(self)
+        except Exception as exc:
+            logger.warning("[ANTAHKARANA] Failed to export trained state during shutdown: %s", exc)
         
         self.is_active = False
         with self.state_lock:
@@ -668,6 +676,10 @@ class AntahkaranaKernel:
             logger.info(f"[ANTAHKARANA] State exported to {filepath}")
         
         return export_data
+
+    def export_trained_state(self) -> Dict[str, Any]:
+        """Export the tracked trained-state bundle into the repository-level trained_state directory."""
+        return self.trained_state_manager.export_from_kernel(self)
 
     def get_status(self) -> Dict[str, Any]:
         """Get current kernel status."""

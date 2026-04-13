@@ -23,6 +23,7 @@ try:
         ExternalScenarioProvider,
         create_hardcoded_external_scenarios,
     )
+    from antahkarana_kernel.modules.TrainedStateManager import TrainedStateManager
     ADAPTIVE_MODULES_AVAILABLE = True
 except ImportError:
     ADAPTIVE_MODULES_AVAILABLE = False
@@ -946,6 +947,17 @@ def run_training(
             batch_size=batch_size,
         )
         report["self_upgrade"] = _apply_self_upgrade_plan(plan=plan, report_file=report_file)
+
+    try:
+        trained_state_manager = TrainedStateManager(REPO_ROOT / "antahkarana_kernel")
+        report["trained_state_export"] = trained_state_manager.export_from_training_run(
+            memory_system=chitta_memory,
+            conflict_tracker=conflict_tracker,
+            report=report,
+            memory_top_n=250,
+        )
+    except Exception as exc:
+        report["trained_state_export_error"] = str(exc)
 
     _write_json(report_file, report)
     _write_json(sample_file, {"samples": samples})

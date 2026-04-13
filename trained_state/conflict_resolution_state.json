@@ -1,0 +1,115 @@
+{
+  "current_metrics": {
+    "total_conflicts": 43,
+    "resolved_conflicts": 0,
+    "unresolved_conflicts": 43,
+    "mean_time_to_resolution_seconds": null,
+    "repeated_conflict_rate": 0.0,
+    "resolution_reliability": 0.0,
+    "conflict_coherence": 5.634993298978921e-06
+  },
+  "history": [
+    {
+      "total_conflicts": 36,
+      "resolved_conflicts": 0,
+      "unresolved_conflicts": 36,
+      "mean_time_to_resolution_seconds": null,
+      "repeated_conflict_rate": 0.0,
+      "resolution_reliability": 0.0,
+      "conflict_coherence": 0.3206764024227914,
+      "timestamp": 1776073793.699816
+    },
+    {
+      "total_conflicts": 42,
+      "resolved_conflicts": 0,
+      "unresolved_conflicts": 42,
+      "mean_time_to_resolution_seconds": null,
+      "repeated_conflict_rate": 0.0,
+      "resolution_reliability": 0.0,
+      "conflict_coherence": 5.0703640539081586e-05,
+      "timestamp": 1776074135.6304698
+    },
+    {
+      "total_conflicts": 42,
+      "resolved_conflicts": 0,
+      "unresolved_conflicts": 42,
+      "mean_time_to_resolution_seconds": null,
+      "repeated_conflict_rate": 0.0,
+      "resolution_reliability": 0.0,
+      "conflict_coherence": 2.533445234032246e-05,
+      "timestamp": 1776074223.907435
+    },
+    {
+      "total_conflicts": 43,
+      "resolved_conflicts": 0,
+      "unresolved_conflicts": 43,
+      "mean_time_to_resolution_seconds": null,
+      "repeated_conflict_rate": 0.0,
+      "resolution_reliability": 0.0,
+      "conflict_coherence": 1.6907272826710076e-05,
+      "timestamp": 1776074318.5877194
+    },
+    {
+      "total_conflicts": 43,
+      "resolved_conflicts": 0,
+      "unresolved_conflicts": 43,
+      "mean_time_to_resolution_seconds": null,
+      "repeated_conflict_rate": 0.0,
+      "resolution_reliability": 0.0,
+      "conflict_coherence": 1.2679674004958611e-05,
+      "timestamp": 1776074433.8542922
+    },
+    {
+      "total_conflicts": 43,
+      "resolved_conflicts": 0,
+      "unresolved_conflicts": 43,
+      "mean_time_to_resolution_seconds": null,
+      "repeated_conflict_rate": 0.0,
+      "resolution_reliability": 0.0,
+      "conflict_coherence": 1.0145015457879982e-05,
+      "timestamp": 1776074617.5170772
+    },
+    {
+      "total_conflicts": 43,
+      "resolved_conflicts": 0,
+      "unresolved_conflicts": 43,
+      "mean_time_to_resolution_seconds": null,
+      "repeated_conflict_rate": 0.0,
+      "resolution_reliability": 0.0,
+      "conflict_coherence": 8.453251929438608e-06,
+      "timestamp": 1776075211.7088194
+    },
+    {
+      "total_conflicts": 43,
+      "resolved_conflicts": 0,
+      "unresolved_conflicts": 43,
+      "mean_time_to_resolution_seconds": null,
+      "repeated_conflict_rate": 0.0,
+      "resolution_reliability": 0.0,
+      "conflict_coherence": 7.244538819924445e-06,
+      "timestamp": 1776075496.5110772
+    },
+    {
+      "total_conflicts": 43,
+      "resolved_conflicts": 0,
+      "unresolved_conflicts": 43,
+      "mean_time_to_resolution_seconds": null,
+      "repeated_conflict_rate": 0.0,
+      "resolution_reliability": 0.0,
+      "conflict_coherence": 6.33951495945333e-06,
+      "timestamp": 1776075840.9732895
+    },
+    {
+      "total_conflicts": 43,
+      "resolved_conflicts": 0,
+      "unresolved_conflicts": 43,
+      "mean_time_to_resolution_seconds": null,
+      "repeated_conflict_rate": 0.0,
+      "resolution_reliability": 0.0,
+      "conflict_coherence": 5.634993298978921e-06,
+      "timestamp": 1776076404.0570176
+    }
+  ],
+  "generated_at": 1776078558.1923692,
+  "source_metrics_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\conflict_resolution_metrics.json"
+}
