@@ -39,6 +39,29 @@ This visual shows the intended operator experience:
 - Copilot/LLM fast grounded response in the other panel
 - Runtime metrics and uncertainty-aware answers (no fabricated state)
 
+## Evidence Panel (What We Got While Testing)
+
+Latest heavy validation proved the following in live runtime:
+- `10,000,000` scenario training samples processed
+- average training accuracy: `0.9998391`
+- autonomous self-upgrade implementation success: `10/10` runs
+- internet learning integrated: `58` validated facts
+- successful fetch events: `4` with sources including `arXiv`, `GitHub`, `Crossref`, `GoogleNews`, `RedditTech`, `HackerNews`, `DevTo`
+
+Evidence files:
+- `../benchmarks/artifacts/full_autonomy_web_validation_report.json`
+- `../benchmarks/artifacts/full_web_run_10_report.json`
+- `evolution_vault/self_authoring_registry.json`
+- `evolution_vault/self_authoring_ledger.jsonl`
+- `evolution_vault/self_authoring_capability_graph.json`
+- `evolution_vault/self_authoring_missions.json`
+
+Confirmed self-updates during this run window:
+- `modules/InferenceLoop.py` auto-tuning
+- `../Release_Build/antahkarana_kernel/modules/InferenceLoop.py` mirror propagation
+- `config.json` training-autonomy policy refresh
+- new generated active modules under `modules/generated/`
+
 ## Core Architecture
 
 The kernel consists of five integrated modules working in concert:
@@ -225,6 +248,20 @@ Current benchmark status:
 - **Real-world performance emerges through use**: The more you interact, the more semantic memory builds, the more meaningful autonomy becomes.
 
 ## Installation & Usage
+
+### Quick Reproduction Commands
+
+Run full 10M + internet validation from repository root:
+
+```powershell
+python tools/run_full_autonomy_web_validation.py --million-runs 10 --target-scenarios 1000000 --batch-size 5000 --checkpoint-every 50000 --memory-sample-rate 100
+```
+
+Run direct 1M training loop with memory wiring:
+
+```powershell
+python tools/run_million_scenario_training.py --target-scenarios 1000000 --batch-size 5000 --checkpoint-every 50000 --wire-memory --memory-sample-rate 100 --resume --checkpoint-file benchmarks/artifacts/training_1m_memory_full_checkpoint.json --report-file benchmarks/artifacts/training_1m_memory_full_report.json --sample-file benchmarks/artifacts/training_1m_memory_full_samples.json
+```
 
 ### Requirements
 ```

@@ -39,6 +39,23 @@ This visual shows the intended operator experience:
 - Copilot/LLM fast grounded response in the other panel
 - Runtime metrics and uncertainty-aware answers (no fabricated state)
 
+## Evidence Panel (Latest Verified Run)
+
+Validated milestone outcomes:
+- `10,000,000` scenario samples processed
+- `0.9998391` average accuracy
+- `10/10` autonomous implementation success runs
+- `58` learned internet facts integrated
+
+Primary evidence artifacts:
+- `../benchmarks/artifacts/full_autonomy_web_validation_report.json`
+- `../benchmarks/artifacts/full_web_run_10_report.json`
+- `../antahkarana_kernel/evolution_vault/self_authoring_registry.json`
+- `../antahkarana_kernel/evolution_vault/self_authoring_ledger.jsonl`
+
+Release mirror note:
+- Autonomous tuning is propagated to both runtime and release mirror InferenceLoop modules.
+
 ## Core Architecture
 
 The kernel consists of five integrated modules working in concert:
@@ -225,6 +242,12 @@ Current benchmark status:
 - **Real-world performance emerges through use**: The more you interact, the more semantic memory builds, the more meaningful autonomy becomes.
 
 ## Installation & Usage
+
+### Heavy Validation Command
+
+```powershell
+python tools/run_full_autonomy_web_validation.py --million-runs 10 --target-scenarios 1000000 --batch-size 5000 --checkpoint-every 50000 --memory-sample-rate 100
+```
 
 ### Requirements
 ```

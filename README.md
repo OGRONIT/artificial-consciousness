@@ -15,6 +15,34 @@ This repository combines:
 - a provider-agnostic LLM bridge layer,
 - and guardrailed operational defaults for safer experimentation.
 
+## Evidence Panel (Latest Milestone Validation)
+
+The latest full stress validation executed:
+- `10,000,000` scenario samples (`10 x 1M`)
+- live internet ingestion cycles
+- autonomous self-upgrade + sovereign loop execution
+
+Evidence highlights from `benchmarks/artifacts/full_autonomy_web_validation_report.json`:
+- `total_processed`: `10,000,000`
+- `average_accuracy`: `0.9998391`
+- `implementation_success_runs`: `10/10`
+- `learned_fact_count`: `58`
+- `total_successful_fetch_events`: `4`
+- active source set observed: `Crossref`, `DevTo`, `GitHub`, `GoogleNews`, `HackerNews`, `RedditTech`, `arXiv`
+
+Autonomous self-updates confirmed during this run window:
+- Core tuning applied to:
+   - `antahkarana_kernel/modules/InferenceLoop.py`
+   - `Release_Build/antahkarana_kernel/modules/InferenceLoop.py`
+- Runtime policy updates applied to:
+   - `antahkarana_kernel/config.json`
+   - `antahkarana_kernel/evolution_vault/training_autonomy_policy.json`
+- Self-authored module activation + Phase 2 mission progression logged in:
+   - `antahkarana_kernel/evolution_vault/self_authoring_registry.json`
+   - `antahkarana_kernel/evolution_vault/self_authoring_ledger.jsonl`
+   - `antahkarana_kernel/evolution_vault/self_authoring_capability_graph.json`
+   - `antahkarana_kernel/evolution_vault/self_authoring_missions.json`
+
 ![Evolution + Copilot Runtime View](antahkarana_kernel/assets/evolution-copilot-fast-response.svg)
 
 ## Why This Exists
@@ -125,6 +153,22 @@ What this means for you:
    cd antahkarana_kernel
    ../.venv/bin/python InteractiveBridge.py
    ```
+
+## Heavy Validation Runbook (Reproduce The Big Test)
+
+Run the same full-scale validation command:
+
+```powershell
+python tools/run_full_autonomy_web_validation.py --million-runs 10 --target-scenarios 1000000 --batch-size 5000 --checkpoint-every 50000 --memory-sample-rate 100
+```
+
+Then inspect evidence artifacts:
+- `benchmarks/artifacts/full_autonomy_web_validation_report.json`
+- `benchmarks/artifacts/full_web_run_10_report.json`
+- `antahkarana_kernel/evolution_vault/self_authoring_registry.json`
+- `antahkarana_kernel/evolution_vault/self_authoring_ledger.jsonl`
+- `antahkarana_kernel/evolution_vault/self_authoring_capability_graph.json`
+- `antahkarana_kernel/evolution_vault/self_authoring_missions.json`
 
 ## How to Operate & Train This Engine
 
