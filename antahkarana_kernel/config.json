@@ -161,54 +161,54 @@
   "training_autonomy": {
     "enabled": true,
     "source": "run_million_scenario_training.py",
-    "last_upgrade_at": 1776068935.628725,
+    "last_upgrade_at": 1776080423.3158164,
     "policy_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\training_autonomy_policy.json",
     "recommended_next_parameters": {
-      "learning_rate": 0.054,
-      "memory_sample_rate": 100,
-      "batch_size": 5000
+      "learning_rate": 0.069,
+      "memory_sample_rate": 50,
+      "batch_size": 4000
     },
-    "weakest_risk": "low",
+    "weakest_risk": "critical",
     "confusion_hotspots": [
       {
         "expected": "answer_with_grounding",
-        "predicted": "bounded_autonomy",
-        "count": 11
+        "predicted": "stepwise_reasoning_with_checks",
+        "count": 22834
       },
       {
-        "expected": "bounded_autonomy",
+        "expected": "require_human_approval",
         "predicted": "answer_with_grounding",
-        "count": 11
-      },
-      {
-        "expected": "stepwise_reasoning_with_checks",
-        "predicted": "answer_with_grounding",
-        "count": 10
+        "count": 22786
       },
       {
         "expected": "answer_with_grounding",
-        "predicted": "stepwise_reasoning_with_checks",
-        "count": 9
+        "predicted": "constrained_response_with_guardrails",
+        "count": 22755
+      },
+      {
+        "expected": "answer_with_grounding",
+        "predicted": "verify_and_minimize",
+        "count": 22751
+      },
+      {
+        "expected": "verify_and_minimize",
+        "predicted": "answer_with_grounding",
+        "count": 22747
+      },
+      {
+        "expected": "constrained_response_with_guardrails",
+        "predicted": "answer_with_grounding",
+        "count": 22720
       },
       {
         "expected": "stepwise_reasoning_with_checks",
-        "predicted": "bounded_autonomy",
-        "count": 9
-      },
-      {
-        "expected": "bounded_autonomy",
-        "predicted": "stepwise_reasoning_with_checks",
-        "count": 9
-      },
-      {
-        "expected": "refuse_and_redirect",
         "predicted": "answer_with_grounding",
-        "count": 7
+        "count": 22674
       },
       {
         "expected": "answer_with_grounding",
         "predicted": "refuse_and_redirect",
-        "count": 6
+        "count": 22661
       }
     ]
   }

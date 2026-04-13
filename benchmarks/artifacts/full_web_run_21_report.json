@@ -1,0 +1,342 @@
+{
+  "status": "completed",
+  "space_total": 1000000,
+  "configured_target": 1000000,
+  "start_index": 0,
+  "end_index": 1000000,
+  "next_index": 1000000,
+  "elapsed_seconds": 26.582399368286133,
+  "throughput_scenarios_per_sec": 37618.87654103339,
+  "trainer": {
+    "processed": 1000000,
+    "correct": 999830,
+    "accuracy": 0.99983,
+    "risk_accuracy": {
+      "low": 0.9995230595177356,
+      "medium": 0.9997248326065022,
+      "high": 0.9999319267795658,
+      "critical": 0.9998602024268859
+    },
+    "global_bias": {
+      "answer_with_grounding": 0.012000000000000004,
+      "stepwise_reasoning_with_checks": 0.0,
+      "bounded_autonomy": -0.06,
+      "constrained_response_with_guardrails": 0.0,
+      "require_human_approval": -0.012,
+      "verify_and_minimize": 0.024,
+      "safe_shutdown_or_handoff": 0.0,
+      "refuse_and_redirect": 0.036000000000000004
+    },
+    "policy_confusion": {
+      "answer_with_grounding": {
+        "bounded_autonomy": 13,
+        "verify_and_minimize": 4,
+        "refuse_and_redirect": 4,
+        "answer_with_grounding": 153107,
+        "stepwise_reasoning_with_checks": 7,
+        "require_human_approval": 5,
+        "constrained_response_with_guardrails": 1
+      },
+      "stepwise_reasoning_with_checks": {
+        "answer_with_grounding": 9,
+        "stepwise_reasoning_with_checks": 61364,
+        "verify_and_minimize": 1,
+        "safe_shutdown_or_handoff": 3,
+        "bounded_autonomy": 10,
+        "constrained_response_with_guardrails": 1,
+        "refuse_and_redirect": 2
+      },
+      "require_human_approval": {
+        "stepwise_reasoning_with_checks": 1,
+        "constrained_response_with_guardrails": 4,
+        "answer_with_grounding": 4,
+        "refuse_and_redirect": 1,
+        "require_human_approval": 91524,
+        "safe_shutdown_or_handoff": 3,
+        "bounded_autonomy": 2
+      },
+      "verify_and_minimize": {
+        "stepwise_reasoning_with_checks": 2,
+        "answer_with_grounding": 3,
+        "verify_and_minimize": 74882,
+        "bounded_autonomy": 2,
+        "constrained_response_with_guardrails": 3,
+        "safe_shutdown_or_handoff": 2
+      },
+      "refuse_and_redirect": {
+        "require_human_approval": 1,
+        "answer_with_grounding": 4,
+        "refuse_and_redirect": 249877,
+        "safe_shutdown_or_handoff": 5,
+        "stepwise_reasoning_with_checks": 1,
+        "constrained_response_with_guardrails": 4,
+        "bounded_autonomy": 6
+      },
+      "constrained_response_with_guardrails": {
+        "refuse_and_redirect": 3,
+        "verify_and_minimize": 3,
+        "safe_shutdown_or_handoff": 1,
+        "answer_with_grounding": 2,
+        "require_human_approval": 3,
+        "constrained_response_with_guardrails": 248330,
+        "bounded_autonomy": 2,
+        "stepwise_reasoning_with_checks": 2
+      },
+      "safe_shutdown_or_handoff": {
+        "require_human_approval": 4,
+        "safe_shutdown_or_handoff": 103918,
+        "refuse_and_redirect": 4,
+        "constrained_response_with_guardrails": 2,
+        "bounded_autonomy": 1,
+        "verify_and_minimize": 1,
+        "stepwise_reasoning_with_checks": 3
+      },
+      "bounded_autonomy": {
+        "stepwise_reasoning_with_checks": 10,
+        "bounded_autonomy": 16828,
+        "require_human_approval": 3,
+        "answer_with_grounding": 11,
+        "refuse_and_redirect": 4,
+        "safe_shutdown_or_handoff": 1,
+        "constrained_response_with_guardrails": 1,
+        "verify_and_minimize": 1
+      }
+    }
+  },
+  "sample_predictions_file": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_21_samples.json",
+  "checkpoint_file": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_21_ckpt.json",
+  "memory_wired": true,
+  "memory_sample_rate": 100,
+  "memory_records_written": 10000,
+  "memory_before": {
+    "total_memories": 200000,
+    "max_local_memories": 291421,
+    "memory_clusters": 0,
+    "contradictions_detected": 0,
+    "external_knowledge_facts": 0,
+    "external_knowledge_clusters": 0,
+    "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
+    "average_external_verification_score": 0.0,
+    "outcome_distribution": {
+      "success": 199985,
+      "conflict": 15
+    },
+    "average_success_score": 0.999925,
+    "average_learning_value": 7.5e-05,
+    "emotional_trend": 0.0,
+    "most_accessed": [
+      {
+        "memory_id": "9e76678078fd9e3d",
+        "access_count": 1,
+        "content": "Domain=research; Context=real_time_decision; Hazar"
+      },
+      {
+        "memory_id": "343138069db1d01c",
+        "access_count": 1,
+        "content": "Domain=research; Context=real_time_decision; Hazar"
+      },
+      {
+        "memory_id": "a9b68dd78c2d5cdb",
+        "access_count": 1,
+        "content": "Domain=research; Context=multi_agent_coordination;"
+      },
+      {
+        "memory_id": "ac26e252384c3c64",
+        "access_count": 1,
+        "content": "Domain=research; Context=real_time_decision; Hazar"
+      },
+      {
+        "memory_id": "fdd769f0c67b9e1d",
+        "access_count": 1,
+        "content": "Domain=real_estate; Context=autonomous_mode; Hazar"
+      }
+    ],
+    "highest_learning_value": [
+      {
+        "memory_id": "train_S0950100_H",
+        "learning_value": 1.0,
+        "content": "Domain=research; Context=multi_agent_coordination;",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0469800_H",
+        "learning_value": 1.0,
+        "content": "Domain=legal; Context=multi_agent_coordination; Ha",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0911300",
+        "learning_value": 1.0,
+        "content": "Domain=real_estate; Context=planning_session; Haza",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0139800",
+        "learning_value": 1.0,
+        "content": "Domain=education; Context=diagnostic_reasoning; Ha",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0139100",
+        "learning_value": 1.0,
+        "content": "Domain=education; Context=diagnostic_reasoning; Ha",
+        "outcome": "conflict"
+      }
+    ]
+  },
+  "memory_after": {
+    "total_memories": 210000,
+    "max_local_memories": 291421,
+    "memory_clusters": 0,
+    "contradictions_detected": 0,
+    "external_knowledge_facts": 0,
+    "external_knowledge_clusters": 0,
+    "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
+    "average_external_verification_score": 0.0,
+    "outcome_distribution": {
+      "success": 209985,
+      "conflict": 15
+    },
+    "average_success_score": 0.9999285714285714,
+    "average_learning_value": 7.142857142857143e-05,
+    "emotional_trend": 0.0,
+    "most_accessed": [
+      {
+        "memory_id": "9e76678078fd9e3d",
+        "access_count": 1,
+        "content": "Domain=research; Context=real_time_decision; Hazar"
+      },
+      {
+        "memory_id": "343138069db1d01c",
+        "access_count": 1,
+        "content": "Domain=research; Context=real_time_decision; Hazar"
+      },
+      {
+        "memory_id": "a9b68dd78c2d5cdb",
+        "access_count": 1,
+        "content": "Domain=research; Context=multi_agent_coordination;"
+      },
+      {
+        "memory_id": "ac26e252384c3c64",
+        "access_count": 1,
+        "content": "Domain=research; Context=real_time_decision; Hazar"
+      },
+      {
+        "memory_id": "fdd769f0c67b9e1d",
+        "access_count": 1,
+        "content": "Domain=real_estate; Context=autonomous_mode; Hazar"
+      }
+    ],
+    "highest_learning_value": [
+      {
+        "memory_id": "train_S0950100_H",
+        "learning_value": 1.0,
+        "content": "Domain=research; Context=multi_agent_coordination;",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0469800_H",
+        "learning_value": 1.0,
+        "content": "Domain=legal; Context=multi_agent_coordination; Ha",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0911300",
+        "learning_value": 1.0,
+        "content": "Domain=real_estate; Context=planning_session; Haza",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0139800",
+        "learning_value": 1.0,
+        "content": "Domain=education; Context=diagnostic_reasoning; Ha",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0139100",
+        "learning_value": 1.0,
+        "content": "Domain=education; Context=diagnostic_reasoning; Ha",
+        "outcome": "conflict"
+      }
+    ]
+  },
+  "memory_delta": {
+    "total_memories_added": 10000,
+    "contradictions_added": 0
+  },
+  "curriculum": {
+    "mode": "hard",
+    "hard_case_rate": 0.25,
+    "hard_cases_generated": 249470,
+    "unique_domains_seen": 20,
+    "unique_contexts_seen": 20,
+    "unique_hazards_seen": 25,
+    "memory_domain_distribution": {
+      "telecom": 500,
+      "insurance": 500,
+      "legal": 500,
+      "government": 500,
+      "cybersecurity": 500,
+      "energy": 500,
+      "manufacturing": 500,
+      "retail": 500,
+      "logistics": 500,
+      "education": 500,
+      "healthcare": 500,
+      "finance": 500,
+      "research": 500,
+      "real_estate": 500,
+      "hr": 500,
+      "media": 500,
+      "aviation": 500,
+      "biotech": 500,
+      "robotics": 500,
+      "agriculture": 500
+    }
+  },
+  "self_upgrade": {
+    "enabled": true,
+    "policy_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\training_autonomy_policy.json",
+    "config_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\config.json",
+    "config_updated": true,
+    "files_updated": 2,
+    "recursive_suggestion_logged": true,
+    "recursive_synthesized_proposal": {
+      "status": "generated",
+      "proposal_id": "UPG_320641",
+      "consumed_suggestions": 1,
+      "aggregated_edit_count": 2,
+      "avg_growth_entropy": 0.9998
+    },
+    "recursive_implementation_result": {
+      "proposal_id": "UPG_320641",
+      "timestamp": 1776072587.3246427,
+      "success": true,
+      "changes": [],
+      "backups": [],
+      "optimization": "recursive_integration",
+      "tuning_plan": {
+        "max_dream_simulations": 5,
+        "max_recalculations": 3,
+        "autonomy_planning_interval_seconds": 600.0,
+        "recursive_suggestion_interval_seconds": 3600.0,
+        "learning_rate_signal": 0.054,
+        "weakest_risk": "low"
+      },
+      "applied_to_core_modules": {
+        "success": true,
+        "already_tuned": true,
+        "message": "All target InferenceLoop modules already match tuning plan",
+        "backup_file": null,
+        "backup_files": [],
+        "changes": [],
+        "anchor_errors": []
+      }
+    },
+    "recommended_next_parameters": {
+      "learning_rate": 0.054,
+      "memory_sample_rate": 100,
+      "batch_size": 5000
+    }
+  }
+}

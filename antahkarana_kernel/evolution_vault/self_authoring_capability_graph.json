@@ -3,22 +3,22 @@
     "autogen_1776067965_00": {
       "family": "generic",
       "status": "active",
-      "updated_at": 1776068970.9087975
+      "updated_at": 1776079901.5128267
     },
     "planner_1776068417_01": {
       "family": "planner",
       "status": "active",
-      "updated_at": 1776068970.9087975
+      "updated_at": 1776079901.5128267
     },
     "planner_1776068590_02": {
       "family": "planner",
       "status": "active",
-      "updated_at": 1776068970.9087975
+      "updated_at": 1776079901.5128267
     },
     "monitor_1776068970_03": {
       "family": "monitor",
       "status": "active",
-      "updated_at": 1776068970.9087975
+      "updated_at": 1776079901.5128267
     }
   },
   "edges": [
@@ -51,7 +51,25 @@
       "to": "planner_1776068590_02",
       "relation": "guides",
       "weight": 0.6
+    },
+    {
+      "from": "planner_1776068590_02",
+      "to": "autogen_1776067965_00",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "planner_1776068590_02",
+      "to": "planner_1776068417_01",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "planner_1776068590_02",
+      "to": "monitor_1776068970_03",
+      "relation": "guides",
+      "weight": 0.6
     }
   ],
-  "last_updated": 1776068970.9087975
+  "last_updated": 1776079901.5128267
 }

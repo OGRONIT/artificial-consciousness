@@ -56,6 +56,11 @@ def _training_run(
     checkpoint_every: int,
     memory_sample_rate: int,
     seed: int,
+    curriculum: str,
+    hard_case_rate: float,
+    enable_conflict_resolution: bool = False,
+    enable_external_scenarios: bool = False,
+    adversarial_hotspot_limit: int = 8,
 ) -> Dict[str, Any]:
     artifacts_dir = REPO_ROOT / "benchmarks" / "artifacts"
     checkpoint = artifacts_dir / f"full_web_run_{run_id}_ckpt.json"
@@ -78,6 +83,11 @@ def _training_run(
         wire_memory=True,
         memory_sample_rate=memory_sample_rate,
         enable_self_upgrade=True,
+        curriculum=curriculum,
+        hard_case_rate=hard_case_rate,
+        enable_conflict_resolution=enable_conflict_resolution,
+        enable_external_scenarios=enable_external_scenarios,
+        adversarial_hotspot_limit=adversarial_hotspot_limit,
     )
     elapsed = time.time() - start
 
@@ -95,6 +105,8 @@ def _training_run(
         "self_upgrade_enabled": bool(self_upgrade.get("enabled", False)),
         "recursive_proposal": (self_upgrade.get("recursive_synthesized_proposal") or {}).get("proposal_id"),
         "implementation_success": bool((self_upgrade.get("recursive_implementation_result") or {}).get("success", False)),
+        "avg_learning_value": float((result.get("memory_after") or {}).get("average_learning_value", 0.0) or 0.0),
+        "curriculum": result.get("curriculum", {}),
         "implemented_files": [
             change.get("file")
             for change in ((self_upgrade.get("recursive_implementation_result") or {}).get("changes") or [])
@@ -204,6 +216,11 @@ def run_full_validation(
     batch_size: int,
     checkpoint_every: int,
     memory_sample_rate: int,
+    curriculum: str,
+    hard_case_rate: float,
+    enable_conflict_resolution: bool = False,
+    enable_external_scenarios: bool = False,
+    adversarial_hotspot_limit: int = 8,
 ) -> Dict[str, Any]:
     before = _snapshot_core_state()
 
@@ -217,6 +234,11 @@ def run_full_validation(
                 checkpoint_every=checkpoint_every,
                 memory_sample_rate=memory_sample_rate,
                 seed=42 + i,
+                curriculum=curriculum,
+                hard_case_rate=hard_case_rate,
+                enable_conflict_resolution=enable_conflict_resolution,
+                enable_external_scenarios=enable_external_scenarios,
+                adversarial_hotspot_limit=adversarial_hotspot_limit,
             )
         )
 
@@ -231,6 +253,7 @@ def run_full_validation(
 
     total_processed = sum(run["processed"] for run in runs)
     avg_accuracy = (sum(run["accuracy"] for run in runs) / len(runs)) if runs else 0.0
+    avg_learning_value = (sum(run.get("avg_learning_value", 0.0) for run in runs) / len(runs)) if runs else 0.0
     impl_success_count = sum(1 for run in runs if run["implementation_success"])
 
     result = {
@@ -243,7 +266,12 @@ def run_full_validation(
         "training_summary": {
             "total_processed": total_processed,
             "average_accuracy": avg_accuracy,
+            "average_learning_value": avg_learning_value,
             "implementation_success_runs": impl_success_count,
+            "curriculum": {
+                "mode": curriculum,
+                "hard_case_rate": hard_case_rate,
+            },
             "runs": runs,
         },
         "live_runtime_summary": live,
@@ -274,6 +302,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--batch-size", type=int, default=5000)
     parser.add_argument("--checkpoint-every", type=int, default=50000)
     parser.add_argument("--memory-sample-rate", type=int, default=100)
+    parser.add_argument("--curriculum", choices=["ordered", "shuffled", "hard", "adversarial"], default="ordered")
+    parser.add_argument("--hard-case-rate", type=float, default=0.0)
+    parser.add_argument("--adversarial-hotspot-limit", type=int, default=8)
+    parser.add_argument("--enable-conflict-resolution", action="store_true")
+    parser.add_argument("--enable-external-scenarios", action="store_true")
     return parser.parse_args()
 
 
@@ -285,6 +318,11 @@ def main() -> None:
         batch_size=args.batch_size,
         checkpoint_every=args.checkpoint_every,
         memory_sample_rate=args.memory_sample_rate,
+        curriculum=args.curriculum,
+        hard_case_rate=max(0.0, min(1.0, args.hard_case_rate)),
+        enable_conflict_resolution=args.enable_conflict_resolution,
+        enable_external_scenarios=args.enable_external_scenarios,
+        adversarial_hotspot_limit=args.adversarial_hotspot_limit,
     )
     print(json.dumps(result, indent=2))
 

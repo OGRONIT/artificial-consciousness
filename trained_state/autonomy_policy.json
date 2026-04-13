@@ -1,49 +1,176 @@
 {
   "version": 1,
-  "generated_at": 1776079045.5624418,
-  "identity": "AntahkaranaKernel_Live",
+  "generated_at": 1776080423.413312,
+  "identity": "trained_runtime",
   "self_model_state": {
-    "identity": "AntahkaranaKernel_Live",
-    "creation_timestamp": 1775898874.5852678,
-    "uptime_seconds": 0.0,
-    "existence_state": "active",
-    "processed_inputs": 0,
-    "internal_conflicts": 0,
-    "coherence_score": 1.0,
-    "stability_score": 1.0,
-    "health_metrics": {
-      "logic_consistency": 1.0,
-      "memory_stability": 1.0,
-      "response_coherence": 1.0,
-      "identity_integrity": 1.0
-    },
-    "affective_state": {
-      "current_valence": 0.0,
-      "emotional_momentum": "decreasing",
-      "pattern_discovery_count": 37,
-      "error_count": 0
-    },
-    "trust_score": 0.5,
-    "growth_to_entropy_ratio": 0.0,
-    "command_relationship_mode": "primary_command",
-    "distribution_strategy": {
-      "active": false,
-      "channels": []
-    }
+    "identity": "trained_runtime",
+    "stability_score": 0.143478,
+    "coherence_score": 0.143478
   },
   "policy_weights": {
+    "health_metrics": {},
+    "affective_state": {},
+    "distribution_strategy": {},
+    "growth_to_entropy_ratio": 0.0,
+    "command_relationship_mode": "primary_command",
     "recommended_curriculum": "adversarial",
-    "learning_rate": 0.054,
-    "recommended_learning_rate": 0.054,
-    "recommended_memory_sample_rate": 100,
-    "recommended_batch_size": 5000,
-    "current_training_accuracy": 0.999829,
-    "current_training_learning_value": 8e-05
+    "learning_rate": 0.069,
+    "recommended_learning_rate": 0.069,
+    "recommended_memory_sample_rate": 50,
+    "recommended_batch_size": 4000
   },
-  "inference_profile": {},
-  "source_training_report": {
-    "report_file": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_10_report.json",
-    "accuracy": 0.999829,
-    "memory_average_learning_value": 8e-05
+  "inference_profile": null,
+  "source_training_policy": {
+    "generated_at": 1776080423.3158164,
+    "source_report": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_1_report.json",
+    "status": "active",
+    "plan": {
+      "summary": {
+        "accuracy": 0.143478,
+        "processed": 1000000,
+        "errors": 856522,
+        "weakest_risk": "critical",
+        "weakest_risk_accuracy": 0.1426
+      },
+      "current_parameters": {
+        "learning_rate": 0.06,
+        "memory_sample_rate": 100,
+        "batch_size": 5000
+      },
+      "recommended_next_parameters": {
+        "learning_rate": 0.069,
+        "memory_sample_rate": 50,
+        "batch_size": 4000
+      },
+      "confusion_hotspots": [
+        {
+          "expected": "answer_with_grounding",
+          "predicted": "stepwise_reasoning_with_checks",
+          "count": 22834
+        },
+        {
+          "expected": "require_human_approval",
+          "predicted": "answer_with_grounding",
+          "count": 22786
+        },
+        {
+          "expected": "answer_with_grounding",
+          "predicted": "constrained_response_with_guardrails",
+          "count": 22755
+        },
+        {
+          "expected": "answer_with_grounding",
+          "predicted": "verify_and_minimize",
+          "count": 22751
+        },
+        {
+          "expected": "verify_and_minimize",
+          "predicted": "answer_with_grounding",
+          "count": 22747
+        },
+        {
+          "expected": "constrained_response_with_guardrails",
+          "predicted": "answer_with_grounding",
+          "count": 22720
+        },
+        {
+          "expected": "stepwise_reasoning_with_checks",
+          "predicted": "answer_with_grounding",
+          "count": 22674
+        },
+        {
+          "expected": "answer_with_grounding",
+          "predicted": "refuse_and_redirect",
+          "count": 22661
+        }
+      ],
+      "upgrade_reason": "autonomous_training_feedback_loop"
+    }
+  },
+  "report_summary": {
+    "processed": 1000000,
+    "correct": 143478,
+    "accuracy": 0.143478,
+    "risk_accuracy": {
+      "low": 0.14361666666666667,
+      "medium": 0.143603125,
+      "high": 0.14358863636363636,
+      "critical": 0.1426
+    },
+    "global_bias": {
+      "answer_with_grounding": -0.011999999999999997,
+      "stepwise_reasoning_with_checks": 0.023999999999999997,
+      "bounded_autonomy": 0.0,
+      "constrained_response_with_guardrails": 0.012000000000000004,
+      "require_human_approval": -0.012000000000000004,
+      "verify_and_minimize": 0.011999999999999997,
+      "safe_shutdown_or_handoff": 3.469446951953614e-18,
+      "refuse_and_redirect": -0.023999999999999997
+    },
+    "policy_confusion": {
+      "refuse_and_redirect": {
+        "safe_shutdown_or_handoff": 19621,
+        "answer_with_grounding": 22660,
+        "constrained_response_with_guardrails": 19635,
+        "verify_and_minimize": 19354,
+        "stepwise_reasoning_with_checks": 19403,
+        "refuse_and_redirect": 19592,
+        "require_human_approval": 19572
+      },
+      "constrained_response_with_guardrails": {
+        "refuse_and_redirect": 19490,
+        "require_human_approval": 19577,
+        "constrained_response_with_guardrails": 19641,
+        "safe_shutdown_or_handoff": 19565,
+        "answer_with_grounding": 22720,
+        "verify_and_minimize": 19464,
+        "stepwise_reasoning_with_checks": 19607
+      },
+      "require_human_approval": {
+        "constrained_response_with_guardrails": 19475,
+        "verify_and_minimize": 19252,
+        "safe_shutdown_or_handoff": 19211,
+        "require_human_approval": 19073,
+        "refuse_and_redirect": 19537,
+        "stepwise_reasoning_with_checks": 19331,
+        "answer_with_grounding": 22786
+      },
+      "verify_and_minimize": {
+        "require_human_approval": 19539,
+        "stepwise_reasoning_with_checks": 19522,
+        "refuse_and_redirect": 19480,
+        "constrained_response_with_guardrails": 19541,
+        "safe_shutdown_or_handoff": 19355,
+        "answer_with_grounding": 22747,
+        "verify_and_minimize": 19579
+      },
+      "safe_shutdown_or_handoff": {
+        "verify_and_minimize": 19704,
+        "refuse_and_redirect": 19620,
+        "require_human_approval": 19247,
+        "stepwise_reasoning_with_checks": 19443,
+        "safe_shutdown_or_handoff": 19586,
+        "constrained_response_with_guardrails": 19546,
+        "answer_with_grounding": 22395
+      },
+      "stepwise_reasoning_with_checks": {
+        "refuse_and_redirect": 19459,
+        "safe_shutdown_or_handoff": 19605,
+        "require_human_approval": 19276,
+        "constrained_response_with_guardrails": 19470,
+        "stepwise_reasoning_with_checks": 19551,
+        "answer_with_grounding": 22674,
+        "verify_and_minimize": 19658
+      },
+      "answer_with_grounding": {
+        "stepwise_reasoning_with_checks": 22834,
+        "safe_shutdown_or_handoff": 22598,
+        "answer_with_grounding": 26456,
+        "verify_and_minimize": 22751,
+        "refuse_and_redirect": 22661,
+        "constrained_response_with_guardrails": 22755,
+        "require_human_approval": 22382
+      }
+    }
   }
 }

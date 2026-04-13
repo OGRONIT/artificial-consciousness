@@ -1,101 +1,79 @@
 {
   "version": 1,
-  "updated_at": 1776068851.4202783,
+  "updated_at": 1776075211.3772752,
   "space_total": 1000000,
   "start_index": 0,
   "next_index": 1000000,
   "target_end_index": 1000000,
   "trainer_state": {
     "processed": 1000000,
-    "correct": 999845,
-    "accuracy": 0.999845,
+    "correct": 209842,
+    "accuracy": 0.209842,
     "risk_accuracy": {
-      "low": 0.9996083333333333,
-      "medium": 0.99985625,
-      "high": 0.9999136363636364,
-      "critical": 0.9998
+      "low": 0.20879166666666665,
+      "medium": 0.209721875,
+      "high": 0.21085454545454546,
+      "critical": 0.2075
     },
     "global_bias": {
-      "answer_with_grounding": 0.0,
-      "stepwise_reasoning_with_checks": 0.0,
-      "bounded_autonomy": -0.024,
-      "constrained_response_with_guardrails": 0.0,
-      "require_human_approval": -0.012,
-      "verify_and_minimize": 0.0,
-      "safe_shutdown_or_handoff": 0.012,
-      "refuse_and_redirect": 0.024
+      "answer_with_grounding": 0.012000000000000004,
+      "stepwise_reasoning_with_checks": -0.012000000000000004,
+      "bounded_autonomy": 0.0,
+      "constrained_response_with_guardrails": -3.469446951953614e-18,
+      "require_human_approval": 0.012000000000000004,
+      "verify_and_minimize": -0.024000000000000004,
+      "safe_shutdown_or_handoff": -0.012,
+      "refuse_and_redirect": 0.024000000000000004
     },
     "policy_confusion": {
-      "answer_with_grounding": {
-        "require_human_approval": 5,
-        "answer_with_grounding": 203961,
-        "refuse_and_redirect": 5,
-        "stepwise_reasoning_with_checks": 9,
-        "verify_and_minimize": 4,
-        "safe_shutdown_or_handoff": 2,
-        "constrained_response_with_guardrails": 2,
-        "bounded_autonomy": 12
-      },
-      "refuse_and_redirect": {
-        "answer_with_grounding": 6,
-        "refuse_and_redirect": 199980,
-        "constrained_response_with_guardrails": 8,
-        "safe_shutdown_or_handoff": 3,
-        "bounded_autonomy": 3
-      },
-      "stepwise_reasoning_with_checks": {
-        "answer_with_grounding": 10,
-        "refuse_and_redirect": 2,
-        "verify_and_minimize": 2,
-        "stepwise_reasoning_with_checks": 81581,
-        "constrained_response_with_guardrails": 2,
-        "safe_shutdown_or_handoff": 1,
-        "bounded_autonomy": 2
-      },
       "verify_and_minimize": {
-        "answer_with_grounding": 4,
-        "stepwise_reasoning_with_checks": 1,
-        "verify_and_minimize": 99988,
-        "constrained_response_with_guardrails": 2,
-        "require_human_approval": 1,
-        "safe_shutdown_or_handoff": 2,
-        "bounded_autonomy": 2
+        "require_human_approval": 11840,
+        "constrained_response_with_guardrails": 11771,
+        "answer_with_grounding": 19422,
+        "stepwise_reasoning_with_checks": 3933,
+        "refuse_and_redirect": 11833,
+        "verify_and_minimize": 3844
       },
       "constrained_response_with_guardrails": {
-        "answer_with_grounding": 3,
-        "constrained_response_with_guardrails": 263980,
-        "refuse_and_redirect": 7,
-        "stepwise_reasoning_with_checks": 3,
-        "verify_and_minimize": 2,
-        "require_human_approval": 3,
-        "safe_shutdown_or_handoff": 1,
-        "bounded_autonomy": 1
+        "verify_and_minimize": 11685,
+        "answer_with_grounding": 58461,
+        "refuse_and_redirect": 35228,
+        "require_human_approval": 35363,
+        "constrained_response_with_guardrails": 34796,
+        "stepwise_reasoning_with_checks": 11984
       },
       "require_human_approval": {
-        "constrained_response_with_guardrails": 4,
-        "refuse_and_redirect": 1,
-        "require_human_approval": 55988,
-        "safe_shutdown_or_handoff": 4,
-        "verify_and_minimize": 1,
-        "answer_with_grounding": 2
+        "verify_and_minimize": 11725,
+        "answer_with_grounding": 58686,
+        "require_human_approval": 35006,
+        "refuse_and_redirect": 35042,
+        "constrained_response_with_guardrails": 35292,
+        "stepwise_reasoning_with_checks": 11786
       },
-      "safe_shutdown_or_handoff": {
-        "constrained_response_with_guardrails": 2,
-        "safe_shutdown_or_handoff": 71986,
-        "require_human_approval": 3,
-        "answer_with_grounding": 2,
-        "stepwise_reasoning_with_checks": 2,
-        "refuse_and_redirect": 2,
-        "verify_and_minimize": 2,
-        "bounded_autonomy": 1
+      "refuse_and_redirect": {
+        "safe_shutdown_or_handoff": 1,
+        "verify_and_minimize": 11706,
+        "require_human_approval": 34970,
+        "answer_with_grounding": 58676,
+        "refuse_and_redirect": 35476,
+        "constrained_response_with_guardrails": 35267,
+        "stepwise_reasoning_with_checks": 11885
       },
-      "bounded_autonomy": {
-        "answer_with_grounding": 12,
-        "bounded_autonomy": 22381,
-        "stepwise_reasoning_with_checks": 4,
-        "verify_and_minimize": 1,
-        "require_human_approval": 1,
-        "refuse_and_redirect": 1
+      "answer_with_grounding": {
+        "refuse_and_redirect": 58609,
+        "require_human_approval": 58591,
+        "constrained_response_with_guardrails": 58614,
+        "answer_with_grounding": 96838,
+        "stepwise_reasoning_with_checks": 19311,
+        "verify_and_minimize": 19579
+      },
+      "stepwise_reasoning_with_checks": {
+        "refuse_and_redirect": 11791,
+        "constrained_response_with_guardrails": 11777,
+        "answer_with_grounding": 19458,
+        "require_human_approval": 11766,
+        "stepwise_reasoning_with_checks": 3882,
+        "verify_and_minimize": 4106
       }
     }
   }

@@ -3,6 +3,6 @@
   "version": "1.0",
   "immutable": true,
   "objective": "Maximize Growth-to-Entropy while maintaining Identity Coherence over a 72-hour continuous cycle.",
-  "anchored_at": "2026-04-12T07:20:16.818969Z",
+  "anchored_at": "2026-04-11T00:00:00Z",
   "notes": "Protected identity anchor. Mutation cycles must never write to or delete this file."
 }
