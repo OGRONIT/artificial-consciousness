@@ -344,6 +344,194 @@ def _load_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _load_autonomous_training_defaults() -> Dict[str, Any]:
+    policy_file = REPO_ROOT / "antahkarana_kernel" / "evolution_vault" / "training_autonomy_policy.json"
+    if not policy_file.exists():
+        return {}
+    try:
+        payload = _load_json(policy_file)
+        plan = payload.get("plan", {})
+        recommended = plan.get("recommended_next_parameters", {})
+        if not isinstance(recommended, dict):
+            return {}
+        return recommended
+    except Exception:
+        return {}
+
+
+def _extract_confusion_hotspots(confusion: Dict[str, Dict[str, int]], limit: int = 8) -> List[Dict[str, Any]]:
+    hotspots: List[Dict[str, Any]] = []
+    for expected, predicted_counts in confusion.items():
+        for predicted, count in predicted_counts.items():
+            if expected == predicted:
+                continue
+            hotspots.append(
+                {
+                    "expected": expected,
+                    "predicted": predicted,
+                    "count": int(count),
+                }
+            )
+    hotspots.sort(key=lambda row: row["count"], reverse=True)
+    return hotspots[:limit]
+
+
+def _synthesize_self_upgrade_plan(
+    trainer_snapshot: Dict[str, Any],
+    learning_rate: float,
+    memory_sample_rate: int,
+    batch_size: int,
+) -> Dict[str, Any]:
+    accuracy = float(trainer_snapshot.get("accuracy", 0.0))
+    processed = int(trainer_snapshot.get("processed", 0))
+    correct = int(trainer_snapshot.get("correct", 0))
+    errors = max(0, processed - correct)
+
+    risk_accuracy = trainer_snapshot.get("risk_accuracy", {})
+    weakest_risk = None
+    weakest_risk_acc = 1.0
+    for risk_name, risk_acc in risk_accuracy.items():
+        value = float(risk_acc)
+        if value < weakest_risk_acc:
+            weakest_risk = str(risk_name)
+            weakest_risk_acc = value
+
+    next_learning_rate = learning_rate
+    if accuracy < 0.995:
+        next_learning_rate = min(0.15, learning_rate * 1.15)
+    elif accuracy > 0.9995:
+        next_learning_rate = max(0.01, learning_rate * 0.90)
+
+    next_memory_sample_rate = max(1, memory_sample_rate)
+    if weakest_risk in {"high", "critical"} and weakest_risk_acc < 0.9999:
+        # Capture denser memory around toughest safety classes.
+        next_memory_sample_rate = max(10, int(memory_sample_rate * 0.5))
+
+    next_batch_size = batch_size
+    if errors > 1000:
+        # More frequent checkpoint boundaries if error volume is high.
+        next_batch_size = max(1024, int(batch_size * 0.8))
+    elif accuracy > 0.9999:
+        # Increase throughput when policy is already highly stable.
+        next_batch_size = min(20000, int(batch_size * 1.2))
+
+    confusion = trainer_snapshot.get("policy_confusion", {})
+    hotspots = _extract_confusion_hotspots(confusion, limit=8)
+
+    return {
+        "summary": {
+            "accuracy": accuracy,
+            "processed": processed,
+            "errors": errors,
+            "weakest_risk": weakest_risk,
+            "weakest_risk_accuracy": weakest_risk_acc,
+        },
+        "current_parameters": {
+            "learning_rate": learning_rate,
+            "memory_sample_rate": memory_sample_rate,
+            "batch_size": batch_size,
+        },
+        "recommended_next_parameters": {
+            "learning_rate": round(next_learning_rate, 6),
+            "memory_sample_rate": int(next_memory_sample_rate),
+            "batch_size": int(next_batch_size),
+        },
+        "confusion_hotspots": hotspots,
+        "upgrade_reason": "autonomous_training_feedback_loop",
+    }
+
+
+def _apply_self_upgrade_plan(
+    plan: Dict[str, Any],
+    report_file: Path,
+) -> Dict[str, Any]:
+    kernel_root = REPO_ROOT / "antahkarana_kernel"
+    evolution_vault = kernel_root / "evolution_vault"
+    evolution_vault.mkdir(parents=True, exist_ok=True)
+
+    policy_file = evolution_vault / "training_autonomy_policy.json"
+    config_file = kernel_root / "config.json"
+
+    payload = {
+        "generated_at": time.time(),
+        "source_report": str(report_file),
+        "status": "active",
+        "plan": plan,
+    }
+    _write_json(policy_file, payload)
+
+    config_updated = False
+    if config_file.exists():
+        try:
+            config_data = _load_json(config_file)
+            config_data["training_autonomy"] = {
+                "enabled": True,
+                "source": "run_million_scenario_training.py",
+                "last_upgrade_at": time.time(),
+                "policy_file": str(policy_file),
+                "recommended_next_parameters": plan.get("recommended_next_parameters", {}),
+                "weakest_risk": plan.get("summary", {}).get("weakest_risk"),
+                "confusion_hotspots": plan.get("confusion_hotspots", []),
+            }
+            _write_json(config_file, config_data)
+            config_updated = True
+        except Exception:
+            config_updated = False
+
+    recursive_logged = False
+    synthesized_proposal = None
+    try:
+        from antahkarana_kernel.modules.EvolutionaryWriter import get_evolutionary_writer
+
+        writer = get_evolutionary_writer(str(kernel_root))
+        suggestion = {
+            "target_module": "tools.run_million_scenario_training",
+            "reason": "training_feedback_autonomous_upgrade",
+            "growth_entropy": float(plan.get("summary", {}).get("accuracy", 0.0)),
+            "proposed_edits": [
+                {
+                    "file": str(policy_file),
+                    "action": "update",
+                    "description": "refresh training autonomy policy from latest million-scenario feedback",
+                },
+                {
+                    "file": str(config_file),
+                    "action": "update",
+                    "description": "sync kernel config with recommended next training parameters",
+                },
+            ],
+            "observed_metrics": plan.get("summary", {}),
+        }
+        writer.record_recursive_integration_suggestion(suggestion)
+        synthesized_proposal = writer.synthesize_recursive_proposal(max_pending=1)
+        writer.record_evolution_consciousness(
+            {
+                "timestamp": time.time(),
+                "mutation_target": "training_autonomy_policy",
+                "logic_shift": "autonomous parameter adaptation from million-scenario feedback",
+                "stability_impact": {
+                    "accuracy": plan.get("summary", {}).get("accuracy", 0.0),
+                    "errors": plan.get("summary", {}).get("errors", 0),
+                },
+                "status": "active",
+            }
+        )
+        recursive_logged = True
+    except Exception:
+        recursive_logged = False
+
+    return {
+        "enabled": True,
+        "policy_file": str(policy_file),
+        "config_file": str(config_file),
+        "config_updated": config_updated,
+        "files_updated": 2 if config_updated else 1,
+        "recursive_suggestion_logged": recursive_logged,
+        "recursive_synthesized_proposal": synthesized_proposal,
+        "recommended_next_parameters": plan.get("recommended_next_parameters", {}),
+    }
+
+
 def run_training(
     target_scenarios: int,
     start_index: int,
@@ -358,6 +546,7 @@ def run_training(
     seed: int,
     wire_memory: bool,
     memory_sample_rate: int,
+    enable_self_upgrade: bool,
 ) -> Dict[str, Any]:
     space = MillionScenarioSpace()
     if target_scenarios <= 0:
@@ -395,13 +584,25 @@ def run_training(
 
     end_index = min(space.total, start_index + target_scenarios)
     if current_index >= end_index:
+        trainer_state = trainer.snapshot()
+        self_upgrade = None
+        if enable_self_upgrade:
+            plan = _synthesize_self_upgrade_plan(
+                trainer_snapshot=trainer_state,
+                learning_rate=learning_rate,
+                memory_sample_rate=memory_sample_rate,
+                batch_size=batch_size,
+            )
+            self_upgrade = _apply_self_upgrade_plan(plan=plan, report_file=report_file)
+
         summary = {
             "status": "already_completed",
             "space_total": space.total,
             "start_index": start_index,
             "next_index": current_index,
             "target_end_index": end_index,
-            "trainer": trainer.snapshot(),
+            "trainer": trainer_state,
+            "self_upgrade": self_upgrade,
         }
         _write_json(report_file, summary)
         return summary
@@ -499,6 +700,15 @@ def run_training(
         "memory_delta": memory_delta,
     }
 
+    if enable_self_upgrade:
+        plan = _synthesize_self_upgrade_plan(
+            trainer_snapshot=report["trainer"],
+            learning_rate=learning_rate,
+            memory_sample_rate=max(1, memory_sample_rate),
+            batch_size=batch_size,
+        )
+        report["self_upgrade"] = _apply_self_upgrade_plan(plan=plan, report_file=report_file)
+
     _write_json(report_file, report)
     _write_json(sample_file, {"samples": samples})
     return report
@@ -541,11 +751,31 @@ def parse_args() -> argparse.Namespace:
         default=10,
         help="Write 1 memory record per N scenarios (N=1 writes all scenarios).",
     )
+    parser.add_argument(
+        "--disable-self-upgrade",
+        action="store_true",
+        help="Disable autonomous self-upgrade policy synthesis/application after training.",
+    )
+    parser.add_argument(
+        "--ignore-upgrade-policy",
+        action="store_true",
+        help="Ignore learned defaults from training_autonomy_policy.json and use CLI/default values as-is.",
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
+
+    if not args.ignore_upgrade_policy:
+        learned_defaults = _load_autonomous_training_defaults()
+        if "learning_rate" in learned_defaults and args.learning_rate == 0.06:
+            args.learning_rate = float(learned_defaults["learning_rate"])
+        if "memory_sample_rate" in learned_defaults and args.memory_sample_rate == 10:
+            args.memory_sample_rate = int(learned_defaults["memory_sample_rate"])
+        if "batch_size" in learned_defaults and args.batch_size == 2048:
+            args.batch_size = int(learned_defaults["batch_size"])
+
     result = run_training(
         target_scenarios=args.target_scenarios,
         start_index=args.start_index,
@@ -560,6 +790,7 @@ def main() -> None:
         seed=args.seed,
         wire_memory=args.wire_memory,
         memory_sample_rate=max(1, args.memory_sample_rate),
+        enable_self_upgrade=not args.disable_self_upgrade,
     )
     print(json.dumps(result, indent=2))
 

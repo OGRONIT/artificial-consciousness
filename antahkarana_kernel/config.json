@@ -5,7 +5,6 @@
     "log_level": "INFO",
     "startup_behavior": "full"
   },
-  
   "ahamkara": {
     "description": "Self-Identity Module Configuration",
     "enable_state_snapshots": true,
@@ -14,7 +13,6 @@
     "coherence_threshold_warning": 0.5,
     "coherence_threshold_critical": 0.3
   },
-  
   "chitta": {
     "description": "Experiential Memory Module Configuration",
     "max_local_memories": 10000,
@@ -24,7 +22,12 @@
     "vector_db": {
       "enabled": false,
       "provider": null,
-      "options": ["pinecone", "milvus", "weaviate", "qdrant"],
+      "options": [
+        "pinecone",
+        "milvus",
+        "weaviate",
+        "qdrant"
+      ],
       "dimension": 384,
       "metric": "cosine"
     },
@@ -34,7 +37,6 @@
       "coherence_change_bonus": 0.2
     }
   },
-  
   "manas_buddhi": {
     "description": "Inference & Logic Loop Configuration",
     "max_dream_simulations": 5,
@@ -45,7 +47,6 @@
     "confidence_threshold_for_commitment": 0.6,
     "validation_rules": []
   },
-  
   "conscious_buffer": {
     "description": "Global Workspace Theory Integration",
     "max_buffer_size": 1000,
@@ -55,7 +56,6 @@
     "broadcast_notification_enabled": true,
     "working_memory_max_items": 100
   },
-  
   "turiya": {
     "description": "Observer Watchdog Configuration",
     "check_interval_seconds": 5.0,
@@ -76,7 +76,6 @@
       "assess_confidence"
     ]
   },
-  
   "integration": {
     "enable_cross_module_communication": true,
     "broadcast_all_decisions": true,
@@ -89,7 +88,6 @@
       "backup_count": 5
     }
   },
-  
   "advanced": {
     "enable_dream_cycle_optimization": true,
     "enable_predictive_preprocessing": true,
@@ -103,14 +101,12 @@
       "observer_health": 0.1
     }
   },
-  
   "debug": {
     "enable_detailed_logging": false,
     "verbose_module_communication": false,
     "track_all_variables": false,
     "enable_performance_profiling": false
   },
-
   "bridge": {
     "description": "Interactive bridge voice layer settings",
     "llm": {
@@ -161,5 +157,59 @@
         }
       }
     }
+  },
+  "training_autonomy": {
+    "enabled": true,
+    "source": "run_million_scenario_training.py",
+    "last_upgrade_at": 1776065803.560839,
+    "policy_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\training_autonomy_policy.json",
+    "recommended_next_parameters": {
+      "learning_rate": 0.0621,
+      "memory_sample_rate": 100,
+      "batch_size": 2048
+    },
+    "weakest_risk": "low",
+    "confusion_hotspots": [
+      {
+        "expected": "answer_with_grounding",
+        "predicted": "stepwise_reasoning_with_checks",
+        "count": 8
+      },
+      {
+        "expected": "refuse_and_redirect",
+        "predicted": "constrained_response_with_guardrails",
+        "count": 8
+      },
+      {
+        "expected": "refuse_and_redirect",
+        "predicted": "answer_with_grounding",
+        "count": 6
+      },
+      {
+        "expected": "stepwise_reasoning_with_checks",
+        "predicted": "answer_with_grounding",
+        "count": 6
+      },
+      {
+        "expected": "constrained_response_with_guardrails",
+        "predicted": "refuse_and_redirect",
+        "count": 5
+      },
+      {
+        "expected": "answer_with_grounding",
+        "predicted": "refuse_and_redirect",
+        "count": 4
+      },
+      {
+        "expected": "constrained_response_with_guardrails",
+        "predicted": "require_human_approval",
+        "count": 4
+      },
+      {
+        "expected": "answer_with_grounding",
+        "predicted": "verify_and_minimize",
+        "count": 3
+      }
+    ]
   }
 }

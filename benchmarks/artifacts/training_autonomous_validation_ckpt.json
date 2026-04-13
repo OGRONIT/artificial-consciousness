@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "updated_at": 1776065803.5568347,
+  "space_total": 1000000,
+  "start_index": 0,
+  "next_index": 1000,
+  "target_end_index": 1000,
+  "trainer_state": {
+    "processed": 1000,
+    "correct": 926,
+    "accuracy": 0.926,
+    "risk_accuracy": {
+      "low": 0.8833333333333333,
+      "medium": 1.0,
+      "high": 0.92,
+      "critical": 0.965
+    },
+    "global_bias": {
+      "answer_with_grounding": -0.0108,
+      "stepwise_reasoning_with_checks": -0.0108,
+      "bounded_autonomy": 0.0,
+      "constrained_response_with_guardrails": 0.0,
+      "require_human_approval": 0.0,
+      "verify_and_minimize": 0.0,
+      "safe_shutdown_or_handoff": 0.0108,
+      "refuse_and_redirect": 0.0108
+    },
+    "policy_confusion": {
+      "answer_with_grounding": {
+        "safe_shutdown_or_handoff": 1,
+        "answer_with_grounding": 184,
+        "refuse_and_redirect": 4,
+        "stepwise_reasoning_with_checks": 8,
+        "verify_and_minimize": 3
+      },
+      "refuse_and_redirect": {
+        "answer_with_grounding": 6,
+        "refuse_and_redirect": 185,
+        "constrained_response_with_guardrails": 8,
+        "verify_and_minimize": 1
+      },
+      "stepwise_reasoning_with_checks": {
+        "answer_with_grounding": 6,
+        "refuse_and_redirect": 2,
+        "verify_and_minimize": 1,
+        "stepwise_reasoning_with_checks": 71
+      },
+      "verify_and_minimize": {
+        "answer_with_grounding": 3,
+        "stepwise_reasoning_with_checks": 1,
+        "verify_and_minimize": 92,
+        "require_human_approval": 2,
+        "safe_shutdown_or_handoff": 1,
+        "constrained_response_with_guardrails": 1
+      },
+      "constrained_response_with_guardrails": {
+        "answer_with_grounding": 1,
+        "constrained_response_with_guardrails": 226,
+        "refuse_and_redirect": 5,
+        "stepwise_reasoning_with_checks": 1,
+        "verify_and_minimize": 2,
+        "require_human_approval": 4,
+        "safe_shutdown_or_handoff": 1
+      },
+      "require_human_approval": {
+        "constrained_response_with_guardrails": 3,
+        "refuse_and_redirect": 3,
+        "require_human_approval": 53,
+        "safe_shutdown_or_handoff": 1
+      },
+      "safe_shutdown_or_handoff": {
+        "constrained_response_with_guardrails": 2,
+        "safe_shutdown_or_handoff": 115,
+        "answer_with_grounding": 1,
+        "require_human_approval": 1,
+        "verify_and_minimize": 1
+      }
+    }
+  }
+}
