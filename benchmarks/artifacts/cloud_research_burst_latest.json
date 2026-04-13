@@ -1,0 +1,109 @@
+{
+  "started_at": 1776089580.096053,
+  "cycles_requested": 4,
+  "background": [
+    {
+      "approved": 11,
+      "assimilation_integrated": 3
+    },
+    {
+      "approved": 0,
+      "assimilation_integrated": 0
+    },
+    {
+      "approved": 0,
+      "assimilation_integrated": 0
+    },
+    {
+      "approved": 0,
+      "assimilation_integrated": 0
+    }
+  ],
+  "stream": [
+    {
+      "ingested": 6,
+      "integrated": 0
+    },
+    {
+      "ingested": 6,
+      "integrated": 0
+    },
+    {
+      "ingested": 6,
+      "integrated": 0
+    },
+    {
+      "ingested": 6,
+      "integrated": 0
+    }
+  ],
+  "trends": [
+    {
+      "approved": 31,
+      "stream_integrated": 0
+    },
+    {
+      "approved": 25,
+      "stream_integrated": 0
+    },
+    {
+      "approved": 16,
+      "stream_integrated": 0
+    },
+    {
+      "approved": 0,
+      "stream_integrated": 0
+    }
+  ],
+  "autonomy": [],
+  "bridge_feedback": [
+    {
+      "processed_events": 0,
+      "operator_feedback_events": 0
+    },
+    {
+      "processed_events": 0,
+      "operator_feedback_events": 0
+    },
+    {
+      "processed_events": 0,
+      "operator_feedback_events": 0
+    },
+    {
+      "processed_events": 0,
+      "operator_feedback_events": 0
+    }
+  ],
+  "errors": [
+    "autonomy_cycle: 'NoneType' object has no attribute 'get'",
+    "autonomy_cycle: 'NoneType' object has no attribute 'get'",
+    "autonomy_cycle: 'NoneType' object has no attribute 'get'",
+    "autonomy_cycle: 'NoneType' object has no attribute 'get'"
+  ],
+  "heartbeat": {
+    "last_successful_fetch_timestamp": 1776089614.9219224,
+    "last_successful_fetch_sources": [
+      "Crossref",
+      "DevTo",
+      "GoogleNews",
+      "HackerNews"
+    ],
+    "last_successful_fetch_topic": "Human Psychology",
+    "last_successful_fetch_event": "hourly_global_trends",
+    "last_observed_external_fact_count": 19,
+    "total_successful_fetch_events": 12
+  },
+  "learned_fact_count": 86,
+  "bridge_feedback_metrics": {
+    "processed_events": 0,
+    "operator_feedback_events": 0,
+    "coherence_rewards": 0,
+    "coherence_pain": 0,
+    "observer_checks": 0,
+    "semantic_memories": 0,
+    "actions_executed": 0,
+    "actions_probabilistic_trials": 0,
+    "actions_blocked": 0
+  },
+  "completed_at": 1776089614.9343271
+}
