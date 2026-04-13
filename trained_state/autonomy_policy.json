@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": 1776078558.1943812,
+  "generated_at": 1776079045.5624418,
   "identity": "AntahkaranaKernel_Live",
   "self_model_state": {
     "identity": "AntahkaranaKernel_Live",
@@ -33,6 +33,7 @@
   },
   "policy_weights": {
     "recommended_curriculum": "adversarial",
+    "learning_rate": 0.054,
     "recommended_learning_rate": 0.054,
     "recommended_memory_sample_rate": 100,
     "recommended_batch_size": 5000,

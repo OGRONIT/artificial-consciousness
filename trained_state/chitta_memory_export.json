@@ -1,12 +1,16 @@
 {
   "version": 1,
-  "generated_at": 1776078558.1886706,
+  "generated_at": 1776079045.546685,
   "source_memory_count": 1451,
   "loaded_memory_count": 250,
   "memory_statistics": {
     "total_memories": 1451,
     "average_learning_value": 0.0006891798759476223,
+    "avg_learning_value": 0.0006891798759476223,
     "average_success_score": 0.9993108201240524,
+    "avg_success_score": 0.9993108201240524,
+    "conflict_count": 1,
+    "conflict_ratio": 0.0006891798759476223,
     "highest_learning_value": [
       {
         "memory_id": "a9b68dd78c2d5cdb",

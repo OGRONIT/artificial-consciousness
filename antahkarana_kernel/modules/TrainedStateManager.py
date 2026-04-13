@@ -143,6 +143,7 @@ class TrainedStateManager:
     def _build_memory_export(self, memory_source: Any, memory_top_n: int) -> Dict[str, Any]:
         memories: List[Dict[str, Any]] = []
         source_stats: Dict[str, Any] = {}
+        computed_stats: Dict[str, Any] = {}
         if memory_source is not None:
             try:
                 source_stats = memory_source.memory_statistics()
@@ -176,12 +177,40 @@ class TrainedStateManager:
 
             memories = sorted(candidate_items, key=lambda item: item.get("learning_value", 0.0), reverse=True)[: max(1, memory_top_n)]
 
+            total = len(candidate_items)
+            avg_learning = (sum(item.get("learning_value", 0.0) for item in candidate_items) / total) if total else 0.0
+            avg_success = (sum(item.get("success_score", 0.0) for item in candidate_items) / total) if total else 0.0
+            conflict_count = sum(1 for item in candidate_items if str(item.get("outcome", "")).lower() == "conflict")
+            conflict_ratio = (conflict_count / total) if total else 0.0
+            computed_stats = {
+                "total_memories": total,
+                "average_learning_value": avg_learning,
+                "avg_learning_value": avg_learning,
+                "average_success_score": avg_success,
+                "avg_success_score": avg_success,
+                "conflict_count": conflict_count,
+                "conflict_ratio": conflict_ratio,
+            }
+
+        merged_stats = dict(source_stats)
+        merged_stats.update(computed_stats)
+        if "avg_learning_value" not in merged_stats and "average_learning_value" in merged_stats:
+            merged_stats["avg_learning_value"] = merged_stats.get("average_learning_value")
+        if "avg_success_score" not in merged_stats and "average_success_score" in merged_stats:
+            merged_stats["avg_success_score"] = merged_stats.get("average_success_score")
+        if "conflict_ratio" not in merged_stats:
+            outcome_distribution = merged_stats.get("outcome_distribution", {}) if isinstance(merged_stats, dict) else {}
+            if isinstance(outcome_distribution, dict):
+                total_od = sum(float(v) for v in outcome_distribution.values())
+                conflict_od = float(outcome_distribution.get("conflict", 0.0))
+                merged_stats["conflict_ratio"] = (conflict_od / total_od) if total_od > 0 else 0.0
+
         return {
             "version": 1,
             "generated_at": time.time(),
             "source_memory_count": source_stats.get("total_memories"),
             "loaded_memory_count": len(memories),
-            "memory_statistics": source_stats,
+            "memory_statistics": merged_stats,
             "memories": memories,
         }
 
@@ -215,6 +244,7 @@ class TrainedStateManager:
             "growth_to_entropy_ratio": self_model_state.get("growth_to_entropy_ratio", 0.0),
             "command_relationship_mode": self_model_state.get("command_relationship_mode", "primary_command"),
             "recommended_curriculum": (report or {}).get("curriculum", {}).get("mode"),
+            "learning_rate": source_policy.get("plan", {}).get("recommended_next_parameters", {}).get("learning_rate"),
             "recommended_learning_rate": source_policy.get("plan", {}).get("recommended_next_parameters", {}).get("learning_rate"),
             "recommended_memory_sample_rate": source_policy.get("plan", {}).get("recommended_next_parameters", {}).get("memory_sample_rate"),
             "recommended_batch_size": source_policy.get("plan", {}).get("recommended_next_parameters", {}).get("batch_size"),

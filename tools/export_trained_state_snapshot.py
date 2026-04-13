@@ -75,6 +75,13 @@ def _generate_chitta_export() -> dict:
         )
 
     normalized.sort(key=lambda item: item.get("learning_value", 0.0), reverse=True)
+
+    total = len(records)
+    avg_learning = (sum(item.get("learning_value", 0.0) for item in records) / total) if total else 0.0
+    avg_success = (sum(item.get("success_score", 0.0) for item in records) / total) if total else 0.0
+    conflict_count = sum(1 for item in records if str(item.get("outcome", "")).lower() == "conflict")
+    conflict_ratio = (conflict_count / total) if total else 0.0
+
     return {
         "version": 1,
         "generated_at": time.time(),
@@ -82,8 +89,12 @@ def _generate_chitta_export() -> dict:
         "loaded_memory_count": min(250, len(normalized)),
         "memory_statistics": {
             "total_memories": len(records),
-            "average_learning_value": (sum(item.get("learning_value", 0.0) for item in records) / len(records)) if records else 0.0,
-            "average_success_score": (sum(item.get("success_score", 0.0) for item in records) / len(records)) if records else 0.0,
+            "average_learning_value": avg_learning,
+            "avg_learning_value": avg_learning,
+            "average_success_score": avg_success,
+            "avg_success_score": avg_success,
+            "conflict_count": conflict_count,
+            "conflict_ratio": conflict_ratio,
             "highest_learning_value": normalized[:5],
         },
         "memories": normalized[:250],
@@ -127,6 +138,8 @@ def _generate_autonomy_export() -> dict:
         "distribution_strategy": live_snapshot.get("body_status", {}).get("distribution_strategy", {"active": False, "channels": []}) if isinstance(live_snapshot.get("body_status"), dict) else {"active": False, "channels": []},
     }
 
+    recommended_lr = policy_report.get("self_upgrade", {}).get("recommended_next_parameters", {}).get("learning_rate")
+
     return {
         "version": 1,
         "generated_at": time.time(),
@@ -134,7 +147,8 @@ def _generate_autonomy_export() -> dict:
         "self_model_state": self_model_state,
         "policy_weights": {
             "recommended_curriculum": "adversarial",
-            "recommended_learning_rate": policy_report.get("self_upgrade", {}).get("recommended_next_parameters", {}).get("learning_rate"),
+            "learning_rate": recommended_lr,
+            "recommended_learning_rate": recommended_lr,
             "recommended_memory_sample_rate": policy_report.get("self_upgrade", {}).get("recommended_next_parameters", {}).get("memory_sample_rate"),
             "recommended_batch_size": policy_report.get("self_upgrade", {}).get("recommended_next_parameters", {}).get("batch_size"),
             "current_training_accuracy": policy_report.get("trainer", {}).get("accuracy"),
