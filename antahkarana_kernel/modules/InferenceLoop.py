@@ -129,7 +129,7 @@ class ManasBuddhi:
     - Recalculation: Adjust if contradictions found
     """
 
-    def __init__(self, max_dream_simulations: int = 6, max_recalculations: int = 4, idle_threshold_seconds: float = 300.0):
+    def __init__(self, max_dream_simulations: int = 6, max_recalculations: int = 3, idle_threshold_seconds: float = 300.0):
         """
         Initialize the inference and logic loop.
         
@@ -230,7 +230,7 @@ class ManasBuddhi:
         self.last_dynamic_heuristics_update = 0.0
         self.dynamic_heuristics_interval_seconds = 60.0
         self.last_recursive_suggestion_timestamp = 0.0
-        self.recursive_suggestion_interval_seconds = 1800.0
+        self.recursive_suggestion_interval_seconds = 3600.0
         self.last_paramatman_cycle_timestamp = 0.0
         self.paramatman_cycle_interval_seconds = 86400.0
         self.last_self_authoring_timestamp = 0.0

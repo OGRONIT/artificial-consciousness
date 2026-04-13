@@ -1,23 +1,23 @@
 {
   "version": 1,
-  "generated_at": 1776083155.6321793,
-  "source_memory_count": 263,
-  "loaded_memory_count": 263,
+  "generated_at": 1776093601.8440957,
+  "source_memory_count": 269,
+  "loaded_memory_count": 269,
   "memory_statistics": {
-    "total_memories": 263,
-    "max_local_memories": 290983,
+    "total_memories": 269,
+    "max_local_memories": 290976,
     "memory_clusters": 0,
     "contradictions_detected": 0,
-    "external_knowledge_facts": 84,
+    "external_knowledge_facts": 78,
     "external_knowledge_clusters": 0,
     "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
-    "average_external_verification_score": 0.7825219928034273,
+    "average_external_verification_score": 0.974948717948717,
     "outcome_distribution": {
       "conflict": 250,
-      "success": 13
+      "success": 19
     },
-    "average_success_score": 0.03928136882129278,
-    "average_learning_value": 0.9607186311787071,
+    "average_success_score": 0.056850836431226764,
+    "average_learning_value": 0.9431491635687731,
     "emotional_trend": 0.0,
     "most_accessed": [
       {
@@ -78,10 +78,10 @@
         "outcome": "conflict"
       }
     ],
-    "avg_learning_value": 0.9607186311787071,
-    "avg_success_score": 0.03928136882129278,
+    "avg_learning_value": 0.9431491635687731,
+    "avg_success_score": 0.056850836431226764,
     "conflict_count": 250,
-    "conflict_ratio": 0.9505703422053232
+    "conflict_ratio": 0.929368029739777
   },
   "memories": [
     {
@@ -6423,6 +6423,28 @@
       "last_accessed": 1776082527.624385
     },
     {
+      "memory_id": "dcc7c1cf33813d2f",
+      "interaction_id": "21d7bd60",
+      "timestamp": 1776091482.567079,
+      "content": "Extract and test this knowledge for actionable value. Topic=Human Psychology; Title=Designing AI Systems that Augment Human Performed vs. Demonstrated Critical Thinking; Summary=The recent rapid advancement of LLM-based AI systems has accelerated our search and production of information. While the advantages brought by these systems seemingly improve the performance or efficiency of human activities, they do not necessarily enhance human capabilities. Re",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.661875,
+      "self_model_coherence_before": 0.18476799999999996,
+      "self_model_coherence_after": 0.18476799999999996,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.338125,
+      "access_count": 1,
+      "last_accessed": 1776091482.567079
+    },
+    {
       "memory_id": "1a0947c47d62a21c",
       "interaction_id": "358001f9",
       "timestamp": 1776081683.9629226,
@@ -6489,6 +6511,28 @@
       "last_accessed": 1776081950.0048358
     },
     {
+      "memory_id": "7a9be9fc6ef3d5bb",
+      "interaction_id": "524121cb",
+      "timestamp": 1776091482.5540597,
+      "content": "Extract and test this knowledge for actionable value. Topic=Human Psychology; Title=Needs-aware Artificial Intelligence: AI that 'serves [human] needs'; Summary=By defining the current limits (and thereby the frontiers), many boundaries are shaping, and will continue to shape, the future of Artificial Intelligence (AI). We push on these boundaries in order to make further progress into what were yesterday's frontiers. They are both pliab",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.7,
+      "self_model_coherence_before": 0.19706799999999997,
+      "self_model_coherence_after": 0.19706799999999997,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.30000000000000004,
+      "access_count": 1,
+      "last_accessed": 1776091482.5540597
+    },
+    {
       "memory_id": "f24b7d941d780bcb",
       "interaction_id": "54e56d33",
       "timestamp": 1776082143.5484025,
@@ -6531,6 +6575,72 @@
       "learning_value": 0.19999999999999996,
       "access_count": 1,
       "last_accessed": 1776082527.617381
+    },
+    {
+      "memory_id": "418df18983a84d5d",
+      "interaction_id": "e80a3944",
+      "timestamp": 1776091613.3979933,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=Brainish: Formalizing A Multimodal Language for Intelligence and Consciousness; Summary=Having a rich multimodal inner language is an important component of human intelligence that enables several necessary core cognitive functions such as multimodal prediction, translation, and generation. Building upon the Conscious Turing Machine (CTM), a machine model for consci",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.8,
+      "self_model_coherence_before": 0.16706799999999994,
+      "self_model_coherence_after": 0.16706799999999994,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.19999999999999996,
+      "access_count": 1,
+      "last_accessed": 1776091613.3979933
+    },
+    {
+      "memory_id": "cbda4de84e8b23a3",
+      "interaction_id": "c55d5bba",
+      "timestamp": 1776091482.5794811,
+      "content": "Extract and test this knowledge for actionable value. Topic=Human Psychology; Title=Advanced Data Protection Control (ADPC): An Interdisciplinary Overview; Summary=The Advanced Data Protection Control (ADPC) is a technical specification - and a set of sociotechnical mechanisms surrounding it - that can change the current practice of Internet-based personal data protection and consenting by providing novel and standardized means for the comm",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.9,
+      "self_model_coherence_before": 0.15776799999999996,
+      "self_model_coherence_after": 0.15776799999999996,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.09999999999999998,
+      "access_count": 1,
+      "last_accessed": 1776091482.5794811
+    },
+    {
+      "memory_id": "c9d0f25acfc3ba62",
+      "interaction_id": "53d2393e",
+      "timestamp": 1776091613.3899958,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=On the evolution of phenomenal consciousness; Summary=A number of concepts are included in the term 'consciousness'. We choose to concentrate here on phenomenal consciousness, the process through which we are able to experience aspects of our environment or of our physical state. We probably share this aspect of consciousness with m",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.9,
+      "self_model_coherence_before": 0.16516799999999995,
+      "self_model_coherence_after": 0.16516799999999995,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.09999999999999998,
+      "access_count": 1,
+      "last_accessed": 1776091613.3899958
     },
     {
       "memory_id": "ed64d39d3e5641a5",
@@ -6619,6 +6729,28 @@
       "learning_value": 0.0,
       "access_count": 1,
       "last_accessed": 1776083155.6016617
+    },
+    {
+      "memory_id": "f5c8d5ab1a1b5df9",
+      "interaction_id": "00b29797",
+      "timestamp": 1776091613.3838716,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=Complex-Dynamic Origin of Consciousness and the Critical Choice of Sustainability Transition; Summary=A quite general interaction process of a multi-component system is analysed by the extended effective potential method liberated from usual limitations of perturbation theory or integrable model. The obtained causally complete solution of the many-body problem reveals the phenome",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 0.15966799999999995,
+      "self_model_coherence_after": 0.15966799999999995,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776091613.3838716
     }
   ]
 }

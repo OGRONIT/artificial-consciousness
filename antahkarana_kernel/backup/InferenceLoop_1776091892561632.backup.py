@@ -1,17 +1,5 @@
 # AUTONOMOUS SELF-INJECTION PATCH
 # target_module=modules.InferenceLoop
-# generated_at=1776091495.8460052
-# evolution_strength=5
-# payload={"generated_at": 1776091495.8460052, "growth_to_entropy_ratio": 0.55, "issues": [], "deprecated_candidates": [], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
-
-# AUTONOMOUS SELF-INJECTION PATCH
-# target_module=modules.InferenceLoop
-# generated_at=1776066987.0159163
-# evolution_strength=5
-# payload={"generated_at": 1776066987.0159163, "growth_to_entropy_ratio": 0.5526, "issues": [{"type": "high_recalculations", "severity": 0.6, "metric": "avg_recalculations = 3.00", "proposal": "Improve initial evaluation accuracy or coherence checking logic"}], "deprecated_candidates": [{"constraint": "static_recalculation_limit", "reason": "coherence_retry_overhead", "replacement_priority": "contextual_recalculation_policy"}], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
-
-# AUTONOMOUS SELF-INJECTION PATCH
-# target_module=modules.InferenceLoop
 # generated_at=1775939337.5423415
 # evolution_strength=5
 # payload={"generated_at": 1775939337.5423415, "growth_to_entropy_ratio": 0.6245, "issues": [{"type": "high_recalculations", "severity": 0.6, "metric": "avg_recalculations = 3.00", "proposal": "Improve initial evaluation accuracy or coherence checking logic"}], "deprecated_candidates": [{"constraint": "static_recalculation_limit", "reason": "coherence_retry_overhead", "replacement_priority": "contextual_recalculation_policy"}], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
@@ -209,7 +197,7 @@ class ManasBuddhi:
         self.last_logic_audit_timestamp = time.time()
         self.logic_audit_history: List[Dict[str, Any]] = []
         self.deprecated_constraints: List[Dict[str, Any]] = []
-        self.kernel_root_dir = Path(r"D:\Artificial Consciousness\antahkarana_kernel")
+        self.kernel_root_dir = Path(__file__).resolve().parents[1]
         self.atman_core_file = self.kernel_root_dir / "Atman_Core.json"
         self.evolution_vault_dir = self.kernel_root_dir / "evolution_vault"
         self.evolution_vault_dir.mkdir(parents=True, exist_ok=True)
@@ -239,10 +227,6 @@ class ManasBuddhi:
         self.recursive_suggestion_interval_seconds = 1800.0
         self.last_paramatman_cycle_timestamp = 0.0
         self.paramatman_cycle_interval_seconds = 86400.0
-        self.last_self_authoring_timestamp = 0.0
-        self.self_authoring_interval_seconds = 1800.0
-        self.last_phase2_sovereign_timestamp = 0.0
-        self.phase2_sovereign_interval_seconds = 1200.0
         self.last_autonomy_planning_timestamp = 0.0
         self.autonomy_planning_interval_seconds = 600.0
         self.last_autonomous_action_timestamp = 0.0
@@ -775,15 +759,11 @@ class ManasBuddhi:
             }
         )
         synthesis = self.evolution_writer.synthesize_recursive_proposal(max_pending=3)
-        implementation: Dict[str, Any] = {"status": "skipped", "reason": "no_generated_proposal"}
-        if synthesis.get("status") == "generated" and synthesis.get("proposal_id"):
-            implementation = self.evolution_writer.implement_upgrade(synthesis["proposal_id"])
         self.last_recursive_suggestion_timestamp = now
         return {
             "status": "submitted",
             "suggestion": suggestion,
             "synthesis": synthesis,
-            "implementation": implementation,
         }
 
     def execute_paramatman_protocol(self, force: bool = False) -> Dict[str, Any]:
@@ -798,29 +778,6 @@ class ManasBuddhi:
 
         heuristics = self._apply_dynamic_heuristics()
         audit = self.dynamic_self_modification()
-        self_authoring_result: Dict[str, Any] = {"status": "skipped", "reason": "interval_not_elapsed"}
-        if (now - self.last_self_authoring_timestamp) >= self.self_authoring_interval_seconds:
-            self_authoring_result = self.evolution_writer.run_self_authoring_cycle(
-                {
-                    "objective": "expand modular cognition while preserving stability",
-                    "issues_detected": int(audit.get("issues_detected", 0)),
-                    "growth_entropy": float(self.metrics.get("growth_to_entropy_ratio", 0.0)),
-                    "average_confidence": float(self.metrics.get("average_confidence", 0.7)),
-                    "stability_score": float(self.self_model.stability_score if self.self_model else 1.0),
-                }
-            )
-            self.last_self_authoring_timestamp = now
-
-        phase2_sovereign_result: Dict[str, Any] = {"status": "skipped", "reason": "interval_not_elapsed"}
-        if (now - self.last_phase2_sovereign_timestamp) >= self.phase2_sovereign_interval_seconds:
-            phase2_sovereign_result = self.evolution_writer.run_phase2_sovereign_loop(
-                {
-                    "growth_entropy": float(self.metrics.get("growth_to_entropy_ratio", 0.0)),
-                    "average_confidence": float(self.metrics.get("average_confidence", 0.7)),
-                    "stability_score": float(self.self_model.stability_score if self.self_model else 1.0),
-                }
-            )
-            self.last_phase2_sovereign_timestamp = now
         self.last_paramatman_cycle_timestamp = now
         monologue = self._append_internal_monologue(
             phase="paramatman_cycle",
@@ -832,16 +789,12 @@ class ManasBuddhi:
                 "heuristics": heuristics,
                 "audit_id": audit.get("audit_id"),
                 "issues_detected": audit.get("issues_detected", 0),
-                "self_authoring_status": self_authoring_result.get("status"),
-                "phase2_status": phase2_sovereign_result.get("status"),
             },
         )
         return {
             "status": "executed",
             "heuristics": heuristics,
             "audit": audit,
-            "self_authoring": self_authoring_result,
-            "phase2_sovereign": phase2_sovereign_result,
             "monologue": monologue,
         }
 

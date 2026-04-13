@@ -1,0 +1,12 @@
+{
+  "proposal_id": "UPG_874232",
+  "created_at": "2026-04-13T20:45:14.874232",
+  "status": "implemented",
+  "issue_type": "recursive_integration",
+  "severity": "high",
+  "description": "Recursive integration synthesized from 1 pending suggestions",
+  "fix": "Generate adaptive code edit set for autonomous throughput growth",
+  "kernel_stability_at_creation": 0.3428079999999997,
+  "backup_files": [],
+  "implemented_at": 1776093314.8877597
+}

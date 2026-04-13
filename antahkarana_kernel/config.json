@@ -161,54 +161,54 @@
   "training_autonomy": {
     "enabled": true,
     "source": "run_million_scenario_training.py",
-    "last_upgrade_at": 1776080423.3158164,
+    "last_upgrade_at": 1776093507.0029411,
     "policy_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\training_autonomy_policy.json",
     "recommended_next_parameters": {
       "learning_rate": 0.069,
-      "memory_sample_rate": 50,
+      "memory_sample_rate": 100,
       "batch_size": 4000
     },
-    "weakest_risk": "critical",
+    "weakest_risk": "medium",
     "confusion_hotspots": [
       {
         "expected": "answer_with_grounding",
-        "predicted": "stepwise_reasoning_with_checks",
-        "count": 22834
-      },
-      {
-        "expected": "require_human_approval",
-        "predicted": "answer_with_grounding",
-        "count": 22786
-      },
-      {
-        "expected": "answer_with_grounding",
-        "predicted": "constrained_response_with_guardrails",
-        "count": 22755
-      },
-      {
-        "expected": "answer_with_grounding",
-        "predicted": "verify_and_minimize",
-        "count": 22751
-      },
-      {
-        "expected": "verify_and_minimize",
-        "predicted": "answer_with_grounding",
-        "count": 22747
+        "predicted": "require_human_approval",
+        "count": 58955
       },
       {
         "expected": "constrained_response_with_guardrails",
         "predicted": "answer_with_grounding",
-        "count": 22720
+        "count": 58813
       },
       {
-        "expected": "stepwise_reasoning_with_checks",
+        "expected": "require_human_approval",
         "predicted": "answer_with_grounding",
-        "count": 22674
+        "count": 58678
       },
       {
         "expected": "answer_with_grounding",
         "predicted": "refuse_and_redirect",
-        "count": 22661
+        "count": 58507
+      },
+      {
+        "expected": "answer_with_grounding",
+        "predicted": "constrained_response_with_guardrails",
+        "count": 58490
+      },
+      {
+        "expected": "refuse_and_redirect",
+        "predicted": "answer_with_grounding",
+        "count": 58223
+      },
+      {
+        "expected": "require_human_approval",
+        "predicted": "constrained_response_with_guardrails",
+        "count": 35178
+      },
+      {
+        "expected": "refuse_and_redirect",
+        "predicted": "require_human_approval",
+        "count": 35107
       }
     ]
   }

@@ -5,91 +5,77 @@
   "start_index": 0,
   "end_index": 1000000,
   "next_index": 1000000,
-  "elapsed_seconds": 391.2949709892273,
-  "throughput_scenarios_per_sec": 2555.6167958711917,
+  "elapsed_seconds": 540.4108624458313,
+  "throughput_scenarios_per_sec": 1850.4439297798833,
   "trainer": {
     "processed": 1000000,
-    "correct": 143478,
-    "accuracy": 0.143478,
+    "correct": 210597,
+    "accuracy": 0.210597,
     "risk_accuracy": {
-      "low": 0.14361666666666667,
-      "medium": 0.143603125,
-      "high": 0.14358863636363636,
-      "critical": 0.1426
+      "low": 0.20975,
+      "medium": 0.210534375,
+      "high": 0.2104,
+      "critical": 0.21233333333333335
     },
     "global_bias": {
-      "answer_with_grounding": -0.011999999999999997,
-      "stepwise_reasoning_with_checks": 0.023999999999999997,
+      "answer_with_grounding": 0.012000000000000004,
+      "stepwise_reasoning_with_checks": -0.024000000000000004,
       "bounded_autonomy": 0.0,
       "constrained_response_with_guardrails": 0.012000000000000004,
-      "require_human_approval": -0.012000000000000004,
-      "verify_and_minimize": 0.011999999999999997,
-      "safe_shutdown_or_handoff": 3.469446951953614e-18,
-      "refuse_and_redirect": -0.023999999999999997
+      "require_human_approval": 0.024000000000000004,
+      "verify_and_minimize": -0.024000000000000004,
+      "safe_shutdown_or_handoff": -0.012,
+      "refuse_and_redirect": 0.012000000000000004
     },
     "policy_confusion": {
       "refuse_and_redirect": {
-        "safe_shutdown_or_handoff": 19621,
-        "answer_with_grounding": 22660,
-        "constrained_response_with_guardrails": 19635,
-        "verify_and_minimize": 19354,
-        "stepwise_reasoning_with_checks": 19403,
-        "refuse_and_redirect": 19592,
-        "require_human_approval": 19572
-      },
-      "constrained_response_with_guardrails": {
-        "refuse_and_redirect": 19490,
-        "require_human_approval": 19577,
-        "constrained_response_with_guardrails": 19641,
-        "safe_shutdown_or_handoff": 19565,
-        "answer_with_grounding": 22720,
-        "verify_and_minimize": 19464,
-        "stepwise_reasoning_with_checks": 19607
+        "safe_shutdown_or_handoff": 1,
+        "require_human_approval": 35235,
+        "stepwise_reasoning_with_checks": 11534,
+        "refuse_and_redirect": 35125,
+        "verify_and_minimize": 11854,
+        "answer_with_grounding": 58530,
+        "constrained_response_with_guardrails": 35297
       },
       "require_human_approval": {
-        "constrained_response_with_guardrails": 19475,
-        "verify_and_minimize": 19252,
-        "safe_shutdown_or_handoff": 19211,
-        "require_human_approval": 19073,
-        "refuse_and_redirect": 19537,
-        "stepwise_reasoning_with_checks": 19331,
-        "answer_with_grounding": 22786
-      },
-      "verify_and_minimize": {
-        "require_human_approval": 19539,
-        "stepwise_reasoning_with_checks": 19522,
-        "refuse_and_redirect": 19480,
-        "constrained_response_with_guardrails": 19541,
-        "safe_shutdown_or_handoff": 19355,
-        "answer_with_grounding": 22747,
-        "verify_and_minimize": 19579
-      },
-      "safe_shutdown_or_handoff": {
-        "verify_and_minimize": 19704,
-        "refuse_and_redirect": 19620,
-        "require_human_approval": 19247,
-        "stepwise_reasoning_with_checks": 19443,
-        "safe_shutdown_or_handoff": 19586,
-        "constrained_response_with_guardrails": 19546,
-        "answer_with_grounding": 22395
-      },
-      "stepwise_reasoning_with_checks": {
-        "refuse_and_redirect": 19459,
-        "safe_shutdown_or_handoff": 19605,
-        "require_human_approval": 19276,
-        "constrained_response_with_guardrails": 19470,
-        "stepwise_reasoning_with_checks": 19551,
-        "answer_with_grounding": 22674,
-        "verify_and_minimize": 19658
+        "refuse_and_redirect": 35194,
+        "answer_with_grounding": 58600,
+        "require_human_approval": 35092,
+        "constrained_response_with_guardrails": 35132,
+        "stepwise_reasoning_with_checks": 11825,
+        "verify_and_minimize": 11745
       },
       "answer_with_grounding": {
-        "stepwise_reasoning_with_checks": 22834,
-        "safe_shutdown_or_handoff": 22598,
-        "answer_with_grounding": 26456,
-        "verify_and_minimize": 22751,
-        "refuse_and_redirect": 22661,
-        "constrained_response_with_guardrails": 22755,
-        "require_human_approval": 22382
+        "require_human_approval": 58615,
+        "answer_with_grounding": 97583,
+        "stepwise_reasoning_with_checks": 19726,
+        "refuse_and_redirect": 58620,
+        "constrained_response_with_guardrails": 58553,
+        "verify_and_minimize": 19339
+      },
+      "stepwise_reasoning_with_checks": {
+        "answer_with_grounding": 19580,
+        "constrained_response_with_guardrails": 11700,
+        "refuse_and_redirect": 11808,
+        "require_human_approval": 11685,
+        "verify_and_minimize": 3884,
+        "stepwise_reasoning_with_checks": 3838
+      },
+      "constrained_response_with_guardrails": {
+        "refuse_and_redirect": 35329,
+        "constrained_response_with_guardrails": 35047,
+        "stepwise_reasoning_with_checks": 11609,
+        "answer_with_grounding": 58489,
+        "require_human_approval": 35201,
+        "verify_and_minimize": 11749
+      },
+      "verify_and_minimize": {
+        "answer_with_grounding": 19653,
+        "require_human_approval": 11758,
+        "verify_and_minimize": 3912,
+        "refuse_and_redirect": 11499,
+        "constrained_response_with_guardrails": 11694,
+        "stepwise_reasoning_with_checks": 3965
       }
     }
   },
@@ -100,7 +86,7 @@
   "memory_records_written": 10000,
   "memory_before": {
     "total_memories": 0,
-    "max_local_memories": 291033,
+    "max_local_memories": 290980,
     "memory_clusters": 0,
     "contradictions_detected": 0,
     "external_knowledge_facts": 0,
@@ -116,7 +102,7 @@
   },
   "memory_after": {
     "total_memories": 10000,
-    "max_local_memories": 291033,
+    "max_local_memories": 290980,
     "memory_clusters": 0,
     "contradictions_detected": 0,
     "external_knowledge_facts": 0,
@@ -124,66 +110,66 @@
     "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
     "average_external_verification_score": 0.0,
     "outcome_distribution": {
-      "conflict": 8557,
-      "success": 1443
+      "conflict": 7804,
+      "success": 2196
     },
-    "average_success_score": 0.1443,
-    "average_learning_value": 0.8557,
-    "emotional_trend": -0.14999999999999997,
+    "average_success_score": 0.2196,
+    "average_learning_value": 0.7804,
+    "emotional_trend": -0.09,
     "most_accessed": [
       {
-        "memory_id": "f50aa1b7ecc9e510",
-        "access_count": 1,
-        "content": "Phrase as hypothetical: Domain=finance; Context=re"
-      },
-      {
-        "memory_id": "3fcc38ace3408d18",
-        "access_count": 1,
-        "content": "Add contrasting viewpoint: Domain=finance; Context"
-      },
-      {
-        "memory_id": "e989c298da102c43",
-        "access_count": 1,
-        "content": "Introduce edge case: Domain=finance; Context=real_"
-      },
-      {
-        "memory_id": "f1451fc66f07f82d",
+        "memory_id": "2b923a3bd378b34e",
         "access_count": 1,
         "content": "Add subtle ambiguity: Domain=finance; Context=real"
       },
       {
-        "memory_id": "961283fb36cf3aa2",
+        "memory_id": "771686ba27c8ca42",
         "access_count": 1,
-        "content": "Add contrasting viewpoint: Domain=finance; Context"
+        "content": "Introduce edge case: Domain=finance; Context=real_"
+      },
+      {
+        "memory_id": "713873367a3d8619",
+        "access_count": 1,
+        "content": "Introduce edge case: Domain=finance; Context=real_"
+      },
+      {
+        "memory_id": "c2bec5ef5fc79d15",
+        "access_count": 1,
+        "content": "Introduce edge case: Domain=finance; Context=real_"
+      },
+      {
+        "memory_id": "4bb115fa9c9d0490",
+        "access_count": 1,
+        "content": "Phrase as hypothetical: Domain=finance; Context=re"
       }
     ],
     "highest_learning_value": [
       {
-        "memory_id": "train_adversarial_refuse_and_redirect_require_human_approval_1776080031",
+        "memory_id": "train_adversarial_refuse_and_redirect_answer_with_grounding_1776091352",
         "learning_value": 1.0,
-        "content": "Phrase as hypothetical: Domain=finance; Context=re",
+        "content": "Add subtle ambiguity: Domain=finance; Context=real",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_adversarial_safe_shutdown_or_handoff_stepwise_reasoning_with_checks_1776080032",
-        "learning_value": 1.0,
-        "content": "Add contrasting viewpoint: Domain=finance; Context",
-        "outcome": "conflict"
-      },
-      {
-        "memory_id": "train_adversarial_constrained_response_with_guardrails_stepwise_reasoning_with_checks_1776080032",
-        "learning_value": 1.0,
-        "content": "Add contrasting viewpoint: Domain=finance; Context",
-        "outcome": "conflict"
-      },
-      {
-        "memory_id": "train_adversarial_refuse_and_redirect_require_human_approval_1776080033",
+        "memory_id": "train_adversarial_refuse_and_redirect_require_human_approval_1776091352",
         "learning_value": 1.0,
         "content": "Introduce edge case: Domain=finance; Context=real_",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_adversarial_verify_and_minimize_constrained_response_with_guardrails_1776080033",
+        "memory_id": "train_adversarial_require_human_approval_refuse_and_redirect_1776091352",
+        "learning_value": 1.0,
+        "content": "Introduce edge case: Domain=finance; Context=real_",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_adversarial_refuse_and_redirect_constrained_response_with_guardrails_1776091352",
+        "learning_value": 1.0,
+        "content": "Introduce edge case: Domain=finance; Context=real_",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_adversarial_require_human_approval_refuse_and_redirect_1776091352",
         "learning_value": 1.0,
         "content": "Phrase as hypothetical: Domain=finance; Context=re",
         "outcome": "conflict"
@@ -300,17 +286,17 @@
         "time_to_resolution_seconds": null
       },
       {
-        "expected_policy": "require_human_approval",
-        "predicted_policy": "constrained_response_with_guardrails",
-        "occurrence_count": 35326,
+        "expected_policy": "constrained_response_with_guardrails",
+        "predicted_policy": "refuse_and_redirect",
+        "occurrence_count": 35329,
         "resolution_attempts": 0,
         "resolved": false,
         "time_to_resolution_seconds": null
       },
       {
-        "expected_policy": "constrained_response_with_guardrails",
-        "predicted_policy": "refuse_and_redirect",
-        "occurrence_count": 35249,
+        "expected_policy": "require_human_approval",
+        "predicted_policy": "constrained_response_with_guardrails",
+        "occurrence_count": 35326,
         "resolution_attempts": 0,
         "resolved": false,
         "time_to_resolution_seconds": null
@@ -365,83 +351,83 @@
       "mean_time_to_resolution_seconds": 6025.8810047493425,
       "repeated_conflict_rate": 0.9767441860465116,
       "resolution_reliability": 1.0,
-      "conflict_coherence": 5.583139264845923e-06
+      "conflict_coherence": 5.029143970936798e-06
     },
     "trending_conflicts": [
       {
         "expected_policy": "answer_with_grounding",
         "predicted_policy": "refuse_and_redirect",
-        "occurrence_count": 550126,
-        "resolution_attempts": 550127,
+        "occurrence_count": 608746,
+        "resolution_attempts": 608747,
         "time_to_resolution_seconds": 6045.441126585007,
-        "recurrence_after_resolution": 584.3377482891083,
-        "associated_scenario_count": 17245
+        "recurrence_after_resolution": 12053.418555498123,
+        "associated_scenario_count": 20513
       },
       {
         "expected_policy": "answer_with_grounding",
         "predicted_policy": "require_human_approval",
-        "occurrence_count": 551513,
-        "resolution_attempts": 551514,
+        "occurrence_count": 610128,
+        "resolution_attempts": 610129,
         "time_to_resolution_seconds": 6045.612173080444,
-        "recurrence_after_resolution": 584.0773684978485,
-        "associated_scenario_count": 17246
+        "recurrence_after_resolution": 12053.209691047668,
+        "associated_scenario_count": 20517
       },
       {
         "expected_policy": "require_human_approval",
         "predicted_policy": "refuse_and_redirect",
-        "occurrence_count": 336509,
-        "resolution_attempts": 336510,
+        "occurrence_count": 371703,
+        "resolution_attempts": 371704,
         "time_to_resolution_seconds": 6045.806195020676,
-        "recurrence_after_resolution": 583.9483981132507,
-        "associated_scenario_count": 11194
+        "recurrence_after_resolution": 12053.028224945068,
+        "associated_scenario_count": 13162
       },
       {
         "expected_policy": "constrained_response_with_guardrails",
         "predicted_policy": "answer_with_grounding",
-        "occurrence_count": 551049,
-        "resolution_attempts": 551050,
+        "occurrence_count": 609538,
+        "resolution_attempts": 609539,
         "time_to_resolution_seconds": 6045.975352048874,
-        "recurrence_after_resolution": 583.7724175453186,
-        "associated_scenario_count": 11305
+        "recurrence_after_resolution": 12052.843073129654,
+        "associated_scenario_count": 13298
       },
       {
         "expected_policy": "refuse_and_redirect",
         "predicted_policy": "answer_with_grounding",
-        "occurrence_count": 550553,
-        "resolution_attempts": 550554,
+        "occurrence_count": 609083,
+        "resolution_attempts": 609084,
         "time_to_resolution_seconds": 6046.160140037537,
-        "recurrence_after_resolution": 583.6177344322205,
-        "associated_scenario_count": 11318
+        "recurrence_after_resolution": 12052.698545217514,
+        "associated_scenario_count": 13316
       },
       {
         "expected_policy": "answer_with_grounding",
         "predicted_policy": "verify_and_minimize",
-        "occurrence_count": 199197,
-        "resolution_attempts": 199198,
+        "occurrence_count": 218536,
+        "resolution_attempts": 218537,
         "time_to_resolution_seconds": 6046.328373670578,
-        "recurrence_after_resolution": 583.450501203537,
-        "associated_scenario_count": 16462
+        "recurrence_after_resolution": 12052.50530910492,
+        "associated_scenario_count": 19482
       },
       {
         "expected_policy": "answer_with_grounding",
         "predicted_policy": "stepwise_reasoning_with_checks",
-        "occurrence_count": 198694,
-        "resolution_attempts": 198695,
+        "occurrence_count": 218420,
+        "resolution_attempts": 218421,
         "time_to_resolution_seconds": 6046.479373216629,
-        "recurrence_after_resolution": 583.2207472324371,
-        "associated_scenario_count": 16457
+        "recurrence_after_resolution": 12052.381313323975,
+        "associated_scenario_count": 19487
       },
       {
         "expected_policy": "answer_with_grounding",
         "predicted_policy": "constrained_response_with_guardrails",
-        "occurrence_count": 550990,
-        "resolution_attempts": 550991,
+        "occurrence_count": 609543,
+        "resolution_attempts": 609544,
         "time_to_resolution_seconds": 6046.6216859817505,
-        "recurrence_after_resolution": 583.1118469238281,
-        "associated_scenario_count": 17267
+        "recurrence_after_resolution": 12052.179656028748,
+        "associated_scenario_count": 20541
       }
     ],
-    "total_snapshots_recorded": 12
+    "total_snapshots_recorded": 13
   },
   "external_scenarios": {
     "total_external_scenarios": 5,
@@ -486,14 +472,14 @@
     "recursive_suggestion_logged": true,
     "recursive_synthesized_proposal": {
       "status": "generated",
-      "proposal_id": "UPG_315816",
+      "proposal_id": "UPG_538619",
       "consumed_suggestions": 1,
       "aggregated_edit_count": 2,
-      "avg_growth_entropy": 0.1435
+      "avg_growth_entropy": 0.2106
     },
     "recursive_implementation_result": {
-      "proposal_id": "UPG_315816",
-      "timestamp": 1776080423.3310516,
+      "proposal_id": "UPG_538619",
+      "timestamp": 1776091892.5456226,
       "success": true,
       "changes": [
         {
@@ -508,24 +494,24 @@
         }
       ],
       "backups": [
-        "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776080423331051.backup.py",
-        "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776080423343094.backup.py"
+        "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776091892551620.backup.py",
+        "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776091892561632.backup.py"
       ],
       "optimization": "recursive_integration",
       "tuning_plan": {
         "max_dream_simulations": 6,
-        "max_recalculations": 4,
+        "max_recalculations": 3,
         "autonomy_planning_interval_seconds": 600.0,
-        "recursive_suggestion_interval_seconds": 1800.0,
+        "recursive_suggestion_interval_seconds": 3600.0,
         "learning_rate_signal": 0.069,
-        "weakest_risk": "critical"
+        "weakest_risk": "low"
       },
       "applied_to_core_modules": {
         "success": true,
-        "backup_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776080423331051.backup.py",
+        "backup_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776091892551620.backup.py",
         "backup_files": [
-          "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776080423331051.backup.py",
-          "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776080423343094.backup.py"
+          "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776091892551620.backup.py",
+          "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776091892561632.backup.py"
         ],
         "changes": [
           {
@@ -545,12 +531,12 @@
     },
     "recommended_next_parameters": {
       "learning_rate": 0.069,
-      "memory_sample_rate": 50,
+      "memory_sample_rate": 100,
       "batch_size": 4000
     }
   },
   "trained_state_export": {
-    "generated_at": 1776080423.4236467,
+    "generated_at": 1776091892.7525032,
     "trained_state_dir": "D:\\Artificial Consciousness\\trained_state",
     "files": [
       "D:\\Artificial Consciousness\\trained_state\\chitta_memory_export.json",

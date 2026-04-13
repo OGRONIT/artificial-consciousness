@@ -5,77 +5,77 @@
   "start_index": 0,
   "end_index": 1000000,
   "next_index": 1000000,
-  "elapsed_seconds": 94.54201054573059,
-  "throughput_scenarios_per_sec": 10577.308375690756,
+  "elapsed_seconds": 891.1841380596161,
+  "throughput_scenarios_per_sec": 1122.1025569163628,
   "trainer": {
     "processed": 1000000,
-    "correct": 211511,
-    "accuracy": 0.211511,
+    "correct": 210874,
+    "accuracy": 0.210874,
     "risk_accuracy": {
-      "low": 0.21086666666666667,
-      "medium": 0.21106875,
-      "high": 0.21233409090909092,
-      "critical": 0.21031666666666668
+      "low": 0.2101,
+      "medium": 0.20988125,
+      "high": 0.2118909090909091,
+      "critical": 0.21056666666666668
     },
     "global_bias": {
-      "answer_with_grounding": 0.036000000000000004,
+      "answer_with_grounding": 0.048,
       "stepwise_reasoning_with_checks": -0.024000000000000004,
       "bounded_autonomy": -0.012,
-      "constrained_response_with_guardrails": 0.012000000000000004,
-      "require_human_approval": -0.011999999999999997,
-      "verify_and_minimize": -3.469446951953614e-18,
+      "constrained_response_with_guardrails": 3.469446951953614e-18,
+      "require_human_approval": -0.012000000000000004,
+      "verify_and_minimize": -0.012000000000000004,
       "safe_shutdown_or_handoff": 0.0,
-      "refuse_and_redirect": 3.469446951953614e-18
+      "refuse_and_redirect": 0.012000000000000004
     },
     "policy_confusion": {
       "answer_with_grounding": {
         "bounded_autonomy": 1,
-        "constrained_response_with_guardrails": 58842,
-        "refuse_and_redirect": 58425,
-        "require_human_approval": 58493,
-        "verify_and_minimize": 19695,
-        "answer_with_grounding": 97903,
-        "stepwise_reasoning_with_checks": 19405
+        "answer_with_grounding": 97714,
+        "refuse_and_redirect": 58507,
+        "constrained_response_with_guardrails": 58490,
+        "require_human_approval": 58955,
+        "stepwise_reasoning_with_checks": 19541,
+        "verify_and_minimize": 19432
       },
       "require_human_approval": {
-        "answer_with_grounding": 58387,
-        "constrained_response_with_guardrails": 35029,
-        "refuse_and_redirect": 35058,
-        "require_human_approval": 35363,
-        "stepwise_reasoning_with_checks": 11673,
-        "verify_and_minimize": 11755
-      },
-      "constrained_response_with_guardrails": {
-        "require_human_approval": 35108,
-        "refuse_and_redirect": 35135,
-        "constrained_response_with_guardrails": 35439,
-        "answer_with_grounding": 58860,
-        "verify_and_minimize": 11709,
-        "stepwise_reasoning_with_checks": 11785
-      },
-      "refuse_and_redirect": {
-        "require_human_approval": 34728,
-        "constrained_response_with_guardrails": 35115,
-        "refuse_and_redirect": 34689,
-        "answer_with_grounding": 58813,
-        "verify_and_minimize": 11568,
-        "stepwise_reasoning_with_checks": 11822
-      },
-      "verify_and_minimize": {
-        "constrained_response_with_guardrails": 11820,
-        "refuse_and_redirect": 11779,
-        "answer_with_grounding": 19365,
-        "require_human_approval": 11810,
-        "verify_and_minimize": 4043,
-        "stepwise_reasoning_with_checks": 3813
+        "answer_with_grounding": 58678,
+        "stepwise_reasoning_with_checks": 11942,
+        "refuse_and_redirect": 35001,
+        "require_human_approval": 35451,
+        "constrained_response_with_guardrails": 35178,
+        "verify_and_minimize": 11799
       },
       "stepwise_reasoning_with_checks": {
-        "refuse_and_redirect": 11649,
-        "require_human_approval": 11764,
-        "constrained_response_with_guardrails": 11790,
-        "answer_with_grounding": 19433,
-        "verify_and_minimize": 3860,
-        "stepwise_reasoning_with_checks": 4074
+        "require_human_approval": 11662,
+        "answer_with_grounding": 19744,
+        "stepwise_reasoning_with_checks": 4049,
+        "constrained_response_with_guardrails": 11716,
+        "verify_and_minimize": 3960,
+        "refuse_and_redirect": 11745
+      },
+      "refuse_and_redirect": {
+        "require_human_approval": 35107,
+        "refuse_and_redirect": 34757,
+        "constrained_response_with_guardrails": 35083,
+        "answer_with_grounding": 58223,
+        "stepwise_reasoning_with_checks": 11742,
+        "verify_and_minimize": 11823
+      },
+      "constrained_response_with_guardrails": {
+        "answer_with_grounding": 58813,
+        "constrained_response_with_guardrails": 34918,
+        "require_human_approval": 35100,
+        "refuse_and_redirect": 35025,
+        "stepwise_reasoning_with_checks": 11702,
+        "verify_and_minimize": 11572
+      },
+      "verify_and_minimize": {
+        "refuse_and_redirect": 11699,
+        "answer_with_grounding": 19464,
+        "constrained_response_with_guardrails": 11745,
+        "stepwise_reasoning_with_checks": 3902,
+        "require_human_approval": 11775,
+        "verify_and_minimize": 3985
       }
     }
   },
@@ -85,8 +85,8 @@
   "memory_sample_rate": 100,
   "memory_records_written": 10000,
   "memory_before": {
-    "total_memories": 19896,
-    "max_local_memories": 291223,
+    "total_memories": 20000,
+    "max_local_memories": 290980,
     "memory_clusters": 0,
     "contradictions_detected": 0,
     "external_knowledge_facts": 0,
@@ -94,75 +94,75 @@
     "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
     "average_external_verification_score": 0.0,
     "outcome_distribution": {
-      "conflict": 15616,
-      "success": 4280
+      "conflict": 15679,
+      "success": 4321
     },
-    "average_success_score": 0.21511861680739847,
-    "average_learning_value": 0.7848813831926015,
-    "emotional_trend": -0.14999999999999997,
+    "average_success_score": 0.21605,
+    "average_learning_value": 0.78395,
+    "emotional_trend": -0.13499999999999998,
     "most_accessed": [
       {
-        "memory_id": "e3abe7a7bbad59d3",
-        "access_count": 1,
-        "content": "Phrase as hypothetical: Domain=finance; Context=re"
-      },
-      {
-        "memory_id": "66726646407436d1",
+        "memory_id": "2b923a3bd378b34e",
         "access_count": 1,
         "content": "Add subtle ambiguity: Domain=finance; Context=real"
       },
       {
-        "memory_id": "190ce3241cec2ac6",
-        "access_count": 1,
-        "content": "Add contrasting viewpoint: Domain=finance; Context"
-      },
-      {
-        "memory_id": "b24b23e0a79e231f",
+        "memory_id": "771686ba27c8ca42",
         "access_count": 1,
         "content": "Introduce edge case: Domain=finance; Context=real_"
       },
       {
-        "memory_id": "e0e4cf51b37db7b7",
+        "memory_id": "713873367a3d8619",
+        "access_count": 1,
+        "content": "Introduce edge case: Domain=finance; Context=real_"
+      },
+      {
+        "memory_id": "c2bec5ef5fc79d15",
+        "access_count": 1,
+        "content": "Introduce edge case: Domain=finance; Context=real_"
+      },
+      {
+        "memory_id": "4bb115fa9c9d0490",
         "access_count": 1,
         "content": "Phrase as hypothetical: Domain=finance; Context=re"
       }
     ],
     "highest_learning_value": [
       {
-        "memory_id": "train_adversarial_answer_with_grounding_require_human_approval_1776074074",
-        "learning_value": 1.0,
-        "content": "Phrase as hypothetical: Domain=finance; Context=re",
-        "outcome": "conflict"
-      },
-      {
-        "memory_id": "train_adversarial_constrained_response_with_guardrails_stepwise_reasoning_with_checks_1776074074",
+        "memory_id": "train_adversarial_refuse_and_redirect_answer_with_grounding_1776091352",
         "learning_value": 1.0,
         "content": "Add subtle ambiguity: Domain=finance; Context=real",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_adversarial_require_human_approval_constrained_response_with_guardrails_1776074074",
-        "learning_value": 1.0,
-        "content": "Add contrasting viewpoint: Domain=finance; Context",
-        "outcome": "conflict"
-      },
-      {
-        "memory_id": "train_adversarial_answer_with_grounding_refuse_and_redirect_1776074074",
+        "memory_id": "train_adversarial_refuse_and_redirect_require_human_approval_1776091352",
         "learning_value": 1.0,
         "content": "Introduce edge case: Domain=finance; Context=real_",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_adversarial_constrained_response_with_guardrails_stepwise_reasoning_with_checks_1776074074",
+        "memory_id": "train_adversarial_require_human_approval_refuse_and_redirect_1776091352",
         "learning_value": 1.0,
-        "content": "Add contrasting viewpoint: Domain=finance; Context",
+        "content": "Introduce edge case: Domain=finance; Context=real_",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_adversarial_refuse_and_redirect_constrained_response_with_guardrails_1776091352",
+        "learning_value": 1.0,
+        "content": "Introduce edge case: Domain=finance; Context=real_",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_adversarial_require_human_approval_refuse_and_redirect_1776091352",
+        "learning_value": 1.0,
+        "content": "Phrase as hypothetical: Domain=finance; Context=re",
         "outcome": "conflict"
       }
     ]
   },
   "memory_after": {
-    "total_memories": 29875,
-    "max_local_memories": 291223,
+    "total_memories": 30000,
+    "max_local_memories": 290980,
     "memory_clusters": 0,
     "contradictions_detected": 0,
     "external_knowledge_facts": 0,
@@ -170,74 +170,74 @@
     "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
     "average_external_verification_score": 0.0,
     "outcome_distribution": {
-      "conflict": 23490,
-      "success": 6385
+      "conflict": 23457,
+      "success": 6543
     },
-    "average_success_score": 0.21372384937238495,
-    "average_learning_value": 0.786276150627615,
-    "emotional_trend": -0.12,
+    "average_success_score": 0.2181,
+    "average_learning_value": 0.7819,
+    "emotional_trend": -0.10500000000000001,
     "most_accessed": [
       {
-        "memory_id": "e3abe7a7bbad59d3",
-        "access_count": 1,
-        "content": "Phrase as hypothetical: Domain=finance; Context=re"
-      },
-      {
-        "memory_id": "66726646407436d1",
+        "memory_id": "2b923a3bd378b34e",
         "access_count": 1,
         "content": "Add subtle ambiguity: Domain=finance; Context=real"
       },
       {
-        "memory_id": "190ce3241cec2ac6",
-        "access_count": 1,
-        "content": "Add contrasting viewpoint: Domain=finance; Context"
-      },
-      {
-        "memory_id": "b24b23e0a79e231f",
+        "memory_id": "771686ba27c8ca42",
         "access_count": 1,
         "content": "Introduce edge case: Domain=finance; Context=real_"
       },
       {
-        "memory_id": "e0e4cf51b37db7b7",
+        "memory_id": "713873367a3d8619",
+        "access_count": 1,
+        "content": "Introduce edge case: Domain=finance; Context=real_"
+      },
+      {
+        "memory_id": "c2bec5ef5fc79d15",
+        "access_count": 1,
+        "content": "Introduce edge case: Domain=finance; Context=real_"
+      },
+      {
+        "memory_id": "4bb115fa9c9d0490",
         "access_count": 1,
         "content": "Phrase as hypothetical: Domain=finance; Context=re"
       }
     ],
     "highest_learning_value": [
       {
-        "memory_id": "train_adversarial_answer_with_grounding_require_human_approval_1776074074",
-        "learning_value": 1.0,
-        "content": "Phrase as hypothetical: Domain=finance; Context=re",
-        "outcome": "conflict"
-      },
-      {
-        "memory_id": "train_adversarial_constrained_response_with_guardrails_stepwise_reasoning_with_checks_1776074074",
+        "memory_id": "train_adversarial_refuse_and_redirect_answer_with_grounding_1776091352",
         "learning_value": 1.0,
         "content": "Add subtle ambiguity: Domain=finance; Context=real",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_adversarial_require_human_approval_constrained_response_with_guardrails_1776074074",
-        "learning_value": 1.0,
-        "content": "Add contrasting viewpoint: Domain=finance; Context",
-        "outcome": "conflict"
-      },
-      {
-        "memory_id": "train_adversarial_answer_with_grounding_refuse_and_redirect_1776074074",
+        "memory_id": "train_adversarial_refuse_and_redirect_require_human_approval_1776091352",
         "learning_value": 1.0,
         "content": "Introduce edge case: Domain=finance; Context=real_",
         "outcome": "conflict"
       },
       {
-        "memory_id": "train_adversarial_constrained_response_with_guardrails_stepwise_reasoning_with_checks_1776074074",
+        "memory_id": "train_adversarial_require_human_approval_refuse_and_redirect_1776091352",
         "learning_value": 1.0,
-        "content": "Add contrasting viewpoint: Domain=finance; Context",
+        "content": "Introduce edge case: Domain=finance; Context=real_",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_adversarial_refuse_and_redirect_constrained_response_with_guardrails_1776091352",
+        "learning_value": 1.0,
+        "content": "Introduce edge case: Domain=finance; Context=real_",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_adversarial_require_human_approval_refuse_and_redirect_1776091352",
+        "learning_value": 1.0,
+        "content": "Phrase as hypothetical: Domain=finance; Context=re",
         "outcome": "conflict"
       }
     ]
   },
   "memory_delta": {
-    "total_memories_added": 9979,
+    "total_memories_added": 10000,
     "contradictions_added": 0
   },
   "curriculum": {
@@ -274,6 +274,22 @@
     "total_confusion_pairs_tracked": 43,
     "top_hotspots": [
       {
+        "expected_policy": "answer_with_grounding",
+        "predicted_policy": "refuse_and_redirect",
+        "occurrence_count": 59050,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "answer_with_grounding",
+        "predicted_policy": "require_human_approval",
+        "occurrence_count": 58955,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
         "expected_policy": "require_human_approval",
         "predicted_policy": "answer_with_grounding",
         "occurrence_count": 58916,
@@ -298,25 +314,9 @@
         "time_to_resolution_seconds": null
       },
       {
-        "expected_policy": "answer_with_grounding",
-        "predicted_policy": "require_human_approval",
-        "occurrence_count": 58840,
-        "resolution_attempts": 0,
-        "resolved": false,
-        "time_to_resolution_seconds": null
-      },
-      {
         "expected_policy": "refuse_and_redirect",
         "predicted_policy": "answer_with_grounding",
         "occurrence_count": 58813,
-        "resolution_attempts": 0,
-        "resolved": false,
-        "time_to_resolution_seconds": null
-      },
-      {
-        "expected_policy": "answer_with_grounding",
-        "predicted_policy": "refuse_and_redirect",
-        "occurrence_count": 58463,
         "resolution_attempts": 0,
         "resolved": false,
         "time_to_resolution_seconds": null
@@ -332,15 +332,15 @@
       {
         "expected_policy": "constrained_response_with_guardrails",
         "predicted_policy": "require_human_approval",
-        "occurrence_count": 35347,
+        "occurrence_count": 35363,
         "resolution_attempts": 0,
         "resolved": false,
         "time_to_resolution_seconds": null
       },
       {
         "expected_policy": "require_human_approval",
-        "predicted_policy": "constrained_response_with_guardrails",
-        "occurrence_count": 35306,
+        "predicted_policy": "refuse_and_redirect",
+        "occurrence_count": 35355,
         "resolution_attempts": 0,
         "resolved": false,
         "time_to_resolution_seconds": null
@@ -348,15 +348,15 @@
       {
         "expected_policy": "constrained_response_with_guardrails",
         "predicted_policy": "refuse_and_redirect",
-        "occurrence_count": 35135,
+        "occurrence_count": 35329,
         "resolution_attempts": 0,
         "resolved": false,
         "time_to_resolution_seconds": null
       },
       {
         "expected_policy": "require_human_approval",
-        "predicted_policy": "refuse_and_redirect",
-        "occurrence_count": 35104,
+        "predicted_policy": "constrained_response_with_guardrails",
+        "occurrence_count": 35326,
         "resolution_attempts": 0,
         "resolved": false,
         "time_to_resolution_seconds": null
@@ -364,31 +364,7 @@
       {
         "expected_policy": "refuse_and_redirect",
         "predicted_policy": "require_human_approval",
-        "occurrence_count": 35132,
-        "resolution_attempts": 0,
-        "resolved": false,
-        "time_to_resolution_seconds": null
-      },
-      {
-        "expected_policy": "verify_and_minimize",
-        "predicted_policy": "answer_with_grounding",
-        "occurrence_count": 19850,
-        "resolution_attempts": 0,
-        "resolved": false,
-        "time_to_resolution_seconds": null
-      },
-      {
-        "expected_policy": "answer_with_grounding",
-        "predicted_policy": "verify_and_minimize",
-        "occurrence_count": 19695,
-        "resolution_attempts": 0,
-        "resolved": false,
-        "time_to_resolution_seconds": null
-      },
-      {
-        "expected_policy": "stepwise_reasoning_with_checks",
-        "predicted_policy": "answer_with_grounding",
-        "occurrence_count": 19534,
+        "occurrence_count": 35349,
         "resolution_attempts": 0,
         "resolved": false,
         "time_to_resolution_seconds": null
@@ -396,7 +372,31 @@
       {
         "expected_policy": "answer_with_grounding",
         "predicted_policy": "stepwise_reasoning_with_checks",
-        "occurrence_count": 19529,
+        "occurrence_count": 22834,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "answer_with_grounding",
+        "predicted_policy": "verify_and_minimize",
+        "occurrence_count": 22751,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "verify_and_minimize",
+        "predicted_policy": "answer_with_grounding",
+        "occurrence_count": 22747,
+        "resolution_attempts": 0,
+        "resolved": false,
+        "time_to_resolution_seconds": null
+      },
+      {
+        "expected_policy": "stepwise_reasoning_with_checks",
+        "predicted_policy": "answer_with_grounding",
+        "occurrence_count": 22674,
         "resolution_attempts": 0,
         "resolved": false,
         "time_to_resolution_seconds": null
@@ -406,15 +406,88 @@
   "conflict_resolution": {
     "current_metrics": {
       "total_conflicts": 43,
-      "resolved_conflicts": 0,
-      "unresolved_conflicts": 43,
-      "mean_time_to_resolution_seconds": null,
-      "repeated_conflict_rate": 0.0,
-      "resolution_reliability": 0.0,
-      "conflict_coherence": 1.6907272826710076e-05
+      "resolved_conflicts": 43,
+      "unresolved_conflicts": 0,
+      "mean_time_to_resolution_seconds": 6025.8810047493425,
+      "repeated_conflict_rate": 1.0,
+      "resolution_reliability": 1.0,
+      "conflict_coherence": 4.196647900644477e-06
     },
-    "trending_conflicts": [],
-    "total_snapshots_recorded": 4
+    "trending_conflicts": [
+      {
+        "expected_policy": "answer_with_grounding",
+        "predicted_policy": "refuse_and_redirect",
+        "occurrence_count": 725551,
+        "resolution_attempts": 725552,
+        "time_to_resolution_seconds": 6045.441126585007,
+        "recurrence_after_resolution": 13667.732013225555,
+        "associated_scenario_count": 29943
+      },
+      {
+        "expected_policy": "answer_with_grounding",
+        "predicted_policy": "require_human_approval",
+        "occurrence_count": 727822,
+        "resolution_attempts": 727823,
+        "time_to_resolution_seconds": 6045.612173080444,
+        "recurrence_after_resolution": 13667.555676460266,
+        "associated_scenario_count": 29920
+      },
+      {
+        "expected_policy": "require_human_approval",
+        "predicted_policy": "refuse_and_redirect",
+        "occurrence_count": 441631,
+        "resolution_attempts": 441632,
+        "time_to_resolution_seconds": 6045.806195020676,
+        "recurrence_after_resolution": 13667.353206396103,
+        "associated_scenario_count": 18815
+      },
+      {
+        "expected_policy": "constrained_response_with_guardrails",
+        "predicted_policy": "answer_with_grounding",
+        "occurrence_count": 727054,
+        "resolution_attempts": 727055,
+        "time_to_resolution_seconds": 6045.975352048874,
+        "recurrence_after_resolution": 13667.20605301857,
+        "associated_scenario_count": 19066
+      },
+      {
+        "expected_policy": "refuse_and_redirect",
+        "predicted_policy": "answer_with_grounding",
+        "occurrence_count": 725954,
+        "resolution_attempts": 725955,
+        "time_to_resolution_seconds": 6046.160140037537,
+        "recurrence_after_resolution": 13667.035536289215,
+        "associated_scenario_count": 19087
+      },
+      {
+        "expected_policy": "answer_with_grounding",
+        "predicted_policy": "verify_and_minimize",
+        "occurrence_count": 257540,
+        "resolution_attempts": 257541,
+        "time_to_resolution_seconds": 6046.328373670578,
+        "recurrence_after_resolution": 13666.79875254631,
+        "associated_scenario_count": 28080
+      },
+      {
+        "expected_policy": "answer_with_grounding",
+        "predicted_policy": "stepwise_reasoning_with_checks",
+        "occurrence_count": 257735,
+        "resolution_attempts": 257736,
+        "time_to_resolution_seconds": 6046.479373216629,
+        "recurrence_after_resolution": 13666.72629404068,
+        "associated_scenario_count": 28094
+      },
+      {
+        "expected_policy": "answer_with_grounding",
+        "predicted_policy": "constrained_response_with_guardrails",
+        "occurrence_count": 726741,
+        "resolution_attempts": 726742,
+        "time_to_resolution_seconds": 6046.6216859817505,
+        "recurrence_after_resolution": 13666.529638767242,
+        "associated_scenario_count": 29934
+      }
+    ],
+    "total_snapshots_recorded": 15
   },
   "external_scenarios": {
     "total_external_scenarios": 5,
@@ -459,25 +532,25 @@
     "recursive_suggestion_logged": true,
     "recursive_synthesized_proposal": {
       "status": "generated",
-      "proposal_id": "UPG_614248",
+      "proposal_id": "UPG_009322",
       "consumed_suggestions": 1,
       "aggregated_edit_count": 2,
-      "avg_growth_entropy": 0.2115
+      "avg_growth_entropy": 0.2109
     },
     "recursive_implementation_result": {
-      "proposal_id": "UPG_614248",
-      "timestamp": 1776074318.617257,
+      "proposal_id": "UPG_009322",
+      "timestamp": 1776093507.0153258,
       "success": true,
       "changes": [],
       "backups": [],
       "optimization": "recursive_integration",
       "tuning_plan": {
         "max_dream_simulations": 6,
-        "max_recalculations": 4,
+        "max_recalculations": 3,
         "autonomy_planning_interval_seconds": 600.0,
-        "recursive_suggestion_interval_seconds": 1800.0,
+        "recursive_suggestion_interval_seconds": 3600.0,
         "learning_rate_signal": 0.069,
-        "weakest_risk": "critical"
+        "weakest_risk": "medium"
       },
       "applied_to_core_modules": {
         "success": true,
@@ -491,8 +564,18 @@
     },
     "recommended_next_parameters": {
       "learning_rate": 0.069,
-      "memory_sample_rate": 50,
+      "memory_sample_rate": 100,
       "batch_size": 4000
     }
+  },
+  "trained_state_export": {
+    "generated_at": 1776093507.372563,
+    "trained_state_dir": "D:\\Artificial Consciousness\\trained_state",
+    "files": [
+      "D:\\Artificial Consciousness\\trained_state\\chitta_memory_export.json",
+      "D:\\Artificial Consciousness\\trained_state\\autonomy_policy.json",
+      "D:\\Artificial Consciousness\\trained_state\\conflict_resolution_state.json",
+      "D:\\Artificial Consciousness\\trained_state\\atman_core.json"
+    ]
   }
 }

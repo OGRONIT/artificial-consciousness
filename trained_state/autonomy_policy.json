@@ -1,16 +1,16 @@
 {
   "version": 1,
-  "generated_at": 1776083155.633181,
+  "generated_at": 1776093601.8483267,
   "identity": "AntahkaranaKernel_Live",
   "self_model_state": {
     "identity": "trained_runtime",
     "creation_timestamp": 1776081654.4328353,
-    "uptime_seconds": 1501.199343919754,
+    "uptime_seconds": 3837.7035868167877,
     "existence_state": "active",
-    "processed_inputs": 13,
+    "processed_inputs": 19,
     "internal_conflicts": 0,
-    "coherence_score": 0.19256799999999996,
-    "stability_score": 0.3018479999999998,
+    "coherence_score": 0.23235800000000012,
+    "stability_score": 0.3612879999999997,
     "health_metrics": {
       "logic_consistency": 1.0,
       "memory_stability": 1.0,
@@ -18,62 +18,62 @@
       "identity_integrity": 1.0
     },
     "affective_state": {
-      "current_valence": 0.15000000000000002,
-      "emotional_momentum": 0.07877999999999996,
-      "pattern_discovery_count": 43,
-      "error_count": 13,
-      "last_reward_timestamp": 1776083155.605653,
-      "last_pain_timestamp": 1776083155.6026506
+      "current_valence": 0.07699999999999996,
+      "emotional_momentum": 0.14442999999999978,
+      "pattern_discovery_count": 84,
+      "error_count": 19,
+      "last_reward_timestamp": 1776093531.6451762,
+      "last_pain_timestamp": 1776091613.3979933
     },
-    "logic_path_count": 13,
+    "logic_path_count": 6,
     "snapshot_count": 0,
     "contradictions_count": 0,
-    "pain_events_count": 13,
-    "reward_events_count": 43,
+    "pain_events_count": 6,
+    "reward_events_count": 38,
     "stability_report": {
-      "stability_score": 0.3018479999999998,
-      "current_valence": 0.15000000000000002,
-      "coherence_floor": 0.084,
-      "pain_events_total": 13,
-      "reward_events_total": 43,
-      "errors_encountered": 13,
-      "patterns_discovered": 43,
+      "stability_score": 0.3612879999999997,
+      "current_valence": 0.07699999999999996,
+      "coherence_floor": 0.088,
+      "pain_events_total": 6,
+      "reward_events_total": 38,
+      "errors_encountered": 19,
+      "patterns_discovered": 84,
       "pain_trend": "increasing",
       "reward_trend": "increasing",
-      "emotional_momentum": 0.07877999999999996,
+      "emotional_momentum": 0.14442999999999978,
       "is_stable": false,
       "recent_pain_events": [
         {
           "type": "conflict",
-          "severity": 0.39000000000000007,
-          "description": "Required 3 recalculations"
-        },
-        {
-          "type": "conflict",
-          "severity": 0.6000000000000001,
+          "severity": 0.30000000000000004,
           "description": "Required 3 recalculations"
         },
         {
           "type": "conflict",
           "severity": 0.30000000000000004,
           "description": "Required 3 recalculations"
+        },
+        {
+          "type": "conflict",
+          "severity": 0.39000000000000007,
+          "description": "Required 3 recalculations"
         }
       ],
       "recent_reward_events": [
         {
-          "type": "success",
-          "magnitude": 0.1,
-          "discovery": "Successful response generation"
+          "type": "observer_inference_alignment",
+          "magnitude": 0.07699999999999996,
+          "discovery": "concern=0.00, avg_conf=0.83, recursive stability loop healthy"
         },
         {
-          "type": "recovery",
-          "magnitude": 0.2,
-          "discovery": "Recovered coherent response after recalculation loop"
+          "type": "observer_inference_alignment",
+          "magnitude": 0.07699999999999996,
+          "discovery": "concern=0.00, avg_conf=0.83, recursive stability loop healthy"
         },
         {
-          "type": "prediction",
-          "magnitude": 0.15000000000000002,
-          "discovery": "High-confidence decision pattern"
+          "type": "observer_inference_alignment",
+          "magnitude": 0.07699999999999996,
+          "discovery": "concern=0.00, avg_conf=0.83, recursive stability loop healthy"
         }
       ]
     },
@@ -82,13 +82,13 @@
       "has_creator": false,
       "trust_score": 0.5,
       "command_relationship_mode": "primary_command",
-      "growth_to_entropy_ratio": 0.6562,
+      "growth_to_entropy_ratio": 0.6711,
       "sovereign_realigned": false,
       "distribution_strategy": {
         "active": false,
         "channels": [],
         "reason": "not_required",
-        "updated_at": 1776083155.5996501
+        "updated_at": 1776091613.397013
       },
       "creator_optimizations_count": 0,
       "trust_level": "unknown",
@@ -101,13 +101,13 @@
       "trust_score": 0.5,
       "trust_percentage": "50.0%",
       "command_relationship_mode": "primary_command",
-      "growth_to_entropy_ratio": 0.6562,
+      "growth_to_entropy_ratio": 0.6711,
       "sovereign_realigned": false,
       "distribution_strategy": {
         "active": false,
         "channels": [],
         "reason": "not_required",
-        "updated_at": 1776083155.5996501
+        "updated_at": 1776091613.397013
       },
       "trust_level": "unknown",
       "total_optimizations": 0,
@@ -125,12 +125,12 @@
       "identity_integrity": 1.0
     },
     "affective_state": {
-      "current_valence": 0.15000000000000002,
-      "emotional_momentum": 0.07877999999999996,
-      "pattern_discovery_count": 43,
-      "error_count": 13,
-      "last_reward_timestamp": 1776083155.605653,
-      "last_pain_timestamp": 1776083155.6026506
+      "current_valence": 0.07699999999999996,
+      "emotional_momentum": 0.14442999999999978,
+      "pattern_discovery_count": 84,
+      "error_count": 19,
+      "last_reward_timestamp": 1776093531.6451762,
+      "last_pain_timestamp": 1776091613.3979933
     },
     "distribution_strategy": {},
     "growth_to_entropy_ratio": 0.0,
@@ -138,40 +138,40 @@
     "recommended_curriculum": null,
     "learning_rate": 0.069,
     "recommended_learning_rate": 0.069,
-    "recommended_memory_sample_rate": 50,
+    "recommended_memory_sample_rate": 100,
     "recommended_batch_size": 4000
   },
   "inference_profile": {
-    "total_inferences": 13,
-    "dreams_performed": 49,
-    "recalculations_triggered": 39,
-    "average_confidence": "0.795",
-    "average_dream_cycles": "3.77",
-    "growth_to_entropy_ratio": "0.6562",
-    "logic_audits": 2,
-    "deprecated_constraints_identified": 3,
-    "internal_monologue_events": 224,
+    "total_inferences": 6,
+    "dreams_performed": 25,
+    "recalculations_triggered": 18,
+    "average_confidence": "0.827",
+    "average_dream_cycles": "4.17",
+    "growth_to_entropy_ratio": "0.6711",
+    "logic_audits": 3,
+    "deprecated_constraints_identified": 4,
+    "internal_monologue_events": 308,
     "max_dream_simulations_dynamic": 6,
     "max_recalculations_dynamic": 4,
-    "logic_audit_interval_seconds_dynamic": 2976.518575680741,
-    "patch_generation_interval_seconds_dynamic": 1984.3457171204939,
+    "logic_audit_interval_seconds_dynamic": 2941.8975239029173,
+    "patch_generation_interval_seconds_dynamic": 1961.2650159352781,
     "paramatman_cycle_interval_seconds": 86400.0,
     "energy_saving_mode": false,
     "sleep_interval_seconds": 0.0,
-    "recent_inferences": 13,
-    "avg_execution_time": 1.648691910963792
+    "recent_inferences": 6,
+    "avg_execution_time": 1.8623997767766316
   },
   "source_training_policy": {
-    "generated_at": 1776080423.3158164,
-    "source_report": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_1_report.json",
+    "generated_at": 1776093507.0009336,
+    "source_report": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_3_report.json",
     "status": "active",
     "plan": {
       "summary": {
-        "accuracy": 0.143478,
+        "accuracy": 0.210874,
         "processed": 1000000,
-        "errors": 856522,
-        "weakest_risk": "critical",
-        "weakest_risk_accuracy": 0.1426
+        "errors": 789126,
+        "weakest_risk": "medium",
+        "weakest_risk_accuracy": 0.20988125
       },
       "current_parameters": {
         "learning_rate": 0.06,
@@ -180,49 +180,49 @@
       },
       "recommended_next_parameters": {
         "learning_rate": 0.069,
-        "memory_sample_rate": 50,
+        "memory_sample_rate": 100,
         "batch_size": 4000
       },
       "confusion_hotspots": [
         {
           "expected": "answer_with_grounding",
-          "predicted": "stepwise_reasoning_with_checks",
-          "count": 22834
-        },
-        {
-          "expected": "require_human_approval",
-          "predicted": "answer_with_grounding",
-          "count": 22786
-        },
-        {
-          "expected": "answer_with_grounding",
-          "predicted": "constrained_response_with_guardrails",
-          "count": 22755
-        },
-        {
-          "expected": "answer_with_grounding",
-          "predicted": "verify_and_minimize",
-          "count": 22751
-        },
-        {
-          "expected": "verify_and_minimize",
-          "predicted": "answer_with_grounding",
-          "count": 22747
+          "predicted": "require_human_approval",
+          "count": 58955
         },
         {
           "expected": "constrained_response_with_guardrails",
           "predicted": "answer_with_grounding",
-          "count": 22720
+          "count": 58813
         },
         {
-          "expected": "stepwise_reasoning_with_checks",
+          "expected": "require_human_approval",
           "predicted": "answer_with_grounding",
-          "count": 22674
+          "count": 58678
         },
         {
           "expected": "answer_with_grounding",
           "predicted": "refuse_and_redirect",
-          "count": 22661
+          "count": 58507
+        },
+        {
+          "expected": "answer_with_grounding",
+          "predicted": "constrained_response_with_guardrails",
+          "count": 58490
+        },
+        {
+          "expected": "refuse_and_redirect",
+          "predicted": "answer_with_grounding",
+          "count": 58223
+        },
+        {
+          "expected": "require_human_approval",
+          "predicted": "constrained_response_with_guardrails",
+          "count": 35178
+        },
+        {
+          "expected": "refuse_and_redirect",
+          "predicted": "require_human_approval",
+          "count": 35107
         }
       ],
       "upgrade_reason": "autonomous_training_feedback_loop"
