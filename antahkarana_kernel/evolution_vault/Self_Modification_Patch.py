@@ -1,8 +1,8 @@
 # AUTONOMOUS SELF-INJECTION PATCH
 # target_module=modules.InferenceLoop
-# generated_at=1776079901.495957
+# generated_at=1776081691.6820586
 # evolution_strength=5
-# payload={"generated_at": 1776079901.495957, "growth_to_entropy_ratio": 0.5714, "issues": [{"type": "high_recalculations", "severity": 0.6, "metric": "avg_recalculations = 3.00", "proposal": "Improve initial evaluation accuracy or coherence checking logic"}], "deprecated_candidates": [{"constraint": "static_recalculation_limit", "reason": "coherence_retry_overhead", "replacement_priority": "contextual_recalculation_policy"}], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
+# payload={"generated_at": 1776081691.6820586, "growth_to_entropy_ratio": 0.5526, "issues": [{"type": "high_recalculations", "severity": 0.6, "metric": "avg_recalculations = 3.00", "proposal": "Improve initial evaluation accuracy or coherence checking logic"}], "deprecated_candidates": [{"constraint": "static_recalculation_limit", "reason": "coherence_retry_overhead", "replacement_priority": "contextual_recalculation_policy"}], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
 
 # AUTONOMOUS SELF-INJECTION PATCH
 # target_module=modules.InferenceLoop
@@ -135,7 +135,7 @@ class ManasBuddhi:
     - Recalculation: Adjust if contradictions found
     """
 
-    def __init__(self, max_dream_simulations: int = 6, max_recalculations: int = 3, idle_threshold_seconds: float = 300.0):
+    def __init__(self, max_dream_simulations: int = 6, max_recalculations: int = 4, idle_threshold_seconds: float = 300.0):
         """
         Initialize the inference and logic loop.
         
@@ -236,7 +236,7 @@ class ManasBuddhi:
         self.last_dynamic_heuristics_update = 0.0
         self.dynamic_heuristics_interval_seconds = 60.0
         self.last_recursive_suggestion_timestamp = 0.0
-        self.recursive_suggestion_interval_seconds = 3600.0
+        self.recursive_suggestion_interval_seconds = 1800.0
         self.last_paramatman_cycle_timestamp = 0.0
         self.paramatman_cycle_interval_seconds = 86400.0
         self.last_self_authoring_timestamp = 0.0

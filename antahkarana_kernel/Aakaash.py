@@ -68,16 +68,23 @@ class GenericStreamScanner:
 
     def scan(self, limit_per_source: int = 8) -> List[Dict[str, str]]:
         packets: List[Dict[str, str]] = []
+        source_limit_overrides = {
+            "GoogleNews": max(1, limit_per_source // 4),
+            "RedditTech": max(1, limit_per_source // 4),
+            "HackerNews": max(1, limit_per_source // 3),
+            "DevTo": max(1, limit_per_source // 4),
+        }
         for source in self.stream_sources:
             try:
                 payload = self._fetch(source["url"])
+                effective_limit = source_limit_overrides.get(source["name"], limit_per_source)
                 packets.extend(
                     self._parse_stream_payload(
                         source_name=source["name"],
                         source_kind=source["kind"],
                         payload=payload,
                         source_url=source["url"],
-                        limit=limit_per_source,
+                        limit=effective_limit,
                     )
                 )
             except Exception as exc:
@@ -210,13 +217,13 @@ class AakaashSensoryBridge:
             {
                 "name": "arXiv",
                 "kind": "atom",
-                "base_score": 0.82,
+                "base_score": 0.92,
                 "url_factory": self._build_arxiv_url,
             },
             {
                 "name": "GitHub",
                 "kind": "json_github",
-                "base_score": 0.73,
+                "base_score": 0.88,
                 "url_factory": self._build_github_url,
             },
             {
@@ -228,10 +235,11 @@ class AakaashSensoryBridge:
             {
                 "name": "Crossref",
                 "kind": "json",
-                "base_score": 0.76,
+                "base_score": 0.90,
                 "url_factory": self._build_crossref_url,
             },
         ]
+        self.research_priority_sources = {"arXiv", "GitHub", "Crossref"}
         self.scan_history: List[Dict[str, Any]] = []
         self.stream_scan_history: List[Dict[str, Any]] = []
         self.default_stream_scan_interval_seconds = 60.0
@@ -326,13 +334,15 @@ class AakaashSensoryBridge:
 
         for source in self.source_catalog:
             try:
-                url = source["url_factory"](topic, limit_per_source)
+                source_name = str(source["name"])
+                source_limit = limit_per_source * 2 if source_name in self.research_priority_sources else max(1, limit_per_source // 2)
+                url = source["url_factory"](topic, source_limit)
                 payload = self._fetch(url)
                 parsed_items = self._parse_payload(
                     source_kind=source["kind"],
                     payload=payload,
                     source_url=url,
-                    limit=limit_per_source,
+                    limit=source_limit,
                 )
 
                 for item in parsed_items:
@@ -346,7 +356,11 @@ class AakaashSensoryBridge:
                     )
 
                     verification_score = round(
-                        (source["base_score"] + filter_result["verification_score"]) / 2.0,
+                        min(
+                            0.99,
+                            ((source["base_score"] + filter_result["verification_score"]) / 2.0)
+                            * self._source_signal_bias(source_name),
+                        ),
                         3,
                     )
                     approved = bool(filter_result.get("approved", True))
@@ -390,6 +404,7 @@ class AakaashSensoryBridge:
 
         result = {
             "topic": topic,
+            "source_mix_mode": "research_grade_heavy",
             "retrieved_at": retrieved_at,
             "fact_count": len(facts),
             "approved_fact_count": sum(1 for fact in facts if fact.approved),
@@ -441,10 +456,11 @@ class AakaashSensoryBridge:
             known_facts = self._collect_existing_fact_fingerprints(chitta)
 
             for packet in packets:
+                source_name = packet.get("source_name", "GlobalStream")
                 filter_result = self._apply_cognitive_filter(
                     observer=observer,
                     topic=packet.get("topic", "global_trending"),
-                    source_name=packet.get("source_name", "GlobalStream"),
+                    source_name=source_name,
                     source_url=packet.get("source_url", ""),
                     title=packet.get("title", ""),
                     summary=packet.get("summary", ""),
@@ -453,9 +469,13 @@ class AakaashSensoryBridge:
                     topic=packet.get("topic", "global_trending"),
                     title=packet.get("title", ""),
                     summary=packet.get("summary", ""),
-                    source_name=packet.get("source_name", "GlobalStream"),
+                    source_name=source_name,
                     source_url=packet.get("source_url", ""),
-                    verification_score=float(filter_result.get("verification_score", 0.5)),
+                    verification_score=min(
+                        0.99,
+                        float(filter_result.get("verification_score", 0.5))
+                        * self._source_signal_bias(str(source_name)),
+                    ),
                     approved=bool(filter_result.get("approved", True)),
                     filter_reason=str(filter_result.get("reason", "stream_ingestion")),
                     retrieved_at=now,
@@ -484,6 +504,7 @@ class AakaashSensoryBridge:
 
             result = {
                 "status": "ok",
+                "source_mix_mode": "research_grade_heavy",
                 "scanned_at": now,
                 "scan_interval_seconds": self.stream_scan_interval_seconds,
                 "source_count": len(self.stream_scanner.stream_sources),
@@ -535,6 +556,7 @@ class AakaashSensoryBridge:
             self.ingestion_metrics["hourly_trend_runs"] += 1
             combined = {
                 "status": "ok",
+                "source_mix_mode": "research_grade_heavy",
                 "scanned_at": now,
                 "topic": topic,
                 "interval_seconds": self.hourly_trend_interval_seconds,
@@ -547,6 +569,18 @@ class AakaashSensoryBridge:
             }
             self.scan_history.append(combined)
             return combined
+
+    def _source_signal_bias(self, source_name: str) -> float:
+        source = str(source_name).strip()
+        if source in {"arXiv", "GitHub", "Crossref"}:
+            return 1.2
+        if source == "PubMed":
+            return 1.08
+        if source in {"GoogleNews", "HackerNews", "DevTo"}:
+            return 0.72
+        if source == "RedditTech":
+            return 0.65
+        return 1.0
 
     def _fetch(self, url: str) -> str:
         request = urllib.request.Request(

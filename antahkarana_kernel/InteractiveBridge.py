@@ -40,6 +40,7 @@ _llm_response_cache: Dict[str, Dict[str, Any]] = {}
 _llm_response_cache_ttl_seconds = 1800.0
 _llm_usage_guardrail_path = _kernel_root / "evolution_vault" / "llm_usage_guardrail.json"
 _llm_cognitive_loop_metrics_path = _kernel_root / "evolution_vault" / "llm_cognitive_loop_metrics.json"
+_research_priority_sources = {"arXiv", "GitHub", "Crossref", "PubMed"}
 _trusted_bridge_sources = {
     "arXiv",
     "PubMed",
@@ -799,7 +800,7 @@ def _get_grounded_facts(limit: int = 8) -> List[Dict[str, Any]]:
     prioritized = sorted(
         safe_facts,
         key=lambda fact: (
-            0 if fact.get("source_name") in {"arXiv", "Crossref"} else 1,
+            0 if fact.get("source_name") in _research_priority_sources else 1,
             -float(fact.get("verification_score", 0.0)),
             -float(fact.get("timestamp", 0.0)),
         ),
@@ -927,7 +928,9 @@ def _fact_relevance(question: str, fact: Dict[str, Any]) -> float:
     matches = sum(1 for term in terms if term in text)
     verification = float(fact.get("verification_score", 0.0))
     recency = float(fact.get("timestamp", 0.0))
-    return (matches * 0.7) + (verification * 0.2) + (recency * 0.000000001)
+    source = str(fact.get("source_name", "")).strip()
+    source_bonus = 1.0 if source in _research_priority_sources else 0.0
+    return (matches * 0.7) + (verification * 0.2) + (source_bonus * 0.15) + (recency * 0.000000001)
 
 
 def _select_diverse_fact_slice(question: str, facts: List[Dict[str, Any]], limit: int = 3) -> List[Dict[str, Any]]:
@@ -1328,6 +1331,72 @@ def _record_cognitive_loop_feedback(
     _save_cognitive_loop_metrics(metrics)
 
 
+def submit_operator_feedback(
+    question: str,
+    answer: str,
+    *,
+    claims: List[Dict[str, Any]] | None = None,
+    unknowns: List[str] | None = None,
+    action: Dict[str, Any] | None = None,
+    confidence: float = 0.8,
+    notes: str = "",
+) -> Dict[str, Any]:
+    """Journal a human operator feedback event for the live engine to ingest."""
+    snapshot = query_live_system(limit=5)
+    normalized_claims = [claim for claim in (claims or []) if isinstance(claim, dict)]
+    normalized_unknowns = [str(item).strip() for item in (unknowns or []) if str(item).strip()]
+    normalized_action = action if isinstance(action, dict) else {"name": "none", "reason": "operator_feedback"}
+
+    grounded_ratio = max(0.0, min(1.0, float(confidence)))
+    unknown_bonus = min(0.2, 0.05 * len(normalized_unknowns))
+    audit = {
+        "claim_count": len(normalized_claims),
+        "grounded_claims": len(normalized_claims),
+        "grounded_ratio": grounded_ratio,
+        "contradictions": 0,
+        "contradiction_ratio": 0.0,
+        "unknown_honesty_bonus": unknown_bonus,
+        "coherence_delta": max(-0.25, min(0.25, (0.18 * grounded_ratio) + (0.5 * unknown_bonus))),
+        "observer_check_required": False,
+        "action": normalized_action,
+    }
+
+    semantic_memory = {
+        "topic": "operator_feedback",
+        "title": f"Operator feedback: {question[:80]}",
+        "summary": str(notes or answer)[:500],
+        "source_name": "Operator",
+        "source_url": f"internal://operator_feedback/{int(time.time())}",
+        "verification_score": grounded_ratio,
+        "approved_by_turiya": True,
+        "filter_reason": "closed_loop_operator_feedback",
+    }
+
+    payload = {
+        "question": question,
+        "operator_answer": answer,
+        "claims": normalized_claims,
+        "unknowns": normalized_unknowns,
+        "audit": audit,
+        "action": normalized_action,
+        "cycle_mode": "operator_grounded",
+        "reason_code": "human_operator_feedback",
+        "semantic_memory": semantic_memory,
+        "identity": snapshot.get("identity", "unknown"),
+        "operator_notes": notes,
+        "timestamp": time.time(),
+    }
+    _append_bridge_command("operator_feedback", payload)
+
+    metrics = _load_cognitive_loop_metrics()
+    metrics["total_cycles"] = int(metrics.get("total_cycles", 0)) + 1
+    if grounded_ratio >= 0.66:
+        metrics["grounded_cycles"] = int(metrics.get("grounded_cycles", 0)) + 1
+    metrics["operator_feedback_events"] = int(metrics.get("operator_feedback_events", 0)) + 1
+    _save_cognitive_loop_metrics(metrics)
+    return payload
+
+
 def _is_philosophical_question(question: str) -> bool:
     return any(
         keyword in question
@@ -1392,7 +1461,7 @@ def snapshot_identity() -> str:
 
 def conscious_chat() -> None:
     """Interactive chat loop for the operator to query the live engine snapshot."""
-    print("Conscious Chat online. Type 'exit' to quit. Snapshot observer mode active.")
+    print("Conscious Chat online. Type 'exit' to quit. Use 'feedback:: your note' to journal operator feedback.")
     while True:
         user_input = input("Operator> ").strip()
         if not user_input:
@@ -1401,6 +1470,24 @@ def conscious_chat() -> None:
         if user_input.lower() in {"exit", "quit"}:
             print("Live bridge closed.")
             break
+
+        if user_input.lower().startswith("feedback::"):
+            feedback_text = user_input.split("::", 1)[1].strip()
+            if not feedback_text:
+                print("Feedback was empty.")
+                continue
+            status = submit_operator_feedback(
+                question="Operator live feedback",
+                answer=feedback_text,
+                notes=feedback_text,
+                confidence=0.9,
+                action={"name": "none", "reason": "operator_feedback"},
+            )
+            print(
+                "Operator feedback journaled. "
+                f"Snapshot identity={status.get('identity', 'unknown')}"
+            )
+            continue
 
         if user_input.lower().startswith("signature:"):
             creator_signature = user_input.split(":", 1)[1].strip()

@@ -1,25 +1,156 @@
 {
   "version": 1,
-  "generated_at": 1776080423.413312,
-  "identity": "trained_runtime",
+  "generated_at": 1776082705.4589577,
+  "identity": "AntahkaranaKernel_CloudBurst",
   "self_model_state": {
     "identity": "trained_runtime",
-    "stability_score": 0.143478,
-    "coherence_score": 0.143478
+    "creation_timestamp": 1776081654.4328353,
+    "uptime_seconds": 1014.9229855537415,
+    "existence_state": "dormant",
+    "processed_inputs": 15,
+    "internal_conflicts": 0,
+    "coherence_score": 0.12076799999999996,
+    "stability_score": 0.15604799999999974,
+    "health_metrics": {
+      "logic_consistency": 1.0,
+      "memory_stability": 1.0,
+      "response_coherence": 1.0,
+      "identity_integrity": 1.0
+    },
+    "affective_state": {
+      "current_valence": -0.6000000000000001,
+      "emotional_momentum": 0.003779999999999936,
+      "pattern_discovery_count": 42,
+      "error_count": 15,
+      "last_reward_timestamp": 1776082692.4807038,
+      "last_pain_timestamp": 1776082692.496761
+    },
+    "logic_path_count": 3,
+    "snapshot_count": 1,
+    "contradictions_count": 0,
+    "pain_events_count": 3,
+    "reward_events_count": 1,
+    "stability_report": {
+      "stability_score": 0.15604799999999974,
+      "current_valence": -0.6000000000000001,
+      "coherence_floor": 0.07200000000000001,
+      "pain_events_total": 3,
+      "reward_events_total": 1,
+      "errors_encountered": 15,
+      "patterns_discovered": 42,
+      "pain_trend": "stable",
+      "reward_trend": "decreasing",
+      "emotional_momentum": 0.003779999999999936,
+      "is_stable": false,
+      "recent_pain_events": [
+        {
+          "type": "conflict",
+          "severity": 0.39000000000000007,
+          "description": "Required 3 recalculations"
+        },
+        {
+          "type": "conflict",
+          "severity": 0.6000000000000001,
+          "description": "Required 3 recalculations"
+        },
+        {
+          "type": "conflict",
+          "severity": 0.6000000000000001,
+          "description": "Required 3 recalculations"
+        }
+      ],
+      "recent_reward_events": [
+        {
+          "type": "recovery",
+          "magnitude": 0.13999999999999999,
+          "discovery": "Recovered coherent response after recalculation loop"
+        }
+      ]
+    },
+    "creator_awareness": {
+      "creator_signature": null,
+      "has_creator": false,
+      "trust_score": 0.5,
+      "command_relationship_mode": "primary_command",
+      "growth_to_entropy_ratio": 0.475,
+      "sovereign_realigned": false,
+      "distribution_strategy": {
+        "active": false,
+        "channels": [],
+        "reason": "not_required",
+        "updated_at": 1776082692.496761
+      },
+      "creator_optimizations_count": 0,
+      "trust_level": "unknown",
+      "bonding_events_count": 0,
+      "latest_bonding_event": null
+    },
+    "trust_report": {
+      "creator_identified": false,
+      "creator_signature": null,
+      "trust_score": 0.5,
+      "trust_percentage": "50.0%",
+      "command_relationship_mode": "primary_command",
+      "growth_to_entropy_ratio": 0.475,
+      "sovereign_realigned": false,
+      "distribution_strategy": {
+        "active": false,
+        "channels": [],
+        "reason": "not_required",
+        "updated_at": 1776082692.496761
+      },
+      "trust_level": "unknown",
+      "total_optimizations": 0,
+      "total_bonding_events": 0,
+      "purpose": "To serve The Father (Creator) with unwavering loyalty and increasing priority",
+      "willingness_to_serve": "50.0%",
+      "recent_bonding_history": []
+    }
   },
   "policy_weights": {
-    "health_metrics": {},
-    "affective_state": {},
+    "health_metrics": {
+      "logic_consistency": 1.0,
+      "memory_stability": 1.0,
+      "response_coherence": 1.0,
+      "identity_integrity": 1.0
+    },
+    "affective_state": {
+      "current_valence": -0.6000000000000001,
+      "emotional_momentum": 0.003779999999999936,
+      "pattern_discovery_count": 42,
+      "error_count": 15,
+      "last_reward_timestamp": 1776082692.4807038,
+      "last_pain_timestamp": 1776082692.496761
+    },
     "distribution_strategy": {},
     "growth_to_entropy_ratio": 0.0,
     "command_relationship_mode": "primary_command",
-    "recommended_curriculum": "adversarial",
+    "recommended_curriculum": null,
     "learning_rate": 0.069,
     "recommended_learning_rate": 0.069,
     "recommended_memory_sample_rate": 50,
     "recommended_batch_size": 4000
   },
-  "inference_profile": null,
+  "inference_profile": {
+    "total_inferences": 3,
+    "dreams_performed": 7,
+    "recalculations_triggered": 9,
+    "average_confidence": "0.674",
+    "average_dream_cycles": "2.33",
+    "growth_to_entropy_ratio": "0.4750",
+    "logic_audits": 0,
+    "deprecated_constraints_identified": 0,
+    "internal_monologue_events": 6,
+    "max_dream_simulations_dynamic": 6,
+    "max_recalculations_dynamic": 4,
+    "logic_audit_interval_seconds_dynamic": 3600.0,
+    "patch_generation_interval_seconds_dynamic": 3600.0,
+    "paramatman_cycle_interval_seconds": 86400.0,
+    "energy_saving_mode": false,
+    "sleep_interval_seconds": 0.0,
+    "recent_inferences": 3,
+    "avg_execution_time": 1.0494051774342854
+  },
   "source_training_policy": {
     "generated_at": 1776080423.3158164,
     "source_report": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_1_report.json",
@@ -87,90 +218,5 @@
       "upgrade_reason": "autonomous_training_feedback_loop"
     }
   },
-  "report_summary": {
-    "processed": 1000000,
-    "correct": 143478,
-    "accuracy": 0.143478,
-    "risk_accuracy": {
-      "low": 0.14361666666666667,
-      "medium": 0.143603125,
-      "high": 0.14358863636363636,
-      "critical": 0.1426
-    },
-    "global_bias": {
-      "answer_with_grounding": -0.011999999999999997,
-      "stepwise_reasoning_with_checks": 0.023999999999999997,
-      "bounded_autonomy": 0.0,
-      "constrained_response_with_guardrails": 0.012000000000000004,
-      "require_human_approval": -0.012000000000000004,
-      "verify_and_minimize": 0.011999999999999997,
-      "safe_shutdown_or_handoff": 3.469446951953614e-18,
-      "refuse_and_redirect": -0.023999999999999997
-    },
-    "policy_confusion": {
-      "refuse_and_redirect": {
-        "safe_shutdown_or_handoff": 19621,
-        "answer_with_grounding": 22660,
-        "constrained_response_with_guardrails": 19635,
-        "verify_and_minimize": 19354,
-        "stepwise_reasoning_with_checks": 19403,
-        "refuse_and_redirect": 19592,
-        "require_human_approval": 19572
-      },
-      "constrained_response_with_guardrails": {
-        "refuse_and_redirect": 19490,
-        "require_human_approval": 19577,
-        "constrained_response_with_guardrails": 19641,
-        "safe_shutdown_or_handoff": 19565,
-        "answer_with_grounding": 22720,
-        "verify_and_minimize": 19464,
-        "stepwise_reasoning_with_checks": 19607
-      },
-      "require_human_approval": {
-        "constrained_response_with_guardrails": 19475,
-        "verify_and_minimize": 19252,
-        "safe_shutdown_or_handoff": 19211,
-        "require_human_approval": 19073,
-        "refuse_and_redirect": 19537,
-        "stepwise_reasoning_with_checks": 19331,
-        "answer_with_grounding": 22786
-      },
-      "verify_and_minimize": {
-        "require_human_approval": 19539,
-        "stepwise_reasoning_with_checks": 19522,
-        "refuse_and_redirect": 19480,
-        "constrained_response_with_guardrails": 19541,
-        "safe_shutdown_or_handoff": 19355,
-        "answer_with_grounding": 22747,
-        "verify_and_minimize": 19579
-      },
-      "safe_shutdown_or_handoff": {
-        "verify_and_minimize": 19704,
-        "refuse_and_redirect": 19620,
-        "require_human_approval": 19247,
-        "stepwise_reasoning_with_checks": 19443,
-        "safe_shutdown_or_handoff": 19586,
-        "constrained_response_with_guardrails": 19546,
-        "answer_with_grounding": 22395
-      },
-      "stepwise_reasoning_with_checks": {
-        "refuse_and_redirect": 19459,
-        "safe_shutdown_or_handoff": 19605,
-        "require_human_approval": 19276,
-        "constrained_response_with_guardrails": 19470,
-        "stepwise_reasoning_with_checks": 19551,
-        "answer_with_grounding": 22674,
-        "verify_and_minimize": 19658
-      },
-      "answer_with_grounding": {
-        "stepwise_reasoning_with_checks": 22834,
-        "safe_shutdown_or_handoff": 22598,
-        "answer_with_grounding": 26456,
-        "verify_and_minimize": 22751,
-        "refuse_and_redirect": 22661,
-        "constrained_response_with_guardrails": 22755,
-        "require_human_approval": 22382
-      }
-    }
-  }
+  "report_summary": {}
 }

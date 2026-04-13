@@ -123,6 +123,7 @@ def _run_live_cycles() -> Dict[str, Any]:
         "trend_cycles": [],
         "autonomy_cycles": [],
         "paramatman_cycles": [],
+        "bridge_feedback_cycles": [],
         "errors": [],
     }
 
@@ -135,6 +136,19 @@ def _run_live_cycles() -> Dict[str, Any]:
     )
 
     try:
+        try:
+            bridge_feedback = engine.process_bridge_feedback_commands()
+            summary["bridge_feedback_cycles"].append(
+                {
+                    "processed_events": int(bridge_feedback.get("processed_events", 0)),
+                    "operator_feedback_events": int(
+                        (bridge_feedback.get("metrics") or {}).get("operator_feedback_events", 0)
+                    ),
+                }
+            )
+        except Exception as exc:
+            summary["errors"].append(f"bridge_feedback_prewarm: {exc}")
+
         for _ in range(2):
             try:
                 cycle = engine.perform_background_cycle()
@@ -197,6 +211,19 @@ def _run_live_cycles() -> Dict[str, Any]:
             )
         except Exception as exc:
             summary["errors"].append(f"paramatman_cycle: {exc}")
+
+        try:
+            bridge_feedback = engine.process_bridge_feedback_commands()
+            summary["bridge_feedback_cycles"].append(
+                {
+                    "processed_events": int(bridge_feedback.get("processed_events", 0)),
+                    "operator_feedback_events": int(
+                        (bridge_feedback.get("metrics") or {}).get("operator_feedback_events", 0)
+                    ),
+                }
+            )
+        except Exception as exc:
+            summary["errors"].append(f"bridge_feedback_postrun: {exc}")
 
         summary["internet_heartbeat"] = engine.internet_heartbeat
         summary["learned_fact_count"] = int(engine.learned_fact_count)

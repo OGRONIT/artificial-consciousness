@@ -1,0 +1,84 @@
+name: Autonomous Research Burst
+
+on:
+  workflow_dispatch:
+    inputs:
+      cycles:
+        description: "Burst cycles per run"
+        required: false
+        default: "4"
+      with_paramatman:
+        description: "Run one PARAMATMAN cycle at end"
+        required: false
+        default: "false"
+  schedule:
+    - cron: "*/15 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  cloud-burst:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f antahkarana_kernel/requirements.txt ]; then pip install -r antahkarana_kernel/requirements.txt; fi
+
+      - name: Run autonomous burst
+        shell: bash
+        run: |
+          CYCLES="${{ github.event.inputs.cycles || '4' }}"
+          WITH_PARAMATMAN="${{ github.event.inputs.with_paramatman || 'false' }}"
+
+          EXTRA_FLAGS=""
+          if [ "$WITH_PARAMATMAN" = "true" ]; then
+            EXTRA_FLAGS="--with-paramatman"
+          fi
+
+          python tools/run_cloud_research_burst.py \
+            --cycles "$CYCLES" \
+            $EXTRA_FLAGS \
+            --output benchmarks/artifacts/cloud_research_burst_latest.json
+
+      - name: Upload run artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloud-research-burst
+          path: |
+            benchmarks/artifacts/cloud_research_burst_latest.json
+            antahkarana_kernel/live_engine_state.json
+            live_engine_state.json
+          if-no-files-found: ignore
+
+      - name: Commit autonomous updates
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add benchmarks/artifacts/cloud_research_burst_latest.json || true
+          git add antahkarana_kernel/live_engine_state.json || true
+          git add live_engine_state.json || true
+          git add antahkarana_kernel/evolution_vault/Bridge_Commands.jsonl || true
+          git add antahkarana_kernel/evolution_vault/bridge_command_cursor.json || true
+          git add antahkarana_kernel/evolution_vault/llm_cognitive_loop_metrics.json || true
+
+          if git diff --cached --quiet; then
+            echo "No autonomous deltas to commit"
+            exit 0
+          fi
+
+          git commit -m "chore: autonomous cloud research burst update"
+          git push

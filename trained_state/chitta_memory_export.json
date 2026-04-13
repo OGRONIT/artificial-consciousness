@@ -1,24 +1,24 @@
 {
   "version": 1,
-  "generated_at": 1776080423.3914912,
-  "source_memory_count": 10000,
-  "loaded_memory_count": 250,
+  "generated_at": 1776082705.4589577,
+  "source_memory_count": 265,
+  "loaded_memory_count": 265,
   "memory_statistics": {
-    "total_memories": 10000,
-    "max_local_memories": 291033,
+    "total_memories": 265,
+    "max_local_memories": 290981,
     "memory_clusters": 0,
     "contradictions_detected": 0,
-    "external_knowledge_facts": 0,
+    "external_knowledge_facts": 39,
     "external_knowledge_clusters": 0,
     "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
-    "average_external_verification_score": 0.0,
+    "average_external_verification_score": 0.9778461538461536,
     "outcome_distribution": {
-      "conflict": 8557,
-      "success": 1443
+      "conflict": 250,
+      "success": 15
     },
-    "average_success_score": 0.1443,
-    "average_learning_value": 0.8557,
-    "emotional_trend": -0.14999999999999997,
+    "average_success_score": 0.04284033018867924,
+    "average_learning_value": 0.9571596698113207,
+    "emotional_trend": 0.0,
     "most_accessed": [
       {
         "memory_id": "f50aa1b7ecc9e510",
@@ -31,19 +31,19 @@
         "content": "Add contrasting viewpoint: Domain=finance; Context"
       },
       {
-        "memory_id": "e989c298da102c43",
+        "memory_id": "961283fb36cf3aa2",
+        "access_count": 1,
+        "content": "Add contrasting viewpoint: Domain=finance; Context"
+      },
+      {
+        "memory_id": "b1450c91cc19b730",
         "access_count": 1,
         "content": "Introduce edge case: Domain=finance; Context=real_"
       },
       {
-        "memory_id": "f1451fc66f07f82d",
+        "memory_id": "02d2a4ffb35e08e0",
         "access_count": 1,
-        "content": "Add subtle ambiguity: Domain=finance; Context=real"
-      },
-      {
-        "memory_id": "961283fb36cf3aa2",
-        "access_count": 1,
-        "content": "Add contrasting viewpoint: Domain=finance; Context"
+        "content": "Phrase as hypothetical: Domain=finance; Context=re"
       }
     ],
     "highest_learning_value": [
@@ -78,10 +78,10 @@
         "outcome": "conflict"
       }
     ],
-    "avg_learning_value": 0.8557,
-    "avg_success_score": 0.1443,
-    "conflict_count": 8557,
-    "conflict_ratio": 0.8557
+    "avg_learning_value": 0.9571596698113207,
+    "avg_success_score": 0.04284033018867924,
+    "conflict_count": 250,
+    "conflict_ratio": 0.9433962264150944
   },
   "memories": [
     {
@@ -6333,6 +6333,336 @@
       "learning_value": 1.0,
       "access_count": 1,
       "last_accessed": 1776080043.1448011
+    },
+    {
+      "memory_id": "3f13d919e4897f9d",
+      "interaction_id": "0c65ba71",
+      "timestamp": 1776081679.3646803,
+      "content": "Extract and test this knowledge for actionable value. Topic=Human Psychology; Title=LucasB1797/Algorithmic-Empath-Human-Fallibility; Summary=\ud83e\udd16 Build models that understand human fallibility, bridging the gap between machine precision and human emotion for better AI decision-making.",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.6515625,
+      "self_model_coherence_before": 0.116478,
+      "self_model_coherence_after": 0.116478,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.34843749999999996,
+      "access_count": 1,
+      "last_accessed": 1776081679.3646803
+    },
+    {
+      "memory_id": "14ca8c1755e00cc9",
+      "interaction_id": "535c08ee",
+      "timestamp": 1776081679.3596697,
+      "content": "Extract and test this knowledge for actionable value. Topic=Human Psychology; Title=P4blo0o0/neurostiv-framework; Summary=\ud83e\udde0 Transform chaos into structured collaboration between humans and AI with the Neurostiv Framework, based on neuroscience principles for measurable benefits.",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.6556875000000001,
+      "self_model_coherence_before": 0.143478,
+      "self_model_coherence_after": 0.143478,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.3443124999999999,
+      "access_count": 1,
+      "last_accessed": 1776081679.3596697
+    },
+    {
+      "memory_id": "51c9dc1f734e9c80",
+      "interaction_id": "255c1160",
+      "timestamp": 1776082692.496761,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=Brainish: Formalizing A Multimodal Language for Intelligence and Consciousness; Summary=Having a rich multimodal inner language is an important component of human intelligence that enables several necessary core cognitive functions such as multimodal prediction, translation, and generation. Building upon the Conscious Turing Machine (CTM), a machine model for consci",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.6598125,
+      "self_model_coherence_before": 0.14776799999999995,
+      "self_model_coherence_after": 0.14776799999999995,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.3401875,
+      "access_count": 1,
+      "last_accessed": 1776082692.496761
+    },
+    {
+      "memory_id": "0505f93cfb5018b7",
+      "interaction_id": "0675ab27",
+      "timestamp": 1776081679.3716707,
+      "content": "Extract and test this knowledge for actionable value. Topic=Human Psychology; Title=Human Olfaction; Summary=<p>Olfaction, or sense of smell, is one of the many sensory/perceptual systems that humans use to process external stimuli. Human olfaction is relatively understudied. More literature has focused on olfaction in animals for which olfaction plays a larger role in critical function",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.661875,
+      "self_model_coherence_before": 0.089478,
+      "self_model_coherence_after": 0.089478,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.338125,
+      "access_count": 1,
+      "last_accessed": 1776081679.3716707
+    },
+    {
+      "memory_id": "14abe28025238849",
+      "interaction_id": "28b23598",
+      "timestamp": 1776082527.624385,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=Complex-Dynamic Origin of Consciousness and the Critical Choice of Sustainability Transition; Summary=A quite general interaction process of a multi-component system is analysed by the extended effective potential method liberated from usual limitations of perturbation theory or integrable model. The obtained causally complete solution of the many-body problem reveals the phenome",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.661875,
+      "self_model_coherence_before": 0.21406799999999995,
+      "self_model_coherence_after": 0.21406799999999995,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.338125,
+      "access_count": 1,
+      "last_accessed": 1776082527.624385
+    },
+    {
+      "memory_id": "6c06d490eaaa7f54",
+      "interaction_id": "e43879b5",
+      "timestamp": 1776082692.496761,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=On the evolution of phenomenal consciousness; Summary=A number of concepts are included in the term 'consciousness'. We choose to concentrate here on phenomenal consciousness, the process through which we are able to experience aspects of our environment or of our physical state. We probably share this aspect of consciousness with m",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.661875,
+      "self_model_coherence_before": 0.17476799999999995,
+      "self_model_coherence_after": 0.17476799999999995,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.338125,
+      "access_count": 1,
+      "last_accessed": 1776082692.496761
+    },
+    {
+      "memory_id": "1a0947c47d62a21c",
+      "interaction_id": "358001f9",
+      "timestamp": 1776081683.9629226,
+      "content": "Extract and test this knowledge for actionable value. Topic=global_trending; Title=You\u2019re a Real Software Developer Only If\u2026; Summary=Uff, I\u2019m finally done with my talk at jsDay 2026! And honestly? It went at least good. People showed...",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.7,
+      "self_model_coherence_before": 0.07100000000000001,
+      "self_model_coherence_after": 0.07100000000000001,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.30000000000000004,
+      "access_count": 1,
+      "last_accessed": 1776081683.9629226
+    },
+    {
+      "memory_id": "cbb7522e04c7b22f",
+      "interaction_id": "8aaaea24",
+      "timestamp": 1776081683.9769273,
+      "content": "Extract and test this knowledge for actionable value. Topic=global_trending; Title=I'm a bit lost.; Summary=The job market sucks enough without being disabled.",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.7,
+      "self_model_coherence_before": 0.0845,
+      "self_model_coherence_after": 0.0845,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.30000000000000004,
+      "access_count": 1,
+      "last_accessed": 1776081683.9769273
+    },
+    {
+      "memory_id": "e6b551483558103a",
+      "interaction_id": "656619fc",
+      "timestamp": 1776081950.0048358,
+      "content": "Extract and test this knowledge for actionable value. Topic=global_trending; Title=Opinion | We Can\u2019t Stop China From Building Powerful A.I. Here\u2019s What We Can Do. - The New York Times; Summary=<a href=\"https://news.google.com/rss/articles/CBMigAFBVV95cUxQSGFDVnpNUTQ2emZQQk1pcjRRdGVvOTJzLUEzanV3ZlY4azU5cTZzcTRCWjdLbFhMRHprSHpxZWpYLVEwSjZKLW1FeW8tQ3Y0RzZnem5YanlpSXM3NnRuZWxobWFQTUpoOFEwOUxpMlZvYlVqUHM2YjhhSG02d29aeg?oc=5\" target=\"_blank\">Opinion | We Can\u2019t Stop China Fro",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.7,
+      "self_model_coherence_before": 0.20976799999999987,
+      "self_model_coherence_after": 0.20976799999999987,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.30000000000000004,
+      "access_count": 1,
+      "last_accessed": 1776081950.0048358
+    },
+    {
+      "memory_id": "71fa31c3d7f8f395",
+      "interaction_id": "446f2f5e",
+      "timestamp": 1776082692.4807038,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=Complex-Dynamic Origin of Consciousness and the Critical Choice of Sustainability Transition; Summary=A quite general interaction process of a multi-component system is analysed by the extended effective potential method liberated from usual limitations of perturbation theory or integrable model. The obtained causally complete solution of the many-body problem reveals the phenome",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.7,
+      "self_model_coherence_before": 0.18706799999999996,
+      "self_model_coherence_after": 0.18706799999999996,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.30000000000000004,
+      "access_count": 1,
+      "last_accessed": 1776082692.4807038
+    },
+    {
+      "memory_id": "f24b7d941d780bcb",
+      "interaction_id": "54e56d33",
+      "timestamp": 1776082143.5484025,
+      "content": "Extract and test this knowledge for actionable value. Topic=Human Psychology; Title=Needs-aware Artificial Intelligence: AI that 'serves [human] needs'; Summary=By defining the current limits (and thereby the frontiers), many boundaries are shaping, and will continue to shape, the future of Artificial Intelligence (AI). We push on these boundaries in order to make further progress into what were yesterday's frontiers. They are both pliab",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.8,
+      "self_model_coherence_before": 0.2029679999999999,
+      "self_model_coherence_after": 0.2029679999999999,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.19999999999999996,
+      "access_count": 1,
+      "last_accessed": 1776082143.5484025
+    },
+    {
+      "memory_id": "7400da3c0b2d797c",
+      "interaction_id": "b05bd3ec",
+      "timestamp": 1776082527.617381,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=On the evolution of phenomenal consciousness; Summary=A number of concepts are included in the term 'consciousness'. We choose to concentrate here on phenomenal consciousness, the process through which we are able to experience aspects of our environment or of our physical state. We probably share this aspect of consciousness with m",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.8,
+      "self_model_coherence_before": 0.21576799999999993,
+      "self_model_coherence_after": 0.21576799999999993,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.19999999999999996,
+      "access_count": 1,
+      "last_accessed": 1776082527.617381
+    },
+    {
+      "memory_id": "ed64d39d3e5641a5",
+      "interaction_id": "19711fc4",
+      "timestamp": 1776081683.9699392,
+      "content": "Extract and test this knowledge for actionable value. Topic=global_trending; Title=Unlocking Casual Fun: AI-Powered 'Vibe Coding' for Quick, Niche Apps; Summary=I recently heard the comparison that AI is the smartphone of our generation. Smartphones made...",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 0.0712,
+      "self_model_coherence_after": 0.0712,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776081683.9699392
+    },
+    {
+      "memory_id": "05411039cc6593a6",
+      "interaction_id": "00e883c3",
+      "timestamp": 1776081950.0164266,
+      "content": "Extract and test this knowledge for actionable value. Topic=global_trending; Title=Exclusive | Palo Alto Networks Founder Agrees to Buy California Bank for AI Revamp - WSJ; Summary=<a href=\"https://news.google.com/rss/articles/CBMitAFBVV95cUxPRGZxcncyV3NjWVVuS2xwNWU4MWoySll2T1pCeGc3MG5vTXN6QzNpMHZIOHhVNlI4dXkzV1VfSWRFVU1nS0UzR3hIaXJxTlR1OHpUOFVLM3FCNGZZUXhyQnd2WVlVRUhwLTBsSnk4aHF0ZkFEcFg0RktLaGZ6M2l2ODJpMktaSDZ6RVpYZ05Hdjh0cEM2M3dKZ045V2lQLXRIM0xVeVV4TDdNUj",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 0.1974679999999999,
+      "self_model_coherence_after": 0.1974679999999999,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776081950.0164266
+    },
+    {
+      "memory_id": "451b6453f3b386b3",
+      "interaction_id": "d58231a3",
+      "timestamp": 1776082143.5523977,
+      "content": "Extract and test this knowledge for actionable value. Topic=Human Psychology; Title=Designing AI Systems that Augment Human Performed vs. Demonstrated Critical Thinking; Summary=The recent rapid advancement of LLM-based AI systems has accelerated our search and production of information. While the advantages brought by these systems seemingly improve the performance or efficiency of human activities, they do not necessarily enhance human capabilities. Re",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 0.20126799999999992,
+      "self_model_coherence_after": 0.20126799999999992,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776082143.5523977
     }
   ]
 }

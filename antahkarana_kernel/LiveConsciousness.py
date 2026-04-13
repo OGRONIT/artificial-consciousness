@@ -82,6 +82,7 @@ class LiveConsciousnessEngine:
         self.bridge_cursor_path = ROOT / "evolution_vault" / "bridge_command_cursor.json"
         self.bridge_feedback_metrics = {
             "processed_events": 0,
+            "operator_feedback_events": 0,
             "coherence_rewards": 0,
             "coherence_pain": 0,
             "observer_checks": 0,
@@ -369,6 +370,16 @@ class LiveConsciousnessEngine:
         self._persist_state_snapshot()
         return result
 
+    def process_bridge_feedback_commands(self) -> Dict[str, Any]:
+        """Expose bridge feedback processing for external runners and live loops."""
+        before = int(self.bridge_feedback_metrics.get("processed_events", 0))
+        self._process_bridge_feedback_commands()
+        after = int(self.bridge_feedback_metrics.get("processed_events", 0))
+        return {
+            "processed_events": max(0, after - before),
+            "metrics": dict(self.bridge_feedback_metrics),
+        }
+
     def _tune_predator_hunger(self) -> Dict[str, Any]:
         """Adapt scan speed from growth-entropy to keep acquisition hungry and fast."""
         stats = self.kernel.inference_engine.inference_statistics()
@@ -515,7 +526,7 @@ class LiveConsciousnessEngine:
                         event = json.loads(raw)
                     except Exception:
                         continue
-                    if str(event.get("type", "")) == "llm_feedback":
+                    if str(event.get("type", "")) in {"llm_feedback", "operator_feedback"}:
                         events.append(event)
         except Exception as exc:
             logger.warning("[LIVE] Bridge feedback read failed: %s", exc)
@@ -533,6 +544,8 @@ class LiveConsciousnessEngine:
             payload = event.get("payload", {}) if isinstance(event, dict) else {}
             if not isinstance(payload, dict):
                 continue
+            if str(event.get("type", "")) == "operator_feedback":
+                self.bridge_feedback_metrics["operator_feedback_events"] += 1
             self._apply_bridge_feedback(payload)
 
         self._log_thought(
