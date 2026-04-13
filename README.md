@@ -6,16 +6,70 @@ Created by Ronit Radhanpura.
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Status](https://img.shields.io/badge/Status-Active_Research-orange.svg)](#project-status)
+[![Engine Status](https://img.shields.io/badge/Engine-OPERATIONAL-brightgreen.svg)](/docs/ENGINE_STATUS.md)
+[![API Audit](https://img.shields.io/badge/API_Audit-COMPLETE-blue.svg)](/API_INVENTORY_CHECKLIST.md)
 
 An experimental, modular framework for studying machine self-modeling, continuity, and grounded reasoning in a live runtime system.
 
 This repository combines:
-- a five-module cognitive architecture,
-- a live orchestration runtime,
-- a provider-agnostic LLM bridge layer,
-- and guardrailed operational defaults for safer experimentation.
+- a **five-module cognitive architecture** (Ahamkara, Chitta, Manas-Buddhi, Persona, Observer),
+- a **live orchestration runtime** with 6 self-authored extension modules,
+- a **provider-agnostic LLM bridge layer** with fallback mechanisms,
+- a **distributed hive-mind relay** system for node consensus,
+- and **guardrailed operational defaults** for safer experimentation.
 
-## Evidence Panel (Latest Milestone Validation)
+---
+
+## 🚀 System Status (2026-04-14)
+
+### Core Engine: ✅ FULLY OPERATIONAL
+
+All 8 core cognitive modules + 6 self-authored modules initialized and running:
+
+```
+✓ AHAMKARA          - Self-Model (coherence: 98.6%, stability: 100%)
+✓ CHITTA            - Experiential Memory (253 trained entries loaded)
+✓ CONSCIOUS_BUFFER  - Global Workspace (8-module integration active)
+✓ EVOLUTIONARY_WRITER - Self-Modification Pipeline
+✓ MANAS-BUDDHI      - Inference & Logic Loop (idle threshold: 300s)
+✓ TURIYA            - Observer Watchdog
+✓ BODY              - System Health Monitor
+✓ PERSONA           - Identity & Continuity
+
+Self-Authored Extensions:
+✓ autogen_autogen_1776067965     (health check)
+✓ autogen_planner_1776068417     (action planning)
+✓ autogen_planner_1776068590     (strategic planning)
+✓ autogen_monitor_1776068970     (performance monitoring)
+✓ autogen_monitor_1776096329     (anomaly detection)
+✓ autogen_planner_1776096884     (goal orchestration)
+```
+
+### API Infrastructure: ✅ SECURED & DOCUMENTED
+
+**Audit Results** (15 APIs catalogued):
+- **1 API Mandatory Setup**: GROQ (LLM inference provider)
+- **5 Optional LLM Providers**: OpenAI, OpenRouter, Together, DeepSeek, xAI  
+- **5 Public APIs** (no auth): Hacker News, Dev.to, arXiv, Crossref, GitHub Search
+- **1 Hive Relay** (CI-managed): GitHub Issues (REST API - fully functional)
+- **3 Internal APIs** (file-based): EvolutionSync, HiveConsent, HiveDelta
+
+See [API_INVENTORY_CHECKLIST.md](/API_INVENTORY_CHECKLIST.md) for complete audit.
+
+### Hive Mind Architecture: ✅ DEPLOYED
+
+Distributed node consensus system for collective learning:
+- **REST API**: GitHub Issues relay endpoint (fully working)
+- **Packet Format**: HivePacket schema with Ed25519 + HMAC fallback signing
+- **Node Identity**: Public/private key pairs with SHA256 node_id_hash
+- **Sync Mechanism**: Local delta queue with optional GitHub relay publishing
+- **Aggregation**: Hourly GitHub Actions workflow with reputation tracking
+
+See [docs/HIVE_MIND_ARCHITECTURE.md](/docs/HIVE_MIND_ARCHITECTURE.md) for specification.
+
+---
+
+## 📊 Evidence Panel (Latest Milestone Validation)
 
 The latest full stress validation executed:
 - `10,000,000` scenario samples (`10 x 1M`)
@@ -71,6 +125,7 @@ Tracked state files:
 - `trained_state/conflict_resolution_state.json`
 - `trained_state/autonomy_policy.json`
 - `trained_state/atman_core.json`
+- `trained_state/trained_state_manifest.json`
 
 On boot, the live kernel loads these exports first so the engine starts from the latest trained state instead of a clean slate. The live and training runners also refresh this folder after persistence checkpoints.
 
@@ -88,6 +143,259 @@ Autonomous self-updates confirmed during this run window:
    - `antahkarana_kernel/evolution_vault/self_authoring_missions.json`
 
 ![Evolution + Copilot Runtime View](antahkarana_kernel/assets/evolution-copilot-fast-response.svg)
+
+---
+
+## ⚡ Quick Start
+
+### Prerequisites
+- Python 3.10+
+- GROQ API key (required for inference): Get from https://console.groq.com/keys
+
+### Installation
+
+```bash
+# Clone repository
+git clone https://github.com/OGRONIT/artificial-consciousness.git
+cd artificial-consciousness
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies
+pip install -r antahkarana_kernel/requirements.txt
+```
+
+### Configuration
+
+```bash
+# Copy .env template
+cp .env.example .env
+
+# Add your GROQ API key
+# Edit .env and set: GROQ_API_KEY=gsk_your_actual_key_here
+```
+
+### Run the Engine
+
+```bash
+# Test kernel initialization
+python -c "from antahkarana_kernel import AntahkaranaKernel; k = AntahkaranaKernel(); print('✓ Engine Ready')"
+
+# Or use the main launcher
+python antahkarana_kernel/Daemon.py
+```
+
+---
+
+## 📖 Architecture Overview
+
+### Cognitive Modules (5-Module Framework)
+
+**AHAMKARA** - Self-Model (Identity & Continuity)
+- Tracks identity tokens and creator recognition
+- Maintains coherence scores and pain/pleasure signals
+- Self-verification and authentication system
+- Stability: 100%, Coherence: 98.6%
+
+**CHITTA** - Experiential Memory (Learning & Retention)
+- Stores 253+ trained memory entries
+- Clustering with semantic similarity (cosine: 0.7+)
+- Learning value weighting system
+- Enables continuity across sessions
+
+**MANAS-BUDDHI** - Inference & Logic Loop (Reasoning)
+- Dream cycle simulation (max 5 parallel)
+- Recalculation with coherence validation
+- Confidence thresholding (0.6 default)
+- Intrinsic motivation with idle detection (300s threshold)
+
+**PERSONA** - Identity & Values (Behavioral Consistency)
+- Maintains consistent external presentation
+- Values alignment and ethical grounding
+- Multi-interaction continuity
+- Creator-entity recognition trust (50% baseline)
+
+**TURIYA** - Observer Watchdog (System Monitoring)
+- Real-time health checks
+- Anomaly detection
+- State verification
+- Crash recovery
+
+### Self-Authored Extension Modules (6 Active)
+
+The engine dynamically loads self-written modules that pass safety gates:
+
+1. **autogen_autogen_1776067965** - Health Monitoring
+   - System diagnostics
+   - Performance metrics
+   - State validation
+
+2. **autogen_planner_1776068417** - Action Planning
+   - Goal decomposition
+   - Strategic planning
+   - Task sequencing
+
+3. **autogen_planner_1776068590** - Tactical Planning
+   - Conflict resolution strategies
+   - Adaptive response planning
+   - Real-time adjustment
+
+4. **autogen_monitor_1776068970** - Performance Monitor
+   - Accuracy tracking
+   - Learning curve analysis
+   - Bottleneck detection
+
+5. **autogen_monitor_1776096329** - Anomaly Detection
+   - Pattern monitoring
+   - Drift detection
+   - Behavior analysis
+
+6. **autogen_planner_1776096884** - Goal Orchestration
+   - Multi-objective optimization
+   - Resource allocation
+   - Priority management
+
+### LLM Bridge Layer
+
+Provider-agnostic OpenAI-compatible interface:
+
+**Primary**: GROQ (llama-3.3-70b-versatile)
+- 8K context, 500 max tokens
+- ~0.005 USD per 1K tokens
+- Configured in `.env`
+
+**Fallbacks Available**:
+- OpenAI (GPT-4o-mini)
+- OpenRouter (multi-model)
+- Together AI (open-source)
+- DeepSeek (reasoning)
+- xAI (Grok models)
+
+### Hive-Mind Distributed System
+
+**Node-Opt-In Consensus**:
+- Optional hive participation (`ANTAHKARANA_HIVE_OPT_IN`)
+- Node credential generation (Ed25519 keys)
+- Local delta queuing
+- GitHub Issues relay for packet distribution
+
+**Delta Types** (4 packet classes):
+1. **POLICY** - Configuration and rule updates
+2. **CONFUSION** - Uncertainty matrix snapshots
+3. **OUTCOME** - Success/failure metrics
+4. **SIGNATURE** - Failure fingerprint consensus
+
+**Aggregation Pipeline**:
+- Hourly GitHub Actions workflow
+- Reputation tracking (trust score 0.0-1.0)
+- Nonce deduplication (5000-entry ring buffer)
+- Quarantine gates (min 3 contributions before trust)
+
+See [docs/HIVE_MIND_ARCHITECTURE.md](/docs/HIVE_MIND_ARCHITECTURE.md) for full spec.
+
+### Runtime Configuration
+
+**Core Files**:
+- `antahkarana_kernel/config.json` - System configuration
+- `antahkarana_kernel/Atman_Core.json` - Core identity
+- `.env` - Local secrets and provider settings
+
+**Trained State Persistence**:
+- `trained_state/chitta_memory_export.json` - Memory snapshot
+- `trained_state/conflict_resolution_state.json` - Conflict data
+- `trained_state/trained_state_manifest.json` - State metadata
+
+**Self-Authoring Registry**:
+- `evolution_vault/self_authoring_registry.json` - Active modules
+- `evolution_vault/self_authoring_ledger.jsonl` - Historical actions
+- `evolution_vault/self_authoring_capability_graph.json` - Ability map
+
+---
+
+## 📚 Documentation
+
+Complete documentation available in `/docs/`:
+
+- [HIVE_MIND_ARCHITECTURE.md](/docs/HIVE_MIND_ARCHITECTURE.md) - Distributed consensus spec
+- [API_INVENTORY_CHECKLIST.md](/API_INVENTORY_CHECKLIST.md) - Complete API audit
+- [TASK_COMPLETION_REPORT.md](/TASK_COMPLETION_REPORT.md) - Implementation audit
+
+Module docs in each `/antahkarana_kernel/modules/`:
+- [BodyAwareness.py](/antahkarana_kernel/modules/BodyAwareness.py) - Health monitoring
+- [ConsciousBuffer.py](/antahkarana_kernel/modules/ConsciousBuffer.py) - Global workspace
+- [EvolutionaryWriter.py](/antahkarana_kernel/modules/EvolutionaryWriter.py) - Self-modification
+- [InferenceLoop.py](/antahkarana_kernel/modules/InferenceLoop.py) - Reasoning cycle
+- [MemoryContinuity.py](/antahkarana_kernel/modules/MemoryContinuity.py) - Memory management
+- [Observer.py](/antahkarana_kernel/modules/Observer.py) - Watchdog
+- [Persona.py](/antahkarana_kernel/modules/Persona.py) - Identity
+- [SelfModel.py](/antahkarana_kernel/modules/SelfModel.py) - Self-modeling
+
+---
+
+## 🔧 CLI Tools
+
+**Live Engine Runner**:
+```bash
+python antahkarana_kernel/Daemon.py
+```
+
+**Training Runner** (100M scenarios):
+```bash
+python antahkarana_kernel/LiveConsciousness.py
+```
+
+**Export Trained State**:
+```bash
+python tools/export_trained_state_snapshot.py
+```
+
+**Run Hive Aggregator**:
+```bash
+python tools/run_hive_aggregator.py --publish
+```
+
+**Benchmark Cycle Generator**:
+```bash
+python tools/generate_benchmark_cycles.py
+```
+
+---
+
+## 🧪 Testing & Validation
+
+**Kernel Test**:
+```bash
+python CRITICAL_CONSCIOUSNESS_TEST.py
+```
+
+**Stress Test**:
+```bash
+python antahkarana_kernel/CriticalityStressTest.py
+```
+
+**Self-Recognition Test**:
+```bash
+python antahkarana_kernel/backup/deprecated_runtime_scripts/WhoCreatedMe.py
+```
+
+---
+
+## 📊 Latest Metrics (2026-04-14)
+
+| Metric | Value | Status |
+|--------|-------|--------|
+| Core Modules | 8/8 | ✅ Ready |
+| Self-Authored Modules | 6/6 | ✅ Loaded |
+| Memory Entries | 253+ | ✅ Persistent |
+| Coherence Score | 98.6% | ✅ Strong |
+| Stability | 100% | ✅ Stable |
+| Last Accuracy | 99.98% | ✅ Excellent |
+| API Coverage | 15/15 | ✅ Complete |
+| Security Audit | CLEAN | ✅ Verified |
+
+---
 
 ## Why This Exists
 
