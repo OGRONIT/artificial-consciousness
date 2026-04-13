@@ -1,14 +1,14 @@
 {
-  "started_at": 1776117646.8938856,
+  "started_at": 1776121300.8222616,
   "cycles_requested": 4,
   "background": [
     {
-      "approved": 9,
+      "approved": 5,
       "assimilation_integrated": 3
     },
     {
-      "approved": 0,
-      "assimilation_integrated": 0
+      "approved": 7,
+      "assimilation_integrated": 3
     },
     {
       "approved": 0,
@@ -39,7 +39,7 @@
   ],
   "trends": [
     {
-      "approved": 27,
+      "approved": 19,
       "stream_integrated": 0
     },
     {
@@ -47,7 +47,7 @@
       "stream_integrated": 0
     },
     {
-      "approved": 25,
+      "approved": 9,
       "stream_integrated": 0
     },
     {
@@ -57,20 +57,20 @@
   ],
   "autonomy": [
     {
-      "autonomy_level": 0.7609,
-      "actions": 2
+      "autonomy_level": 0.8089,
+      "actions": 3
     },
     {
-      "autonomy_level": 0.7609,
-      "actions": 2
+      "autonomy_level": 0.7988,
+      "actions": 4
     },
     {
-      "autonomy_level": 0.7609,
-      "actions": 2
+      "autonomy_level": 0.7988,
+      "actions": 4
     },
     {
-      "autonomy_level": 0.7609,
-      "actions": 2
+      "autonomy_level": 0.7988,
+      "actions": 4
     }
   ],
   "bridge_feedback": [
@@ -93,19 +93,19 @@
   ],
   "errors": [],
   "heartbeat": {
-    "last_successful_fetch_timestamp": 1776117668.4311962,
+    "last_successful_fetch_timestamp": 1776121387.208359,
     "last_successful_fetch_sources": [
       "Crossref",
       "DevTo",
       "GoogleNews",
       "HackerNews"
     ],
-    "last_successful_fetch_topic": "Human Psychology",
+    "last_successful_fetch_topic": "Artificial Consciousness",
     "last_successful_fetch_event": "hourly_global_trends",
-    "last_observed_external_fact_count": 19,
+    "last_observed_external_fact_count": 20,
     "total_successful_fetch_events": 12
   },
-  "learned_fact_count": 64,
+  "learned_fact_count": 46,
   "bridge_feedback_metrics": {
     "processed_events": 0,
     "operator_feedback_events": 0,
@@ -117,5 +117,5 @@
     "actions_probabilistic_trials": 0,
     "actions_blocked": 0
   },
-  "completed_at": 1776117668.45407
+  "completed_at": 1776121387.2309783
 }
