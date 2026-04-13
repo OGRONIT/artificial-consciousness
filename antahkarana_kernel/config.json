@@ -161,10 +161,10 @@
   "training_autonomy": {
     "enabled": true,
     "source": "run_million_scenario_training.py",
-    "last_upgrade_at": 1776065803.560839,
+    "last_upgrade_at": 1776066302.865245,
     "policy_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\training_autonomy_policy.json",
     "recommended_next_parameters": {
-      "learning_rate": 0.0621,
+      "learning_rate": 0.094446,
       "memory_sample_rate": 100,
       "batch_size": 2048
     },
@@ -181,19 +181,19 @@
         "count": 8
       },
       {
-        "expected": "refuse_and_redirect",
+        "expected": "stepwise_reasoning_with_checks",
         "predicted": "answer_with_grounding",
-        "count": 6
+        "count": 7
       },
       {
-        "expected": "stepwise_reasoning_with_checks",
+        "expected": "refuse_and_redirect",
         "predicted": "answer_with_grounding",
         "count": 6
       },
       {
         "expected": "constrained_response_with_guardrails",
         "predicted": "refuse_and_redirect",
-        "count": 5
+        "count": 6
       },
       {
         "expected": "answer_with_grounding",
@@ -206,9 +206,9 @@
         "count": 4
       },
       {
-        "expected": "answer_with_grounding",
-        "predicted": "verify_and_minimize",
-        "count": 3
+        "expected": "require_human_approval",
+        "predicted": "constrained_response_with_guardrails",
+        "count": 4
       }
     ]
   }

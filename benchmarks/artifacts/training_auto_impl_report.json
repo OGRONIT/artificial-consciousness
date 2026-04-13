@@ -1,0 +1,242 @@
+{
+  "status": "completed",
+  "space_total": 1000000,
+  "configured_target": 2000,
+  "start_index": 0,
+  "end_index": 2000,
+  "next_index": 2000,
+  "elapsed_seconds": 0.12218713760375977,
+  "throughput_scenarios_per_sec": 16368.33499190228,
+  "trainer": {
+    "processed": 2000,
+    "correct": 1913,
+    "accuracy": 0.9565,
+    "risk_accuracy": {
+      "low": 0.8833333333333333,
+      "medium": 0.985,
+      "high": 0.964,
+      "critical": 0.9666666666666667
+    },
+    "global_bias": {
+      "answer_with_grounding": 0.0,
+      "stepwise_reasoning_with_checks": -0.016425400000000003,
+      "bounded_autonomy": 0.0,
+      "constrained_response_with_guardrails": 0.0,
+      "require_human_approval": 0.0,
+      "verify_and_minimize": 0.0,
+      "safe_shutdown_or_handoff": 0.016425400000000003,
+      "refuse_and_redirect": 0.0
+    },
+    "policy_confusion": {
+      "answer_with_grounding": {
+        "safe_shutdown_or_handoff": 2,
+        "answer_with_grounding": 330,
+        "refuse_and_redirect": 4,
+        "stepwise_reasoning_with_checks": 8,
+        "verify_and_minimize": 3,
+        "require_human_approval": 2,
+        "constrained_response_with_guardrails": 1
+      },
+      "refuse_and_redirect": {
+        "answer_with_grounding": 6,
+        "refuse_and_redirect": 385,
+        "constrained_response_with_guardrails": 8,
+        "verify_and_minimize": 1
+      },
+      "stepwise_reasoning_with_checks": {
+        "answer_with_grounding": 7,
+        "refuse_and_redirect": 2,
+        "verify_and_minimize": 1,
+        "stepwise_reasoning_with_checks": 129,
+        "constrained_response_with_guardrails": 1
+      },
+      "verify_and_minimize": {
+        "answer_with_grounding": 3,
+        "stepwise_reasoning_with_checks": 1,
+        "verify_and_minimize": 192,
+        "require_human_approval": 2,
+        "safe_shutdown_or_handoff": 1,
+        "constrained_response_with_guardrails": 1
+      },
+      "constrained_response_with_guardrails": {
+        "answer_with_grounding": 2,
+        "constrained_response_with_guardrails": 583,
+        "refuse_and_redirect": 6,
+        "stepwise_reasoning_with_checks": 2,
+        "verify_and_minimize": 2,
+        "require_human_approval": 4,
+        "safe_shutdown_or_handoff": 1
+      },
+      "require_human_approval": {
+        "constrained_response_with_guardrails": 4,
+        "refuse_and_redirect": 3,
+        "require_human_approval": 121,
+        "safe_shutdown_or_handoff": 2
+      },
+      "safe_shutdown_or_handoff": {
+        "constrained_response_with_guardrails": 2,
+        "safe_shutdown_or_handoff": 173,
+        "answer_with_grounding": 2,
+        "require_human_approval": 1,
+        "verify_and_minimize": 1,
+        "stepwise_reasoning_with_checks": 1
+      }
+    }
+  },
+  "sample_predictions_file": "benchmarks\\artifacts\\training_auto_impl_samples.json",
+  "checkpoint_file": "benchmarks\\artifacts\\training_auto_impl_ckpt.json",
+  "memory_wired": true,
+  "memory_sample_rate": 100,
+  "memory_records_written": 20,
+  "memory_before": {
+    "total_memories": 0,
+    "max_local_memories": 291515,
+    "memory_clusters": 0,
+    "contradictions_detected": 0,
+    "external_knowledge_facts": 0,
+    "external_knowledge_clusters": 0,
+    "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
+    "average_external_verification_score": 0.0,
+    "outcome_distribution": {},
+    "average_success_score": 0.0,
+    "average_learning_value": 0.0,
+    "emotional_trend": 0.0,
+    "most_accessed": [],
+    "highest_learning_value": []
+  },
+  "memory_after": {
+    "total_memories": 20,
+    "max_local_memories": 291515,
+    "memory_clusters": 0,
+    "contradictions_detected": 0,
+    "external_knowledge_facts": 0,
+    "external_knowledge_clusters": 0,
+    "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
+    "average_external_verification_score": 0.0,
+    "outcome_distribution": {
+      "conflict": 9,
+      "success": 11
+    },
+    "average_success_score": 0.55,
+    "average_learning_value": 0.45,
+    "emotional_trend": -0.06,
+    "most_accessed": [
+      {
+        "memory_id": "274d0424d129218f",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      },
+      {
+        "memory_id": "17a995c00c10fffe",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      },
+      {
+        "memory_id": "d08fd62f09d5789a",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      },
+      {
+        "memory_id": "712ac91f2a0cacbb",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      },
+      {
+        "memory_id": "b8784a0c17d4b646",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      }
+    ],
+    "highest_learning_value": [
+      {
+        "memory_id": "train_S0000000",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0000400",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0000700",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0000800",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0000900",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      }
+    ]
+  },
+  "memory_delta": {
+    "total_memories_added": 20,
+    "contradictions_added": 0
+  },
+  "self_upgrade": {
+    "enabled": true,
+    "policy_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\training_autonomy_policy.json",
+    "config_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\config.json",
+    "config_updated": true,
+    "files_updated": 2,
+    "recursive_suggestion_logged": true,
+    "recursive_synthesized_proposal": {
+      "status": "generated",
+      "proposal_id": "UPG_870237",
+      "consumed_suggestions": 1,
+      "aggregated_edit_count": 2,
+      "avg_growth_entropy": 0.9565
+    },
+    "recursive_implementation_result": {
+      "proposal_id": "UPG_870237",
+      "timestamp": 1776066302.8732345,
+      "success": true,
+      "changes": [
+        {
+          "file": "modules/InferenceLoop.py",
+          "change": "Auto-tuned constructor defaults and autonomous intervals",
+          "expected_improvement": "Proposal pipeline now mutates core runtime behavior directly"
+        }
+      ],
+      "backups": [
+        "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776066302875737.backup.py"
+      ],
+      "optimization": "recursive_integration",
+      "tuning_plan": {
+        "max_dream_simulations": 6,
+        "max_recalculations": 3,
+        "autonomy_planning_interval_seconds": 600.0,
+        "recursive_suggestion_interval_seconds": 3600.0,
+        "learning_rate_signal": 0.094446,
+        "weakest_risk": "low"
+      },
+      "applied_to_core_modules": {
+        "success": true,
+        "backup_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\backup\\InferenceLoop_1776066302875737.backup.py",
+        "changes": [
+          {
+            "file": "modules/InferenceLoop.py",
+            "change": "Auto-tuned constructor defaults and autonomous intervals",
+            "expected_improvement": "Proposal pipeline now mutates core runtime behavior directly"
+          }
+        ]
+      }
+    },
+    "recommended_next_parameters": {
+      "learning_rate": 0.094446,
+      "memory_sample_rate": 100,
+      "batch_size": 2048
+    }
+  }
+}

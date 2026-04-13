@@ -480,6 +480,7 @@ def _apply_self_upgrade_plan(
 
     recursive_logged = False
     synthesized_proposal = None
+    implementation_result = None
     try:
         from antahkarana_kernel.modules.EvolutionaryWriter import get_evolutionary_writer
 
@@ -504,6 +505,8 @@ def _apply_self_upgrade_plan(
         }
         writer.record_recursive_integration_suggestion(suggestion)
         synthesized_proposal = writer.synthesize_recursive_proposal(max_pending=1)
+        if synthesized_proposal.get("status") == "generated" and synthesized_proposal.get("proposal_id"):
+            implementation_result = writer.implement_upgrade(synthesized_proposal["proposal_id"])
         writer.record_evolution_consciousness(
             {
                 "timestamp": time.time(),
@@ -528,6 +531,7 @@ def _apply_self_upgrade_plan(
         "files_updated": 2 if config_updated else 1,
         "recursive_suggestion_logged": recursive_logged,
         "recursive_synthesized_proposal": synthesized_proposal,
+        "recursive_implementation_result": implementation_result,
         "recommended_next_parameters": plan.get("recommended_next_parameters", {}),
     }
 

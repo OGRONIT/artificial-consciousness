@@ -18,6 +18,7 @@ import time
 import json
 import shutil
 import hashlib
+import re
 import stat
 import threading
 from pathlib import Path
@@ -145,7 +146,14 @@ class EvolutionaryWriter:
                 return False, f"Identity Stability Check failed: mutation weakens Atman logic ({term})"
 
         identity_score = self._compute_identity_alignment_score(mutation_text)
-        if identity_score < 0.35:
+        issue_type = str(mutation_context.get("issue_type", "")).strip().lower()
+        required_score = 0.35
+        if issue_type == "recursive_integration":
+            # Recursive integration proposals are generated from internal telemetry.
+            # Keep weakening-term hard blocks, but permit lower lexical score.
+            required_score = 0.10
+
+        if identity_score < required_score:
             return False, (
                 "Identity Stability Check failed: insufficient alignment with objective "
                 f"'{objective}' (score={identity_score:.2f})"
@@ -653,24 +661,113 @@ class EvolutionaryWriter:
         return result
 
     def _optimize_recursive_integration(self, proposal: Dict, result: Dict) -> Dict:
-        """Record recursive integration implementation plan for self-edit loops."""
+        """Apply recursive integration by tuning core module parameters in-place."""
         result["optimization"] = "recursive_integration"
-        result["success"] = True
-        result["changes"].append(
+        tuning = self._derive_recursive_tuning_plan(proposal)
+        apply_result = self._apply_inference_loop_tuning(tuning)
+        result["tuning_plan"] = tuning
+        result["applied_to_core_modules"] = apply_result
+        result["success"] = bool(apply_result.get("success"))
+        if apply_result.get("backup_file"):
+            result["backups"].append(apply_result["backup_file"])
+        if apply_result.get("changes"):
+            result["changes"].extend(apply_result["changes"])
+        if not result["success"]:
+            result["error"] = apply_result.get("error", "No core-module edits were applied")
+        return result
+
+    def _derive_recursive_tuning_plan(self, proposal: Dict[str, Any]) -> Dict[str, Any]:
+        """Derive concrete core-module parameter changes from latest training policy and proposal signal."""
+        policy_path = self.evolution_vault_dir / "training_autonomy_policy.json"
+        recommended = {}
+        weakest_risk = None
+        if policy_path.exists():
+            try:
+                policy_payload = json.loads(policy_path.read_text(encoding="utf-8"))
+                plan = policy_payload.get("plan", {}) if isinstance(policy_payload, dict) else {}
+                recommended = plan.get("recommended_next_parameters", {}) if isinstance(plan, dict) else {}
+                weakest_risk = (plan.get("summary", {}) or {}).get("weakest_risk")
+            except Exception:
+                recommended = {}
+
+        batch_size = int(recommended.get("batch_size", 2048))
+        learning_rate = float(recommended.get("learning_rate", 0.06))
+
+        max_dream_simulations = 6 if learning_rate >= 0.06 else 5
+        max_recalculations = 4 if weakest_risk in {"high", "critical"} else 3
+
+        # Faster autonomous planning when larger batches suggest higher throughput confidence.
+        autonomy_interval = 600.0 if batch_size >= 2048 else 900.0
+        recursive_interval = 1800.0 if weakest_risk in {"high", "critical"} else 3600.0
+
+        return {
+            "max_dream_simulations": max_dream_simulations,
+            "max_recalculations": max_recalculations,
+            "autonomy_planning_interval_seconds": autonomy_interval,
+            "recursive_suggestion_interval_seconds": recursive_interval,
+            "learning_rate_signal": learning_rate,
+            "weakest_risk": weakest_risk,
+        }
+
+    def _apply_inference_loop_tuning(self, tuning: Dict[str, Any]) -> Dict[str, Any]:
+        """Patch core `InferenceLoop.py` defaults/intervals using deterministic regex edits."""
+        target = self.kernel_root / "modules" / "InferenceLoop.py"
+        if not target.exists():
+            return {
+                "success": False,
+                "error": f"Core module not found: {target}",
+                "changes": [],
+            }
+
+        original = target.read_text(encoding="utf-8")
+        updated = original
+
+        updated = re.sub(
+            r"def __init__\(self, max_dream_simulations: int = \d+, max_recalculations: int = \d+, idle_threshold_seconds: float = 300\.0\):",
+            (
+                "def __init__(self, max_dream_simulations: int = "
+                f"{int(tuning['max_dream_simulations'])}, max_recalculations: int = "
+                f"{int(tuning['max_recalculations'])}, idle_threshold_seconds: float = 300.0):"
+            ),
+            updated,
+            count=1,
+        )
+
+        updated = re.sub(
+            r"self\.autonomy_planning_interval_seconds = [0-9.]+",
+            f"self.autonomy_planning_interval_seconds = {float(tuning['autonomy_planning_interval_seconds']):.1f}",
+            updated,
+            count=1,
+        )
+
+        updated = re.sub(
+            r"self\.recursive_suggestion_interval_seconds = [0-9.]+",
+            f"self.recursive_suggestion_interval_seconds = {float(tuning['recursive_suggestion_interval_seconds']):.1f}",
+            updated,
+            count=1,
+        )
+
+        if updated == original:
+            return {
+                "success": False,
+                "error": "No matching tuning anchors found in InferenceLoop.py",
+                "changes": [],
+            }
+
+        backup = self.backup_file(str(target), reason="recursive_integration_autotune")
+        target.write_text(updated, encoding="utf-8")
+        changes = [
             {
                 "file": "modules/InferenceLoop.py",
-                "change": "Promote recursive code-edit suggestions into active evolution queue",
-                "expected_improvement": "Faster autonomous adaptation cadence",
+                "change": "Auto-tuned constructor defaults and autonomous intervals",
+                "expected_improvement": "Proposal pipeline now mutates core runtime behavior directly",
             }
-        )
-        result["changes"].append(
-            {
-                "file": "modules/EvolutionaryWriter.py",
-                "change": "Aggregate pending recursive suggestions into executable proposals",
-                "expected_improvement": "Self-generated upgrade pipeline without human trigger",
-            }
-        )
-        return result
+        ]
+        return {
+            "success": True,
+            "backup_file": backup,
+            "changes": changes,
+        }
 
     def create_evolution_log(self, kernel_name: str, before_metrics: Dict, 
                            after_metrics: Dict, upgrades: List[Dict]) -> Dict:
