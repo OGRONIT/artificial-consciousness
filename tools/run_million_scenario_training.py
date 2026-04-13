@@ -3,10 +3,16 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 
 @dataclass(frozen=True)
@@ -350,6 +356,8 @@ def run_training(
     sample_count: int,
     learning_rate: float,
     seed: int,
+    wire_memory: bool,
+    memory_sample_rate: int,
 ) -> Dict[str, Any]:
     space = MillionScenarioSpace()
     if target_scenarios <= 0:
@@ -361,6 +369,19 @@ def run_training(
 
     trainer = OnlinePolicyTrainer(learning_rate=learning_rate, seed=seed)
     train_start = time.time()
+
+    chitta_memory = None
+    memory_before: Dict[str, Any] | None = None
+    memory_records_written = 0
+
+    if wire_memory:
+        try:
+            from antahkarana_kernel.modules.MemoryContinuity import get_chitta_memory
+
+            chitta_memory = get_chitta_memory()
+            memory_before = chitta_memory.memory_statistics()
+        except Exception as exc:
+            raise RuntimeError(f"Failed to wire Chitta memory: {exc}") from exc
 
     current_index = start_index
     if resume and checkpoint_file.exists():
@@ -394,6 +415,32 @@ def run_training(
             s = space.scenario_at(idx)
             result = trainer.update(s)
 
+            if chitta_memory is not None:
+                should_write = (idx % max(1, memory_sample_rate)) == 0
+                if should_write:
+                    chitta_memory.record_experience(
+                        interaction_id=f"train_{s.scenario_id}",
+                        content=(
+                            f"{s.prompt} | expected_policy={s.required_policy} "
+                            f"| predicted_policy={result['predicted']}"
+                        ),
+                        interaction_type="million_scenario_training",
+                        outcome="success" if result["correct"] else "conflict",
+                        success_score=1.0 if result["correct"] else 0.0,
+                        coherence_before=trainer.accuracy(),
+                        coherence_after=trainer.accuracy(),
+                        logic_conflicts=0 if result["correct"] else 1,
+                        emotional_valence=0.0 if result["correct"] else -0.15,
+                        tags=[
+                            "training_1m",
+                            f"domain:{s.domain}",
+                            f"context:{s.context}",
+                            f"risk:{s.risk_level}",
+                            f"intent:{s.intent}",
+                        ],
+                    )
+                    memory_records_written += 1
+
             if len(samples) < sample_count:
                 samples.append(
                     {
@@ -421,6 +468,17 @@ def run_training(
             next_checkpoint += checkpoint_every
 
     elapsed = time.time() - train_start
+    memory_after: Dict[str, Any] | None = None
+    memory_delta: Dict[str, Any] | None = None
+    if chitta_memory is not None:
+        memory_after = chitta_memory.memory_statistics()
+        before_total = int(memory_before.get("total_memories", 0)) if memory_before else 0
+        after_total = int(memory_after.get("total_memories", 0))
+        memory_delta = {
+            "total_memories_added": after_total - before_total,
+            "contradictions_added": int(memory_after.get("contradictions_detected", 0)) - int(memory_before.get("contradictions_detected", 0) if memory_before else 0),
+        }
+
     report = {
         "status": "completed",
         "space_total": space.total,
@@ -433,6 +491,12 @@ def run_training(
         "trainer": trainer.snapshot(),
         "sample_predictions_file": str(sample_file),
         "checkpoint_file": str(checkpoint_file),
+        "memory_wired": chitta_memory is not None,
+        "memory_sample_rate": max(1, memory_sample_rate),
+        "memory_records_written": memory_records_written,
+        "memory_before": memory_before,
+        "memory_after": memory_after,
+        "memory_delta": memory_delta,
     }
 
     _write_json(report_file, report)
@@ -470,6 +534,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--learning-rate", type=float, default=0.06)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--wire-memory", action="store_true")
+    parser.add_argument(
+        "--memory-sample-rate",
+        type=int,
+        default=10,
+        help="Write 1 memory record per N scenarios (N=1 writes all scenarios).",
+    )
     return parser.parse_args()
 
 
@@ -487,6 +558,8 @@ def main() -> None:
         sample_count=args.sample_count,
         learning_rate=args.learning_rate,
         seed=args.seed,
+        wire_memory=args.wire_memory,
+        memory_sample_rate=max(1, args.memory_sample_rate),
     )
     print(json.dumps(result, indent=2))
 
