@@ -198,6 +198,58 @@ What this means for you:
    ../.venv/bin/python InteractiveBridge.py
    ```
 
+## Dual Mode Operations (Recommended)
+
+Run both modes in parallel:
+- Free online baseline mode (GitHub Actions scheduled bursts)
+- Manual deep mode (local intense cycles when your laptop is on)
+
+This gives you continuous progress without needing a paid VPS.
+
+### A. Free Online Baseline Mode
+
+Workflow file:
+- `.github/workflows/autonomous-research.yml`
+
+What it does:
+- Runs autonomous burst cycles on a schedule (every 15 minutes)
+- Uploads runtime artifacts
+- Optionally commits autonomous deltas back to the repository
+
+How to enable:
+1. Push repository to GitHub
+2. Open Actions tab in GitHub
+3. Run workflow: Autonomous Research Burst (manual first run)
+4. Use conservative inputs initially:
+   - cycles: 2 to 4
+   - with_paramatman: false
+
+Primary output artifact:
+- `benchmarks/artifacts/cloud_research_burst_latest.json`
+
+### B. Manual Deep Mode
+
+Runner file:
+- `tools/run_cloud_research_burst.py`
+
+Standard deep run:
+
+```powershell
+d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_cloud_research_burst.py --cycles 8 --with-paramatman --output benchmarks/artifacts/cloud_research_burst_manual_deep.json
+```
+
+Ultra deep run:
+
+```powershell
+d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_cloud_research_burst.py --cycles 15 --with-paramatman --output benchmarks/artifacts/cloud_research_burst_ultra.json
+```
+
+### C. Strategy
+
+- Keep online mode always running as the free baseline
+- Use manual deep mode whenever you want intense forward jumps
+- If GitHub free minutes are exhausted, continue manual mode and resume online mode next cycle/month
+
 ## Heavy Validation Runbook (Reproduce The Big Test)
 
 Run the same full-scale validation command:
