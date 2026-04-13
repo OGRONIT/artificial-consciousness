@@ -1,0 +1,79 @@
+{
+  "backlog": [
+    {
+      "mission_id": "mission_stability_loop",
+      "goal": "improve stability while preserving growth",
+      "priority": 0.9,
+      "status": "executed",
+      "executed_at": 1776068590.7194748,
+      "winner_module": "planner_1776068417_01",
+      "context_summary": {
+        "growth_entropy": 0.0,
+        "stability_score": 1.0
+      }
+    },
+    {
+      "mission_id": "mission_observability_loop",
+      "goal": "expand runtime monitoring fidelity",
+      "priority": 0.8,
+      "status": "pending"
+    },
+    {
+      "mission_id": "mission_followup_1776068590",
+      "goal": "amplify_monitor_capability",
+      "priority": 0.85,
+      "status": "executed",
+      "executed_at": 1776068970.9087975,
+      "winner_module": "monitor_1776068970_03",
+      "context_summary": {
+        "growth_entropy": 0.6579,
+        "stability_score": 0.8783999999999998
+      }
+    },
+    {
+      "mission_id": "mission_followup_1776068970",
+      "goal": "amplify_optimizer_capability",
+      "priority": 0.8,
+      "status": "pending"
+    }
+  ],
+  "active": {
+    "mission_id": "mission_followup_1776068590",
+    "goal": "amplify_monitor_capability",
+    "priority": 0.85,
+    "status": "executed",
+    "executed_at": 1776068970.9087975,
+    "winner_module": "monitor_1776068970_03",
+    "context_summary": {
+      "growth_entropy": 0.6579,
+      "stability_score": 0.8783999999999998
+    }
+  },
+  "history": [
+    {
+      "mission_id": "mission_stability_loop",
+      "goal": "improve stability while preserving growth",
+      "priority": 0.9,
+      "status": "executed",
+      "executed_at": 1776068590.7194748,
+      "winner_module": "planner_1776068417_01",
+      "context_summary": {
+        "growth_entropy": 0.0,
+        "stability_score": 1.0
+      }
+    },
+    {
+      "mission_id": "mission_followup_1776068590",
+      "goal": "amplify_monitor_capability",
+      "priority": 0.85,
+      "status": "executed",
+      "executed_at": 1776068970.9087975,
+      "winner_module": "monitor_1776068970_03",
+      "context_summary": {
+        "growth_entropy": 0.6579,
+        "stability_score": 0.8783999999999998
+      }
+    }
+  ],
+  "last_updated": 1776068970.9087975
+}

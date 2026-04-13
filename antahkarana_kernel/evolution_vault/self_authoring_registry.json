@@ -1,0 +1,62 @@
+{
+  "active_modules": [
+    {
+      "module_id": "sam_1776067965972",
+      "module_name": "autogen_1776067965_00",
+      "class_name": "AutogenModule",
+      "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\generated\\autogen_1776067965_00.py",
+      "checksum": "8b153a6893a00672c7e58de61eb6e46cd1241ebeb529c71e4c5efe1183062f00",
+      "status": "active",
+      "created_at": 1776067965.9723878,
+      "context_summary": {
+        "issue_count": 0,
+        "growth_entropy": 0.0
+      },
+      "family": "generic"
+    },
+    {
+      "module_id": "sam_1776068417420",
+      "module_name": "planner_1776068417_01",
+      "class_name": "AutogenModule",
+      "family": "planner",
+      "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\generated\\planner_1776068417_01.py",
+      "checksum": "dee4f8779c9a6fa41b276ce8deeeb6278ac64492cc8da3a29b9ae20c0ee967a6",
+      "status": "active",
+      "created_at": 1776068417.4201646,
+      "context_summary": {
+        "issue_count": 0,
+        "growth_entropy": 0.0
+      }
+    },
+    {
+      "module_id": "sam_1776068590707",
+      "module_name": "planner_1776068590_02",
+      "class_name": "AutogenModule",
+      "family": "planner",
+      "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\generated\\planner_1776068590_02.py",
+      "checksum": "766b3f6d20b238fd799bc398436273eac3ba5b09420f79ad72e6c4eab514d73c",
+      "status": "active",
+      "created_at": 1776068590.7073965,
+      "context_summary": {
+        "issue_count": 0,
+        "growth_entropy": 0.0
+      }
+    },
+    {
+      "module_id": "sam_1776068970892",
+      "module_name": "monitor_1776068970_03",
+      "class_name": "AutogenModule",
+      "family": "monitor",
+      "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\generated\\monitor_1776068970_03.py",
+      "checksum": "c05426c3d7295e914a8a2b47886ed7e8afe000c53205997863c49ee498447289",
+      "status": "active",
+      "created_at": 1776068970.8922088,
+      "context_summary": {
+        "issue_count": 1,
+        "growth_entropy": 0.6579
+      }
+    }
+  ],
+  "quarantined_modules": [],
+  "last_updated": 1776068970.9075534
+}

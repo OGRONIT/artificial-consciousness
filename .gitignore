@@ -12,6 +12,9 @@ evolution_vault/*.json
 evolution_vault/*.jsonl
 antahkarana_kernel/evolution_vault/*.json
 antahkarana_kernel/evolution_vault/*.jsonl
+!antahkarana_kernel/evolution_vault/self_authoring_registry.json
+!antahkarana_kernel/evolution_vault/self_authoring_missions.json
+!antahkarana_kernel/evolution_vault/self_authoring_capability_graph.json
 
 # Local live state files
 live_engine_state.json
