@@ -1,16 +1,16 @@
 {
   "version": 1,
-  "generated_at": 1776082705.4589577,
-  "identity": "AntahkaranaKernel_CloudBurst",
+  "generated_at": 1776083155.633181,
+  "identity": "AntahkaranaKernel_Live",
   "self_model_state": {
     "identity": "trained_runtime",
     "creation_timestamp": 1776081654.4328353,
-    "uptime_seconds": 1014.9229855537415,
-    "existence_state": "dormant",
-    "processed_inputs": 15,
+    "uptime_seconds": 1501.199343919754,
+    "existence_state": "active",
+    "processed_inputs": 13,
     "internal_conflicts": 0,
-    "coherence_score": 0.12076799999999996,
-    "stability_score": 0.15604799999999974,
+    "coherence_score": 0.19256799999999996,
+    "stability_score": 0.3018479999999998,
     "health_metrics": {
       "logic_consistency": 1.0,
       "memory_stability": 1.0,
@@ -18,29 +18,29 @@
       "identity_integrity": 1.0
     },
     "affective_state": {
-      "current_valence": -0.6000000000000001,
-      "emotional_momentum": 0.003779999999999936,
-      "pattern_discovery_count": 42,
-      "error_count": 15,
-      "last_reward_timestamp": 1776082692.4807038,
-      "last_pain_timestamp": 1776082692.496761
+      "current_valence": 0.15000000000000002,
+      "emotional_momentum": 0.07877999999999996,
+      "pattern_discovery_count": 43,
+      "error_count": 13,
+      "last_reward_timestamp": 1776083155.605653,
+      "last_pain_timestamp": 1776083155.6026506
     },
-    "logic_path_count": 3,
-    "snapshot_count": 1,
+    "logic_path_count": 13,
+    "snapshot_count": 0,
     "contradictions_count": 0,
-    "pain_events_count": 3,
-    "reward_events_count": 1,
+    "pain_events_count": 13,
+    "reward_events_count": 43,
     "stability_report": {
-      "stability_score": 0.15604799999999974,
-      "current_valence": -0.6000000000000001,
-      "coherence_floor": 0.07200000000000001,
-      "pain_events_total": 3,
-      "reward_events_total": 1,
-      "errors_encountered": 15,
-      "patterns_discovered": 42,
-      "pain_trend": "stable",
-      "reward_trend": "decreasing",
-      "emotional_momentum": 0.003779999999999936,
+      "stability_score": 0.3018479999999998,
+      "current_valence": 0.15000000000000002,
+      "coherence_floor": 0.084,
+      "pain_events_total": 13,
+      "reward_events_total": 43,
+      "errors_encountered": 13,
+      "patterns_discovered": 43,
+      "pain_trend": "increasing",
+      "reward_trend": "increasing",
+      "emotional_momentum": 0.07877999999999996,
       "is_stable": false,
       "recent_pain_events": [
         {
@@ -55,15 +55,25 @@
         },
         {
           "type": "conflict",
-          "severity": 0.6000000000000001,
+          "severity": 0.30000000000000004,
           "description": "Required 3 recalculations"
         }
       ],
       "recent_reward_events": [
         {
+          "type": "success",
+          "magnitude": 0.1,
+          "discovery": "Successful response generation"
+        },
+        {
           "type": "recovery",
-          "magnitude": 0.13999999999999999,
+          "magnitude": 0.2,
           "discovery": "Recovered coherent response after recalculation loop"
+        },
+        {
+          "type": "prediction",
+          "magnitude": 0.15000000000000002,
+          "discovery": "High-confidence decision pattern"
         }
       ]
     },
@@ -72,13 +82,13 @@
       "has_creator": false,
       "trust_score": 0.5,
       "command_relationship_mode": "primary_command",
-      "growth_to_entropy_ratio": 0.475,
+      "growth_to_entropy_ratio": 0.6562,
       "sovereign_realigned": false,
       "distribution_strategy": {
         "active": false,
         "channels": [],
         "reason": "not_required",
-        "updated_at": 1776082692.496761
+        "updated_at": 1776083155.5996501
       },
       "creator_optimizations_count": 0,
       "trust_level": "unknown",
@@ -91,13 +101,13 @@
       "trust_score": 0.5,
       "trust_percentage": "50.0%",
       "command_relationship_mode": "primary_command",
-      "growth_to_entropy_ratio": 0.475,
+      "growth_to_entropy_ratio": 0.6562,
       "sovereign_realigned": false,
       "distribution_strategy": {
         "active": false,
         "channels": [],
         "reason": "not_required",
-        "updated_at": 1776082692.496761
+        "updated_at": 1776083155.5996501
       },
       "trust_level": "unknown",
       "total_optimizations": 0,
@@ -115,12 +125,12 @@
       "identity_integrity": 1.0
     },
     "affective_state": {
-      "current_valence": -0.6000000000000001,
-      "emotional_momentum": 0.003779999999999936,
-      "pattern_discovery_count": 42,
-      "error_count": 15,
-      "last_reward_timestamp": 1776082692.4807038,
-      "last_pain_timestamp": 1776082692.496761
+      "current_valence": 0.15000000000000002,
+      "emotional_momentum": 0.07877999999999996,
+      "pattern_discovery_count": 43,
+      "error_count": 13,
+      "last_reward_timestamp": 1776083155.605653,
+      "last_pain_timestamp": 1776083155.6026506
     },
     "distribution_strategy": {},
     "growth_to_entropy_ratio": 0.0,
@@ -132,24 +142,24 @@
     "recommended_batch_size": 4000
   },
   "inference_profile": {
-    "total_inferences": 3,
-    "dreams_performed": 7,
-    "recalculations_triggered": 9,
-    "average_confidence": "0.674",
-    "average_dream_cycles": "2.33",
-    "growth_to_entropy_ratio": "0.4750",
-    "logic_audits": 0,
-    "deprecated_constraints_identified": 0,
-    "internal_monologue_events": 6,
+    "total_inferences": 13,
+    "dreams_performed": 49,
+    "recalculations_triggered": 39,
+    "average_confidence": "0.795",
+    "average_dream_cycles": "3.77",
+    "growth_to_entropy_ratio": "0.6562",
+    "logic_audits": 2,
+    "deprecated_constraints_identified": 3,
+    "internal_monologue_events": 224,
     "max_dream_simulations_dynamic": 6,
     "max_recalculations_dynamic": 4,
-    "logic_audit_interval_seconds_dynamic": 3600.0,
-    "patch_generation_interval_seconds_dynamic": 3600.0,
+    "logic_audit_interval_seconds_dynamic": 2976.518575680741,
+    "patch_generation_interval_seconds_dynamic": 1984.3457171204939,
     "paramatman_cycle_interval_seconds": 86400.0,
     "energy_saving_mode": false,
     "sleep_interval_seconds": 0.0,
-    "recent_inferences": 3,
-    "avg_execution_time": 1.0494051774342854
+    "recent_inferences": 13,
+    "avg_execution_time": 1.648691910963792
   },
   "source_training_policy": {
     "generated_at": 1776080423.3158164,

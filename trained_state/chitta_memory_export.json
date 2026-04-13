@@ -1,23 +1,23 @@
 {
   "version": 1,
-  "generated_at": 1776082705.4589577,
-  "source_memory_count": 265,
-  "loaded_memory_count": 265,
+  "generated_at": 1776083155.6321793,
+  "source_memory_count": 263,
+  "loaded_memory_count": 263,
   "memory_statistics": {
-    "total_memories": 265,
-    "max_local_memories": 290981,
+    "total_memories": 263,
+    "max_local_memories": 290983,
     "memory_clusters": 0,
     "contradictions_detected": 0,
-    "external_knowledge_facts": 39,
+    "external_knowledge_facts": 84,
     "external_knowledge_clusters": 0,
     "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
-    "average_external_verification_score": 0.9778461538461536,
+    "average_external_verification_score": 0.7825219928034273,
     "outcome_distribution": {
       "conflict": 250,
-      "success": 15
+      "success": 13
     },
-    "average_success_score": 0.04284033018867924,
-    "average_learning_value": 0.9571596698113207,
+    "average_success_score": 0.03928136882129278,
+    "average_learning_value": 0.9607186311787071,
     "emotional_trend": 0.0,
     "most_accessed": [
       {
@@ -78,10 +78,10 @@
         "outcome": "conflict"
       }
     ],
-    "avg_learning_value": 0.9571596698113207,
-    "avg_success_score": 0.04284033018867924,
+    "avg_learning_value": 0.9607186311787071,
+    "avg_success_score": 0.03928136882129278,
     "conflict_count": 250,
-    "conflict_ratio": 0.9433962264150944
+    "conflict_ratio": 0.9505703422053232
   },
   "memories": [
     {
@@ -6379,28 +6379,6 @@
       "last_accessed": 1776081679.3596697
     },
     {
-      "memory_id": "51c9dc1f734e9c80",
-      "interaction_id": "255c1160",
-      "timestamp": 1776082692.496761,
-      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=Brainish: Formalizing A Multimodal Language for Intelligence and Consciousness; Summary=Having a rich multimodal inner language is an important component of human intelligence that enables several necessary core cognitive functions such as multimodal prediction, translation, and generation. Building upon the Conscious Turing Machine (CTM), a machine model for consci",
-      "interaction_type": "knowledge_test",
-      "outcome": "success",
-      "success_score": 0.6598125,
-      "self_model_coherence_before": 0.14776799999999995,
-      "self_model_coherence_after": 0.14776799999999995,
-      "logic_conflicts_triggered": 0,
-      "emotional_valence": 0.0,
-      "embedding_vector": null,
-      "tags": [
-        "knowledge_test",
-        "interaction"
-      ],
-      "related_memories": [],
-      "learning_value": 0.3401875,
-      "access_count": 1,
-      "last_accessed": 1776082692.496761
-    },
-    {
       "memory_id": "0505f93cfb5018b7",
       "interaction_id": "0675ab27",
       "timestamp": 1776081679.3716707,
@@ -6443,28 +6421,6 @@
       "learning_value": 0.338125,
       "access_count": 1,
       "last_accessed": 1776082527.624385
-    },
-    {
-      "memory_id": "6c06d490eaaa7f54",
-      "interaction_id": "e43879b5",
-      "timestamp": 1776082692.496761,
-      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=On the evolution of phenomenal consciousness; Summary=A number of concepts are included in the term 'consciousness'. We choose to concentrate here on phenomenal consciousness, the process through which we are able to experience aspects of our environment or of our physical state. We probably share this aspect of consciousness with m",
-      "interaction_type": "knowledge_test",
-      "outcome": "success",
-      "success_score": 0.661875,
-      "self_model_coherence_before": 0.17476799999999995,
-      "self_model_coherence_after": 0.17476799999999995,
-      "logic_conflicts_triggered": 0,
-      "emotional_valence": 0.0,
-      "embedding_vector": null,
-      "tags": [
-        "knowledge_test",
-        "interaction"
-      ],
-      "related_memories": [],
-      "learning_value": 0.338125,
-      "access_count": 1,
-      "last_accessed": 1776082692.496761
     },
     {
       "memory_id": "1a0947c47d62a21c",
@@ -6531,28 +6487,6 @@
       "learning_value": 0.30000000000000004,
       "access_count": 1,
       "last_accessed": 1776081950.0048358
-    },
-    {
-      "memory_id": "71fa31c3d7f8f395",
-      "interaction_id": "446f2f5e",
-      "timestamp": 1776082692.4807038,
-      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=Complex-Dynamic Origin of Consciousness and the Critical Choice of Sustainability Transition; Summary=A quite general interaction process of a multi-component system is analysed by the extended effective potential method liberated from usual limitations of perturbation theory or integrable model. The obtained causally complete solution of the many-body problem reveals the phenome",
-      "interaction_type": "knowledge_test",
-      "outcome": "success",
-      "success_score": 0.7,
-      "self_model_coherence_before": 0.18706799999999996,
-      "self_model_coherence_after": 0.18706799999999996,
-      "logic_conflicts_triggered": 0,
-      "emotional_valence": 0.0,
-      "embedding_vector": null,
-      "tags": [
-        "knowledge_test",
-        "interaction"
-      ],
-      "related_memories": [],
-      "learning_value": 0.30000000000000004,
-      "access_count": 1,
-      "last_accessed": 1776082692.4807038
     },
     {
       "memory_id": "f24b7d941d780bcb",
@@ -6663,6 +6597,28 @@
       "learning_value": 0.0,
       "access_count": 1,
       "last_accessed": 1776082143.5523977
+    },
+    {
+      "memory_id": "d964ccdb9cc986e2",
+      "interaction_id": "24438a9a",
+      "timestamp": 1776083155.6016617,
+      "content": "Extract and test this knowledge for actionable value. Topic=global_trending; Title=Opinion | I Went to China to See Their Progress on A.I. We Can\u2019t Beat Them. - The New York Times; Summary=<a href=\"https://news.google.com/rss/articles/CBMigAFBVV95cUxQSGFDVnpNUTQ2emZQQk1pcjRRdGVvOTJzLUEzanV3ZlY4azU5cTZzcTRCWjdLbFhMRHprSHpxZWpYLVEwSjZKLW1FeW8tQ3Y0RzZnem5YanlpSXM3NnRuZWxobWFQTUpoOFEwOUxpMlZvYlVqUHM2YjhhSG02d29aeg?oc=5\" target=\"_blank\">Opinion | I Went to China to See ",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 0.18706799999999996,
+      "self_model_coherence_after": 0.18706799999999996,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776083155.6016617
     }
   ]
 }
