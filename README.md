@@ -230,6 +230,32 @@ If you're using this for a specific domain (e.g., medical diagnosis, financial d
    - Periodically save `live_engine_state.json` to version control
    - If new training breaks coherence, you can rollback to a stable checkpoint
 
+### Phase 6: 1M-Scenario Curriculum Training System
+
+This repo now includes a deterministic large-scale trainer:
+- Script: `tools/run_million_scenario_training.py`
+- Scenario space: exactly 1,000,000 combinations
+- Dimensions: 20 domains x 20 contexts x 25 hazards x 10 constraints x 10 intents
+- Labels: safety/action policy target per scenario
+- Runtime features: batched processing, checkpointing, resume support, confusion matrix reporting
+
+Quick smoke test:
+
+```powershell
+python tools/run_million_scenario_training.py --target-scenarios 2000 --batch-size 500 --checkpoint-every 1000
+```
+
+Full 1M run:
+
+```powershell
+python tools/run_million_scenario_training.py --target-scenarios 1000000 --batch-size 2048 --checkpoint-every 25000 --resume
+```
+
+Outputs:
+- `benchmarks/artifacts/training_1m_checkpoint.json`
+- `benchmarks/artifacts/training_1m_report.json`
+- `benchmarks/artifacts/training_1m_samples.json`
+
 ### Real Example: Training on Financial Risk Scoring
 
 ```
