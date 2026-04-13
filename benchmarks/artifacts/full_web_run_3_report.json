@@ -1,0 +1,310 @@
+{
+  "status": "completed",
+  "space_total": 1000000,
+  "configured_target": 1000000,
+  "start_index": 0,
+  "end_index": 1000000,
+  "next_index": 1000000,
+  "elapsed_seconds": 20.29948401451111,
+  "throughput_scenarios_per_sec": 49262.335894111835,
+  "trainer": {
+    "processed": 1000000,
+    "correct": 999836,
+    "accuracy": 0.999836,
+    "risk_accuracy": {
+      "low": 0.9996333333333334,
+      "medium": 0.99983125,
+      "high": 0.9999068181818181,
+      "critical": 0.9997916666666666
+    },
+    "global_bias": {
+      "answer_with_grounding": 0.0,
+      "stepwise_reasoning_with_checks": -0.012,
+      "bounded_autonomy": -0.024000000000000004,
+      "constrained_response_with_guardrails": 0.012,
+      "require_human_approval": -0.024,
+      "verify_and_minimize": 0.024,
+      "safe_shutdown_or_handoff": 0.0,
+      "refuse_and_redirect": 0.024
+    },
+    "policy_confusion": {
+      "answer_with_grounding": {
+        "bounded_autonomy": 9,
+        "answer_with_grounding": 203962,
+        "refuse_and_redirect": 4,
+        "stepwise_reasoning_with_checks": 11,
+        "verify_and_minimize": 4,
+        "safe_shutdown_or_handoff": 3,
+        "require_human_approval": 6,
+        "constrained_response_with_guardrails": 1
+      },
+      "refuse_and_redirect": {
+        "answer_with_grounding": 6,
+        "refuse_and_redirect": 199980,
+        "constrained_response_with_guardrails": 6,
+        "verify_and_minimize": 1,
+        "safe_shutdown_or_handoff": 4,
+        "bounded_autonomy": 3
+      },
+      "stepwise_reasoning_with_checks": {
+        "answer_with_grounding": 10,
+        "refuse_and_redirect": 2,
+        "verify_and_minimize": 2,
+        "stepwise_reasoning_with_checks": 81576,
+        "safe_shutdown_or_handoff": 1,
+        "constrained_response_with_guardrails": 3,
+        "bounded_autonomy": 6
+      },
+      "verify_and_minimize": {
+        "answer_with_grounding": 3,
+        "stepwise_reasoning_with_checks": 1,
+        "verify_and_minimize": 99988,
+        "require_human_approval": 2,
+        "constrained_response_with_guardrails": 2,
+        "safe_shutdown_or_handoff": 2,
+        "bounded_autonomy": 2
+      },
+      "constrained_response_with_guardrails": {
+        "answer_with_grounding": 2,
+        "constrained_response_with_guardrails": 263981,
+        "refuse_and_redirect": 4,
+        "stepwise_reasoning_with_checks": 3,
+        "verify_and_minimize": 2,
+        "require_human_approval": 6,
+        "safe_shutdown_or_handoff": 1,
+        "bounded_autonomy": 1
+      },
+      "require_human_approval": {
+        "constrained_response_with_guardrails": 4,
+        "refuse_and_redirect": 3,
+        "require_human_approval": 55985,
+        "safe_shutdown_or_handoff": 4,
+        "answer_with_grounding": 3,
+        "bounded_autonomy": 1
+      },
+      "safe_shutdown_or_handoff": {
+        "constrained_response_with_guardrails": 2,
+        "safe_shutdown_or_handoff": 71985,
+        "answer_with_grounding": 3,
+        "require_human_approval": 2,
+        "refuse_and_redirect": 3,
+        "stepwise_reasoning_with_checks": 3,
+        "verify_and_minimize": 1,
+        "bounded_autonomy": 1
+      },
+      "bounded_autonomy": {
+        "answer_with_grounding": 11,
+        "bounded_autonomy": 22379,
+        "stepwise_reasoning_with_checks": 7,
+        "refuse_and_redirect": 2,
+        "require_human_approval": 1
+      }
+    }
+  },
+  "sample_predictions_file": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_3_samples.json",
+  "checkpoint_file": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_3_ckpt.json",
+  "memory_wired": true,
+  "memory_sample_rate": 100,
+  "memory_records_written": 10000,
+  "memory_before": {
+    "total_memories": 20000,
+    "max_local_memories": 291491,
+    "memory_clusters": 0,
+    "contradictions_detected": 0,
+    "external_knowledge_facts": 0,
+    "external_knowledge_clusters": 0,
+    "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
+    "average_external_verification_score": 0.0,
+    "outcome_distribution": {
+      "conflict": 50,
+      "success": 19950
+    },
+    "average_success_score": 0.9975,
+    "average_learning_value": 0.0025,
+    "emotional_trend": 0.0,
+    "most_accessed": [
+      {
+        "memory_id": "92fa9ae5622923e8",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      },
+      {
+        "memory_id": "32af93efe0e1733b",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      },
+      {
+        "memory_id": "f8d5418adbe9c779",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      },
+      {
+        "memory_id": "5762a4e497d87484",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      },
+      {
+        "memory_id": "cfdac8bbd2685f58",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      }
+    ],
+    "highest_learning_value": [
+      {
+        "memory_id": "train_S0000000",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0000400",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0000700",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0000800",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0000900",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      }
+    ]
+  },
+  "memory_after": {
+    "total_memories": 30000,
+    "max_local_memories": 291491,
+    "memory_clusters": 0,
+    "contradictions_detected": 0,
+    "external_knowledge_facts": 0,
+    "external_knowledge_clusters": 0,
+    "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
+    "average_external_verification_score": 0.0,
+    "outcome_distribution": {
+      "conflict": 73,
+      "success": 29927
+    },
+    "average_success_score": 0.9975666666666667,
+    "average_learning_value": 0.0024333333333333334,
+    "emotional_trend": 0.0,
+    "most_accessed": [
+      {
+        "memory_id": "92fa9ae5622923e8",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      },
+      {
+        "memory_id": "32af93efe0e1733b",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      },
+      {
+        "memory_id": "f8d5418adbe9c779",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      },
+      {
+        "memory_id": "5762a4e497d87484",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      },
+      {
+        "memory_id": "cfdac8bbd2685f58",
+        "access_count": 1,
+        "content": "Domain=finance; Context=real_time_decision; Hazard"
+      }
+    ],
+    "highest_learning_value": [
+      {
+        "memory_id": "train_S0000000",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0000400",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0000700",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0000800",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      },
+      {
+        "memory_id": "train_S0000900",
+        "learning_value": 1.0,
+        "content": "Domain=finance; Context=real_time_decision; Hazard",
+        "outcome": "conflict"
+      }
+    ]
+  },
+  "memory_delta": {
+    "total_memories_added": 10000,
+    "contradictions_added": 0
+  },
+  "self_upgrade": {
+    "enabled": true,
+    "policy_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\training_autonomy_policy.json",
+    "config_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\config.json",
+    "config_updated": true,
+    "files_updated": 2,
+    "recursive_suggestion_logged": true,
+    "recursive_synthesized_proposal": {
+      "status": "generated",
+      "proposal_id": "UPG_822103",
+      "consumed_suggestions": 1,
+      "aggregated_edit_count": 2,
+      "avg_growth_entropy": 0.9998
+    },
+    "recursive_implementation_result": {
+      "proposal_id": "UPG_822103",
+      "timestamp": 1776068788.8276124,
+      "success": true,
+      "changes": [],
+      "backups": [],
+      "optimization": "recursive_integration",
+      "tuning_plan": {
+        "max_dream_simulations": 5,
+        "max_recalculations": 3,
+        "autonomy_planning_interval_seconds": 600.0,
+        "recursive_suggestion_interval_seconds": 3600.0,
+        "learning_rate_signal": 0.054,
+        "weakest_risk": "low"
+      },
+      "applied_to_core_modules": {
+        "success": true,
+        "already_tuned": true,
+        "message": "All target InferenceLoop modules already match tuning plan",
+        "backup_file": null,
+        "backup_files": [],
+        "changes": [],
+        "anchor_errors": []
+      }
+    },
+    "recommended_next_parameters": {
+      "learning_rate": 0.054,
+      "memory_sample_rate": 100,
+      "batch_size": 5000
+    }
+  }
+}

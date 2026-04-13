@@ -161,54 +161,54 @@
   "training_autonomy": {
     "enabled": true,
     "source": "run_million_scenario_training.py",
-    "last_upgrade_at": 1776066538.6752236,
+    "last_upgrade_at": 1776068935.628725,
     "policy_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\training_autonomy_policy.json",
     "recommended_next_parameters": {
-      "learning_rate": 0.108613,
+      "learning_rate": 0.054,
       "memory_sample_rate": 100,
-      "batch_size": 2048
+      "batch_size": 5000
     },
     "weakest_risk": "low",
     "confusion_hotspots": [
       {
         "expected": "answer_with_grounding",
-        "predicted": "stepwise_reasoning_with_checks",
-        "count": 8
+        "predicted": "bounded_autonomy",
+        "count": 11
       },
       {
-        "expected": "refuse_and_redirect",
-        "predicted": "constrained_response_with_guardrails",
-        "count": 8
+        "expected": "bounded_autonomy",
+        "predicted": "answer_with_grounding",
+        "count": 11
       },
       {
         "expected": "stepwise_reasoning_with_checks",
         "predicted": "answer_with_grounding",
-        "count": 7
+        "count": 10
+      },
+      {
+        "expected": "answer_with_grounding",
+        "predicted": "stepwise_reasoning_with_checks",
+        "count": 9
+      },
+      {
+        "expected": "stepwise_reasoning_with_checks",
+        "predicted": "bounded_autonomy",
+        "count": 9
+      },
+      {
+        "expected": "bounded_autonomy",
+        "predicted": "stepwise_reasoning_with_checks",
+        "count": 9
       },
       {
         "expected": "refuse_and_redirect",
         "predicted": "answer_with_grounding",
-        "count": 6
-      },
-      {
-        "expected": "constrained_response_with_guardrails",
-        "predicted": "refuse_and_redirect",
-        "count": 6
+        "count": 7
       },
       {
         "expected": "answer_with_grounding",
         "predicted": "refuse_and_redirect",
-        "count": 4
-      },
-      {
-        "expected": "constrained_response_with_guardrails",
-        "predicted": "require_human_approval",
-        "count": 4
-      },
-      {
-        "expected": "require_human_approval",
-        "predicted": "constrained_response_with_guardrails",
-        "count": 4
+        "count": 6
       }
     ]
   }

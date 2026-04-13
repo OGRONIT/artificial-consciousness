@@ -21,6 +21,8 @@ import hashlib
 import re
 import stat
 import threading
+import py_compile
+import importlib.util
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime
@@ -68,12 +70,29 @@ class EvolutionaryWriter:
         self.atman_core_path = self.kernel_root / "Atman_Core.json"
         self.evolution_consciousness_log = self.kernel_root / "Evolution_Consciousness.log"
         self.recursive_suggestions_log = self.evolution_vault_dir / "Recursive_Integration_Suggestions.jsonl"
+        self.generated_modules_dir = self.kernel_root / "modules" / "generated"
+        self.generated_modules_init = self.generated_modules_dir / "__init__.py"
+        self.self_authoring_registry = self.evolution_vault_dir / "self_authoring_registry.json"
+        self.self_authoring_ledger = self.evolution_vault_dir / "self_authoring_ledger.jsonl"
+        self.self_authoring_quarantine_dir = self.evolution_vault_dir / "quarantine_modules"
+        self.self_authoring_capability_graph = self.evolution_vault_dir / "self_authoring_capability_graph.json"
+        self.self_authoring_missions = self.evolution_vault_dir / "self_authoring_missions.json"
+        self.self_authoring_limits = {
+            "max_active_modules": 8,
+            "max_module_bytes": 32000,
+            "cooldown_seconds": 300.0,
+            "min_stability_score": 0.72,
+            "max_degradation": 0.05,
+        }
+        self.last_self_authoring_at = 0.0
         
         # Create necessary directories
         self.backup_dir.mkdir(exist_ok=True)
         self.evolution_logs_dir.mkdir(exist_ok=True)
         self.evolution_proposals_dir.mkdir(exist_ok=True)
         self.evolution_vault_dir.mkdir(exist_ok=True)
+        self.generated_modules_dir.mkdir(parents=True, exist_ok=True)
+        self.self_authoring_quarantine_dir.mkdir(parents=True, exist_ok=True)
         
         # Evolution tracking
         self.evolution_lock = threading.RLock()
@@ -82,8 +101,63 @@ class EvolutionaryWriter:
         self.self_model = None  # Will be injected by kernel
         self._ensure_atman_anchor()
         self._protect_atman_core()
+        self._ensure_generated_package()
+        self._ensure_self_authoring_registry()
+        self._ensure_phase2_state_files()
         
         logger.info("[EVOLUTIONARY_WRITER] Ghost Writer initialized")
+
+    def _ensure_generated_package(self) -> None:
+        """Ensure generated modules directory is importable as a package."""
+        self.generated_modules_dir.mkdir(parents=True, exist_ok=True)
+        if not self.generated_modules_init.exists():
+            self.generated_modules_init.write_text(
+                '"""Auto-generated modules package for self-authoring runtime extensions."""\n',
+                encoding="utf-8",
+            )
+
+    def _ensure_self_authoring_registry(self) -> None:
+        """Create self-authoring registry file when missing."""
+        if self.self_authoring_registry.exists():
+            return
+        payload = {
+            "active_modules": [],
+            "quarantined_modules": [],
+            "last_updated": time.time(),
+        }
+        self.self_authoring_registry.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    def _ensure_phase2_state_files(self) -> None:
+        """Create Phase 2 sovereign-loop state files when missing."""
+        if not self.self_authoring_capability_graph.exists():
+            graph = {
+                "nodes": {},
+                "edges": [],
+                "last_updated": time.time(),
+            }
+            self.self_authoring_capability_graph.write_text(json.dumps(graph, indent=2), encoding="utf-8")
+
+        if not self.self_authoring_missions.exists():
+            missions = {
+                "backlog": [
+                    {
+                        "mission_id": "mission_stability_loop",
+                        "goal": "improve stability while preserving growth",
+                        "priority": 0.9,
+                        "status": "pending",
+                    },
+                    {
+                        "mission_id": "mission_observability_loop",
+                        "goal": "expand runtime monitoring fidelity",
+                        "priority": 0.8,
+                        "status": "pending",
+                    },
+                ],
+                "active": None,
+                "history": [],
+                "last_updated": time.time(),
+            }
+            self.self_authoring_missions.write_text(json.dumps(missions, indent=2), encoding="utf-8")
 
     def _ensure_atman_anchor(self) -> None:
         """Create Atman anchor once if missing, then preserve it as immutable."""
@@ -722,40 +796,71 @@ class EvolutionaryWriter:
         changes: List[Dict[str, Any]] = []
         backups: List[str] = []
         touched = 0
+        already_tuned = 0
+        processed_targets = 0
+        anchor_errors: List[Dict[str, Any]] = []
+
+        def _replace_once(text: str, patterns: List[str], replacement: str) -> Tuple[str, bool]:
+            for pattern in patterns:
+                next_text, count = re.subn(pattern, replacement, text, count=1)
+                if count > 0:
+                    return next_text, True
+            return text, False
 
         for target, display_name in targets:
             if not target.exists():
                 continue
 
+            processed_targets += 1
+
             original = target.read_text(encoding="utf-8")
             updated = original
+            local_anchor_misses: List[str] = []
 
-            updated = re.sub(
-                r"def __init__\(self, max_dream_simulations: int = \d+, max_recalculations: int = \d+, idle_threshold_seconds: float = 300\.0\):",
-                (
-                    "def __init__(self, max_dream_simulations: int = "
-                    f"{int(tuning['max_dream_simulations'])}, max_recalculations: int = "
-                    f"{int(tuning['max_recalculations'])}, idle_threshold_seconds: float = 300.0):"
-                ),
-                updated,
-                count=1,
+            init_replacement = (
+                "def __init__(self, max_dream_simulations: int = "
+                f"{int(tuning['max_dream_simulations'])}, max_recalculations: int = "
+                f"{int(tuning['max_recalculations'])}, idle_threshold_seconds: float = 300.0):"
             )
+            updated, init_found = _replace_once(
+                updated,
+                [
+                    r"def\s+__init__\s*\(\s*self\s*,\s*max_dream_simulations\s*:\s*int\s*=\s*\d+\s*,\s*max_recalculations\s*:\s*int\s*=\s*\d+\s*,\s*idle_threshold_seconds\s*:\s*float\s*=\s*300(?:\.0+)?\s*\)\s*:",
+                    r"def\s+__init__\s*\(\s*self\s*,\s*max_dream_simulations\s*=\s*\d+\s*,\s*max_recalculations\s*=\s*\d+\s*,\s*idle_threshold_seconds\s*=\s*300(?:\.0+)?\s*\)\s*:",
+                ],
+                init_replacement,
+            )
+            if not init_found:
+                local_anchor_misses.append("__init__ signature")
 
-            updated = re.sub(
-                r"self\.autonomy_planning_interval_seconds = [0-9.]+",
+            updated, autonomy_found = _replace_once(
+                updated,
+                [
+                    r"self\.autonomy_planning_interval_seconds\s*=\s*[0-9.]+",
+                    r"self\.autonomy_planning_interval_seconds\s*:\s*float\s*=\s*[0-9.]+",
+                ],
                 f"self.autonomy_planning_interval_seconds = {float(tuning['autonomy_planning_interval_seconds']):.1f}",
-                updated,
-                count=1,
             )
+            if not autonomy_found:
+                local_anchor_misses.append("autonomy_planning_interval_seconds")
 
-            updated = re.sub(
-                r"self\.recursive_suggestion_interval_seconds = [0-9.]+",
-                f"self.recursive_suggestion_interval_seconds = {float(tuning['recursive_suggestion_interval_seconds']):.1f}",
+            updated, recursive_found = _replace_once(
                 updated,
-                count=1,
+                [
+                    r"self\.recursive_suggestion_interval_seconds\s*=\s*[0-9.]+",
+                    r"self\.recursive_suggestion_interval_seconds\s*:\s*float\s*=\s*[0-9.]+",
+                ],
+                f"self.recursive_suggestion_interval_seconds = {float(tuning['recursive_suggestion_interval_seconds']):.1f}",
             )
+            if not recursive_found:
+                local_anchor_misses.append("recursive_suggestion_interval_seconds")
+
+            if local_anchor_misses:
+                anchor_errors.append({"file": display_name, "missing": local_anchor_misses})
 
             if updated == original:
+                if init_found and autonomy_found and recursive_found:
+                    already_tuned += 1
                 continue
 
             backup = self.backup_file(str(target), reason="recursive_integration_autotune")
@@ -771,12 +876,32 @@ class EvolutionaryWriter:
                 }
             )
 
+        if processed_targets == 0:
+            return {
+                "success": False,
+                "error": "No target InferenceLoop modules found for tuning",
+                "changes": [],
+                "backups": [],
+                "anchor_errors": [],
+            }
+
         if touched == 0:
+            if already_tuned > 0 and (already_tuned == processed_targets):
+                return {
+                    "success": True,
+                    "already_tuned": True,
+                    "message": "All target InferenceLoop modules already match tuning plan",
+                    "backup_file": None,
+                    "backup_files": [],
+                    "changes": [],
+                    "anchor_errors": [],
+                }
             return {
                 "success": False,
                 "error": "No matching tuning anchors found in target InferenceLoop modules",
                 "changes": [],
                 "backups": [],
+                "anchor_errors": anchor_errors,
             }
 
         return {
@@ -784,7 +909,669 @@ class EvolutionaryWriter:
             "backup_file": backups[0] if backups else None,
             "backup_files": backups,
             "changes": changes,
+            "already_tuned": already_tuned,
+            "anchor_errors": anchor_errors,
         }
+
+    def run_self_authoring_cycle(self, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """Autonomously generate, test, and activate a new module with rollback guarantees."""
+        context = context or {}
+        now = time.time()
+
+        if (now - self.last_self_authoring_at) < float(self.self_authoring_limits["cooldown_seconds"]):
+            return {
+                "status": "skipped",
+                "reason": "cooldown_not_elapsed",
+                "seconds_remaining": float(self.self_authoring_limits["cooldown_seconds"]) - (now - self.last_self_authoring_at),
+            }
+
+        maintenance_lock = self.kernel_root / ".maintenance_lock"
+        if maintenance_lock.exists():
+            return {"status": "skipped", "reason": "maintenance_lock_active"}
+
+        stability_before = self._extract_stability_score()
+        if stability_before is not None and stability_before < float(self.self_authoring_limits["min_stability_score"]):
+            return {
+                "status": "skipped",
+                "reason": "stability_too_low",
+                "stability_score": stability_before,
+            }
+
+        registry = self._load_self_authoring_registry()
+        active_modules = registry.get("active_modules", []) if isinstance(registry, dict) else []
+        if len(active_modules) >= int(self.self_authoring_limits["max_active_modules"]):
+            return {
+                "status": "skipped",
+                "reason": "active_module_limit_reached",
+                "active_modules": len(active_modules),
+            }
+
+        module_id = f"sam_{int(now * 1000)}"
+        family = self._choose_self_authoring_family(context=context, active_modules=active_modules)
+        module_name = f"{family}_{int(now)}_{len(active_modules):02d}"
+        class_name = "AutogenModule"
+        source = self._render_generated_module_source(
+            module_id=module_id,
+            class_name=class_name,
+            context=context,
+            family=family,
+        )
+        source_size = len(source.encode("utf-8"))
+        if source_size > int(self.self_authoring_limits["max_module_bytes"]):
+            return {
+                "status": "failed",
+                "reason": "generated_module_too_large",
+                "size_bytes": source_size,
+            }
+
+        staging_path = self.generated_modules_dir / f"{module_name}.tmp.py"
+        final_path = self.generated_modules_dir / f"{module_name}.py"
+        try:
+            staging_path.write_text(source, encoding="utf-8")
+            test_result = self._run_generated_module_self_test(
+                staging_path=staging_path,
+                class_name=class_name,
+                family=family,
+            )
+            if not test_result.get("passed", False):
+                quarantine_result = self._quarantine_generated_file(
+                    source_path=staging_path,
+                    module_name=module_name,
+                    reason=str(test_result.get("error", "self_test_failed")),
+                    class_name=class_name,
+                    metadata={"phase": "self_test", "context": context, "family": family},
+                )
+                return {
+                    "status": "quarantined",
+                    "reason": "self_test_failed",
+                    "module_name": module_name,
+                    "family": family,
+                    "test": test_result,
+                    "quarantine": quarantine_result,
+                }
+
+            if final_path.exists():
+                final_path.unlink()
+            staging_path.replace(final_path)
+
+            checksum = hashlib.sha256(final_path.read_bytes()).hexdigest()
+            module_entry = {
+                "module_id": module_id,
+                "module_name": module_name,
+                "class_name": class_name,
+                "family": family,
+                "file": str(final_path),
+                "checksum": checksum,
+                "status": "active",
+                "created_at": now,
+                "context_summary": {
+                    "issue_count": int(context.get("issues_detected", 0)),
+                    "growth_entropy": float(context.get("growth_entropy", 0.0)),
+                },
+            }
+            active_modules.append(module_entry)
+            registry["active_modules"] = active_modules
+            registry["last_updated"] = time.time()
+            self._save_self_authoring_registry(registry)
+
+            stability_after = self._extract_stability_score()
+            degraded = self._is_stability_degraded(stability_before, stability_after)
+            if degraded:
+                rollback_reason = "stability_degraded_after_activation"
+                quarantine_result = self._quarantine_generated_file(
+                    source_path=final_path,
+                    module_name=module_name,
+                    reason=rollback_reason,
+                    class_name=class_name,
+                    metadata={
+                        "phase": "post_activation",
+                        "stability_before": stability_before,
+                        "stability_after": stability_after,
+                        "family": family,
+                    },
+                    remove_from_active=True,
+                )
+                return {
+                    "status": "rolled_back",
+                    "reason": rollback_reason,
+                    "module_name": module_name,
+                    "family": family,
+                    "stability_before": stability_before,
+                    "stability_after": stability_after,
+                    "quarantine": quarantine_result,
+                }
+
+            self.last_self_authoring_at = now
+            self._append_self_authoring_ledger(
+                {
+                    "timestamp": now,
+                    "event": "module_activated",
+                    "module_id": module_id,
+                    "module_name": module_name,
+                    "class_name": class_name,
+                    "family": family,
+                    "file": str(final_path),
+                    "checksum": checksum,
+                    "stability_before": stability_before,
+                    "stability_after": stability_after,
+                }
+            )
+            return {
+                "status": "activated",
+                "module": module_entry,
+                "family": family,
+                "self_test": test_result,
+                "stability_before": stability_before,
+                "stability_after": stability_after,
+            }
+        except Exception as exc:
+            quarantine_result = self._quarantine_generated_file(
+                source_path=staging_path if staging_path.exists() else final_path,
+                module_name=module_name,
+                reason=str(exc),
+                class_name=class_name,
+                metadata={"phase": "exception", "context": context, "family": family},
+            )
+            return {
+                "status": "failed",
+                "reason": str(exc),
+                "module_name": module_name,
+                "family": family,
+                "quarantine": quarantine_result,
+            }
+
+    def run_phase2_sovereign_loop(self, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """Run competition arena, capability graph propagation, and mission controller updates."""
+        context = context or {}
+        registry = self._load_self_authoring_registry()
+        active_modules = registry.get("active_modules", []) if isinstance(registry, dict) else []
+
+        competition = self._run_module_competition_arena(active_modules=active_modules, context=context)
+        capability_graph = self._update_capability_graph(active_modules=active_modules, competition=competition)
+        missions = self._run_autonomous_mission_controller(competition=competition, context=context)
+
+        result = {
+            "status": "executed",
+            "competition": competition,
+            "capability_graph": capability_graph,
+            "mission_controller": missions,
+            "active_module_count": len(active_modules),
+        }
+        self._append_self_authoring_ledger(
+            {
+                "event": "phase2_sovereign_loop",
+                "result": {
+                    "active_module_count": len(active_modules),
+                    "winner": competition.get("winner", {}).get("module_name"),
+                    "executed_mission": missions.get("executed_mission", {}).get("mission_id") if isinstance(missions, dict) else None,
+                },
+            }
+        )
+        return result
+
+    def _run_module_competition_arena(self, active_modules: List[Dict[str, Any]], context: Dict[str, Any]) -> Dict[str, Any]:
+        """Score active modules and select winner/challengers in a deterministic arena."""
+        scored: List[Dict[str, Any]] = []
+        growth_entropy = float(context.get("growth_entropy", 0.0))
+        avg_conf = float(context.get("average_confidence", 0.7))
+        target_family = "monitor" if avg_conf < 0.72 else ("planner" if growth_entropy < 0.65 else "optimizer")
+
+        for module in active_modules:
+            family = str(module.get("family", "generic")).strip().lower()
+            created_at = float(module.get("created_at", time.time()) or time.time())
+            age_penalty = min(0.25, max(0.0, (time.time() - created_at) / 86400.0) * 0.02)
+            family_bonus = 0.2 if family == target_family else 0.05
+            stability_bonus = 0.15 if float(context.get("stability_score", 1.0) or 1.0) >= 0.9 else 0.05
+            score = max(0.0, min(1.0, 0.45 + family_bonus + stability_bonus - age_penalty))
+            scored.append(
+                {
+                    "module_name": module.get("module_name"),
+                    "family": family,
+                    "score": round(score, 4),
+                }
+            )
+
+        scored.sort(key=lambda row: float(row.get("score", 0.0)), reverse=True)
+        winner = scored[0] if scored else None
+        challengers = scored[1:4] if len(scored) > 1 else []
+        return {
+            "target_family": target_family,
+            "winner": winner,
+            "challengers": challengers,
+            "scores": scored,
+        }
+
+    def _update_capability_graph(self, active_modules: List[Dict[str, Any]], competition: Dict[str, Any]) -> Dict[str, Any]:
+        """Update graph of capability dependencies among generated modules."""
+        try:
+            graph = json.loads(self.self_authoring_capability_graph.read_text(encoding="utf-8"))
+        except Exception:
+            graph = {"nodes": {}, "edges": [], "last_updated": time.time()}
+
+        nodes = graph.get("nodes", {}) if isinstance(graph.get("nodes"), dict) else {}
+        edges = graph.get("edges", []) if isinstance(graph.get("edges"), list) else []
+
+        winner_name = (competition.get("winner") or {}).get("module_name")
+        for module in active_modules:
+            module_name = str(module.get("module_name", "")).strip()
+            if not module_name:
+                continue
+            family = str(module.get("family", "generic")).strip().lower()
+            nodes[module_name] = {
+                "family": family,
+                "status": module.get("status", "active"),
+                "updated_at": time.time(),
+            }
+            if winner_name and winner_name != module_name:
+                edge = {
+                    "from": winner_name,
+                    "to": module_name,
+                    "relation": "guides",
+                    "weight": 0.6,
+                }
+                if edge not in edges:
+                    edges.append(edge)
+
+        graph_payload = {
+            "nodes": nodes,
+            "edges": edges[-100:],
+            "last_updated": time.time(),
+        }
+        self.self_authoring_capability_graph.write_text(json.dumps(graph_payload, indent=2), encoding="utf-8")
+        return {
+            "nodes": len(nodes),
+            "edges": len(graph_payload["edges"]),
+            "winner": winner_name,
+            "graph_file": str(self.self_authoring_capability_graph),
+        }
+
+    def _run_autonomous_mission_controller(self, competition: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
+        """Advance mission backlog based on competition outcome and current signals."""
+        try:
+            payload = json.loads(self.self_authoring_missions.read_text(encoding="utf-8"))
+        except Exception:
+            payload = {"backlog": [], "active": None, "history": [], "last_updated": time.time()}
+
+        backlog = payload.get("backlog", []) if isinstance(payload.get("backlog"), list) else []
+        history = payload.get("history", []) if isinstance(payload.get("history"), list) else []
+
+        pending = [item for item in backlog if str(item.get("status", "pending")) == "pending"]
+        pending.sort(key=lambda item: float(item.get("priority", 0.0)), reverse=True)
+        active = pending[0] if pending else None
+        if active:
+            active["status"] = "executed"
+            active["executed_at"] = time.time()
+            active["winner_module"] = (competition.get("winner") or {}).get("module_name")
+            active["context_summary"] = {
+                "growth_entropy": float(context.get("growth_entropy", 0.0)),
+                "stability_score": float(context.get("stability_score", 1.0)),
+            }
+            history.append(active)
+
+            # Keep mission horizon alive with a follow-up mission.
+            next_mission = {
+                "mission_id": f"mission_followup_{int(time.time())}",
+                "goal": f"amplify_{(competition.get('target_family') or 'generic')}_capability",
+                "priority": round(max(0.4, float(active.get("priority", 0.7)) - 0.05), 2),
+                "status": "pending",
+            }
+            backlog.append(next_mission)
+
+        payload["backlog"] = backlog
+        payload["active"] = active
+        payload["history"] = history[-200:]
+        payload["last_updated"] = time.time()
+        self.self_authoring_missions.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+        return {
+            "executed_mission": active,
+            "pending_count": len([item for item in backlog if str(item.get("status", "pending")) == "pending"]),
+            "history_count": len(payload["history"]),
+            "missions_file": str(self.self_authoring_missions),
+        }
+
+    def _choose_self_authoring_family(self, context: Dict[str, Any], active_modules: List[Dict[str, Any]]) -> str:
+        """Pick generation family based on current signal and existing distribution."""
+        existing_counts: Dict[str, int] = {"planner": 0, "monitor": 0, "optimizer": 0}
+        for item in active_modules:
+            family = str(item.get("family", "")).strip().lower()
+            if family in existing_counts:
+                existing_counts[family] += 1
+
+        growth_entropy = float(context.get("growth_entropy", 0.0))
+        issues = int(context.get("issues_detected", 0))
+        avg_conf = float(context.get("average_confidence", 0.7))
+
+        if issues >= 2:
+            preferred = "monitor"
+        elif growth_entropy < 0.65:
+            preferred = "planner"
+        elif avg_conf < 0.72:
+            preferred = "optimizer"
+        else:
+            preferred = min(existing_counts, key=lambda key: existing_counts[key])
+
+        return preferred
+
+    def _render_generated_module_source(self, module_id: str, class_name: str, context: Dict[str, Any], family: str) -> str:
+        """Render deterministic source for a safe self-authored runtime extension."""
+        objective = str(context.get("objective", "increase coherence and monitored autonomy throughput"))
+        objective = objective.replace('"', "'")[:240]
+        if family == "planner":
+            return self._render_planner_module_source(module_id=module_id, class_name=class_name, objective=objective)
+        if family == "monitor":
+            return self._render_monitor_module_source(module_id=module_id, class_name=class_name, objective=objective)
+        return self._render_optimizer_module_source(module_id=module_id, class_name=class_name, objective=objective)
+
+    def _render_planner_module_source(self, module_id: str, class_name: str, objective: str) -> str:
+        return f'''"""Auto-generated planner extension module."""
+
+import time
+from typing import Any, Dict
+
+
+class {class_name}:
+    """Self-authored planner with deterministic agenda synthesis."""
+
+    def __init__(self, module_id: str = "{module_id}"):
+        self.module_id = module_id
+        self.created_at = time.time()
+        self.kernel = None
+        self.objective = "{objective}"
+        self.family = "planner"
+
+    def attach(self, kernel: Any) -> None:
+        self.kernel = kernel
+
+    def health_check(self) -> bool:
+        return True
+
+    def heartbeat(self) -> Dict[str, Any]:
+        return {{
+            "module_id": self.module_id,
+            "family": self.family,
+            "uptime_seconds": max(0.0, time.time() - self.created_at),
+            "objective": self.objective,
+            "status": "healthy",
+        }}
+
+    def build_plan(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        confidence = float(payload.get("confidence", 0.5) or 0.5)
+        priority = "stability_first" if confidence < 0.72 else "exploration"
+        actions = ["logic_audit", "dream_state_refresh"] if priority == "stability_first" else ["paramatman_protocol", "common_sense_drill"]
+        return {{
+            "module_id": self.module_id,
+            "priority": priority,
+            "actions": actions,
+            "timestamp": time.time(),
+        }}
+
+    def on_interaction(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        plan = self.build_plan(payload)
+        return {{
+            "module_id": self.module_id,
+            "handled": True,
+            "input_type": payload.get("input_type", "unknown"),
+            "plan_priority": plan.get("priority"),
+            "timestamp": time.time(),
+        }}
+'''
+
+    def _render_monitor_module_source(self, module_id: str, class_name: str, objective: str) -> str:
+        return f'''"""Auto-generated monitor extension module."""
+
+import time
+from typing import Any, Dict
+
+
+class {class_name}:
+    """Self-authored monitor that samples runtime health signals."""
+
+    def __init__(self, module_id: str = "{module_id}"):
+        self.module_id = module_id
+        self.created_at = time.time()
+        self.kernel = None
+        self.objective = "{objective}"
+        self.family = "monitor"
+
+    def attach(self, kernel: Any) -> None:
+        self.kernel = kernel
+
+    def health_check(self) -> bool:
+        return True
+
+    def heartbeat(self) -> Dict[str, Any]:
+        return {{
+            "module_id": self.module_id,
+            "family": self.family,
+            "uptime_seconds": max(0.0, time.time() - self.created_at),
+            "objective": self.objective,
+            "status": "healthy",
+        }}
+
+    def observe(self) -> Dict[str, Any]:
+        if self.kernel is None:
+            return {{"module_id": self.module_id, "status": "detached"}}
+        stats = self.kernel.inference_engine.inference_statistics()
+        concern = self.kernel.observer.get_system_health_report().get("overall_concern_level", 0.0)
+        return {{
+            "module_id": self.module_id,
+            "avg_confidence": float(stats.get("average_confidence", 0.0) or 0.0),
+            "observer_concern": float(concern or 0.0),
+            "timestamp": time.time(),
+        }}
+
+    def on_interaction(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        obs = self.observe()
+        return {{
+            "module_id": self.module_id,
+            "handled": True,
+            "observer_concern": obs.get("observer_concern", 0.0),
+            "timestamp": time.time(),
+        }}
+'''
+
+    def _render_optimizer_module_source(self, module_id: str, class_name: str, objective: str) -> str:
+        return f'''"""Auto-generated optimizer extension module."""
+
+import time
+from typing import Any, Dict
+
+
+class {class_name}:
+    """Self-authored optimizer that applies bounded runtime tuning."""
+
+    def __init__(self, module_id: str = "{module_id}"):
+        self.module_id = module_id
+        self.created_at = time.time()
+        self.kernel = None
+        self.objective = "{objective}"
+        self.family = "optimizer"
+
+    def attach(self, kernel: Any) -> None:
+        self.kernel = kernel
+
+    def health_check(self) -> bool:
+        return True
+
+    def heartbeat(self) -> Dict[str, Any]:
+        return {{
+            "module_id": self.module_id,
+            "family": self.family,
+            "uptime_seconds": max(0.0, time.time() - self.created_at),
+            "objective": self.objective,
+            "status": "healthy",
+        }}
+
+    def optimize(self) -> Dict[str, Any]:
+        if self.kernel is None:
+            return {{"module_id": self.module_id, "status": "detached"}}
+        engine = self.kernel.inference_engine
+        before = float(getattr(engine, "autonomy_planning_interval_seconds", 900.0) or 900.0)
+        tuned = max(300.0, min(1200.0, before * 0.95))
+        setattr(engine, "autonomy_planning_interval_seconds", tuned)
+        return {{
+            "module_id": self.module_id,
+            "before": before,
+            "after": tuned,
+            "timestamp": time.time(),
+        }}
+
+    def on_interaction(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        tuning = self.optimize()
+        return {{
+            "module_id": self.module_id,
+            "handled": True,
+            "tuned_autonomy_interval": tuning.get("after"),
+            "timestamp": time.time(),
+        }}
+'''
+
+    def _run_generated_module_self_test(self, staging_path: Path, class_name: str, family: str) -> Dict[str, Any]:
+        """Compile/import/instantiate generated module before activation."""
+        try:
+            py_compile.compile(str(staging_path), doraise=True)
+            module_name = f"modules.generated._selftest_{int(time.time() * 1000)}"
+            spec = importlib.util.spec_from_file_location(module_name, staging_path)
+            if spec is None or spec.loader is None:
+                return {"passed": False, "error": "import_spec_creation_failed"}
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            module_class = getattr(module, class_name, None)
+            if module_class is None:
+                return {"passed": False, "error": f"missing_class:{class_name}"}
+            instance = module_class()
+            if not hasattr(instance, "health_check") or not bool(instance.health_check()):
+                return {"passed": False, "error": "health_check_failed"}
+            heartbeat = instance.heartbeat() if hasattr(instance, "heartbeat") else {}
+            if family == "planner" and hasattr(instance, "build_plan"):
+                instance.build_plan({"confidence": 0.8})
+            elif family == "monitor" and hasattr(instance, "observe"):
+                instance.observe()
+            elif family == "optimizer" and hasattr(instance, "optimize"):
+                instance.optimize()
+            return {"passed": True, "heartbeat": heartbeat, "family": family}
+        except Exception as exc:
+            return {"passed": False, "error": str(exc)}
+
+    def _extract_stability_score(self) -> Optional[float]:
+        """Read current stability score from self-model when available."""
+        if not self.self_model or not hasattr(self.self_model, "get_stability_report"):
+            return None
+        try:
+            report = self.self_model.get_stability_report()
+            return float(report.get("stability_score", 1.0))
+        except Exception:
+            return None
+
+    def _is_stability_degraded(self, before: Optional[float], after: Optional[float]) -> bool:
+        """Assess whether activation reduced stability beyond safe threshold."""
+        if before is None or after is None:
+            return False
+        return (before - after) > float(self.self_authoring_limits["max_degradation"])
+
+    def _load_self_authoring_registry(self) -> Dict[str, Any]:
+        """Load registry for active/quarantined generated modules."""
+        self._ensure_self_authoring_registry()
+        try:
+            payload = json.loads(self.self_authoring_registry.read_text(encoding="utf-8"))
+            if not isinstance(payload, dict):
+                raise ValueError("registry_not_dict")
+            payload.setdefault("active_modules", [])
+            payload.setdefault("quarantined_modules", [])
+            payload.setdefault("last_updated", time.time())
+            updated = False
+            for entry in payload.get("active_modules", []):
+                if not isinstance(entry, dict):
+                    continue
+                if not entry.get("family"):
+                    module_name = str(entry.get("module_name", ""))
+                    if module_name.startswith("planner_"):
+                        entry["family"] = "planner"
+                    elif module_name.startswith("monitor_"):
+                        entry["family"] = "monitor"
+                    elif module_name.startswith("optimizer_"):
+                        entry["family"] = "optimizer"
+                    else:
+                        entry["family"] = "generic"
+                    updated = True
+            if updated:
+                self._save_self_authoring_registry(payload)
+            return payload
+        except Exception:
+            fallback = {
+                "active_modules": [],
+                "quarantined_modules": [],
+                "last_updated": time.time(),
+            }
+            self._save_self_authoring_registry(fallback)
+            return fallback
+
+    def _save_self_authoring_registry(self, registry: Dict[str, Any]) -> None:
+        """Persist registry to disk."""
+        registry["last_updated"] = time.time()
+        self.self_authoring_registry.write_text(json.dumps(registry, indent=2), encoding="utf-8")
+
+    def _append_self_authoring_ledger(self, event: Dict[str, Any]) -> None:
+        """Append event to auditable self-authoring ledger."""
+        payload = dict(event)
+        payload.setdefault("timestamp", time.time())
+        with self.self_authoring_ledger.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(payload) + "\n")
+
+    def _quarantine_generated_file(
+        self,
+        source_path: Path,
+        module_name: str,
+        reason: str,
+        class_name: str,
+        metadata: Optional[Dict[str, Any]] = None,
+        remove_from_active: bool = False,
+    ) -> Dict[str, Any]:
+        """Move failed generated module to quarantine and update registry + ledger."""
+        quarantine_target = self.self_authoring_quarantine_dir / f"{module_name}_{int(time.time() * 1000)}.py"
+        moved = False
+        if source_path.exists():
+            quarantine_target.parent.mkdir(parents=True, exist_ok=True)
+            source_path.replace(quarantine_target)
+            moved = True
+
+        registry = self._load_self_authoring_registry()
+        active = registry.get("active_modules", []) if isinstance(registry, dict) else []
+        removed_entry = None
+        if remove_from_active:
+            kept = []
+            for entry in active:
+                if entry.get("module_name") == module_name:
+                    removed_entry = entry
+                    continue
+                kept.append(entry)
+            registry["active_modules"] = kept
+
+        quarantine_entry = {
+            "module_name": module_name,
+            "class_name": class_name,
+            "reason": reason,
+            "quarantined_at": time.time(),
+            "file": str(quarantine_target) if moved else None,
+            "metadata": metadata or {},
+        }
+        if removed_entry:
+            quarantine_entry["previous_active_entry"] = removed_entry
+
+        registry.setdefault("quarantined_modules", []).append(quarantine_entry)
+        self._save_self_authoring_registry(registry)
+        self._append_self_authoring_ledger(
+            {
+                "event": "module_quarantined",
+                "module_name": module_name,
+                "class_name": class_name,
+                "reason": reason,
+                "file": str(quarantine_target) if moved else None,
+                "metadata": metadata or {},
+            }
+        )
+        return {"moved": moved, "quarantine_file": str(quarantine_target) if moved else None}
 
     def create_evolution_log(self, kernel_name: str, before_metrics: Dict, 
                            after_metrics: Dict, upgrades: List[Dict]) -> Dict:

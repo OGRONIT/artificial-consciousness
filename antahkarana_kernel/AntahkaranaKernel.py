@@ -17,6 +17,8 @@ import time
 import json
 import logging
 import threading
+import importlib
+import shutil
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Tuple
 
@@ -83,6 +85,11 @@ class AntahkaranaKernel:
         self.inference_engine = get_manas_buddhi()
         self.observer = get_turiya_observer()
         self.body_monitor = get_system_body_monitor()
+        self.generated_modules: Dict[str, Any] = {}
+        self.self_authoring_registry_path = ROOT / "evolution_vault" / "self_authoring_registry.json"
+        self.self_authoring_quarantine_dir = ROOT / "evolution_vault" / "quarantine_modules"
+        self.self_authoring_quarantine_dir.mkdir(parents=True, exist_ok=True)
+        self._registry_last_loaded_mtime = 0.0
         
         # Set up cross-module references
         self._setup_module_integrations()
@@ -125,8 +132,122 @@ class AntahkaranaKernel:
         self.conscious_buffer.register_module("inference_engine")
         self.conscious_buffer.register_module("observer")
         self.conscious_buffer.register_module("body_monitor")
+
+        # Dynamically wire self-authored modules that passed activation gates.
+        self._load_self_authored_modules()
         
         logger.debug("[ANTAHKARANA] Module integrations configured")
+
+    def _load_self_authored_modules(self) -> None:
+        """Load active generated modules and wire them into observer/buffer registries."""
+        self.generated_modules = {}
+        if not self.self_authoring_registry_path.exists():
+            return
+
+        try:
+            self._registry_last_loaded_mtime = self.self_authoring_registry_path.stat().st_mtime
+        except Exception:
+            self._registry_last_loaded_mtime = time.time()
+
+        try:
+            registry = json.loads(self.self_authoring_registry_path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            logger.warning("[ANTAHKARANA] Failed to read self-authoring registry: %s", exc)
+            return
+
+        for entry in registry.get("active_modules", []):
+            module_name = str(entry.get("module_name", "")).strip()
+            class_name = str(entry.get("class_name", "AutogenModule")).strip() or "AutogenModule"
+            if not module_name:
+                continue
+
+            import_name = f"modules.generated.{module_name}"
+            try:
+                module = importlib.import_module(import_name)
+                module_class = getattr(module, class_name)
+                instance = module_class(module_id=entry.get("module_id", module_name))
+                if hasattr(instance, "attach"):
+                    instance.attach(self)
+
+                wired_name = f"autogen_{module_name}"
+                self.generated_modules[module_name] = instance
+                self.observer.register_module(wired_name, instance)
+                self.conscious_buffer.register_module(wired_name)
+            except Exception as exc:
+                logger.warning("[ANTAHKARANA] Failed to wire self-authored module %s: %s", module_name, exc)
+                self._quarantine_generated_module(module_name, f"load_failure:{exc}")
+
+    def _refresh_self_authored_modules_if_needed(self) -> None:
+        """Reload generated modules when registry changes on disk."""
+        if not self.self_authoring_registry_path.exists():
+            return
+        try:
+            current_mtime = self.self_authoring_registry_path.stat().st_mtime
+        except Exception:
+            return
+
+        if current_mtime <= self._registry_last_loaded_mtime:
+            return
+        self._load_self_authored_modules()
+
+    def _run_self_authored_interaction_hooks(self, payload: Dict[str, Any]) -> None:
+        """Invoke generated-module interaction hooks and quarantine any crashing module."""
+        for module_name, instance in list(self.generated_modules.items()):
+            try:
+                if hasattr(instance, "heartbeat"):
+                    instance.heartbeat()
+                if hasattr(instance, "build_plan"):
+                    instance.build_plan(payload)
+                if hasattr(instance, "observe"):
+                    instance.observe()
+                if hasattr(instance, "optimize"):
+                    instance.optimize()
+                if hasattr(instance, "on_interaction"):
+                    instance.on_interaction(payload)
+            except Exception as exc:
+                logger.warning("[ANTAHKARANA] Self-authored module failed during interaction: %s", exc)
+                self._quarantine_generated_module(module_name, f"runtime_hook_failure:{exc}")
+
+    def _quarantine_generated_module(self, module_name: str, reason: str) -> None:
+        """Disable a generated module by moving it to quarantine and updating registry."""
+        if not self.self_authoring_registry_path.exists():
+            return
+        try:
+            registry = json.loads(self.self_authoring_registry_path.read_text(encoding="utf-8"))
+        except Exception:
+            return
+
+        active = registry.get("active_modules", [])
+        remaining = []
+        quarantined_entry = None
+        for entry in active:
+            if entry.get("module_name") == module_name:
+                quarantined_entry = dict(entry)
+                continue
+            remaining.append(entry)
+
+        if quarantined_entry is None:
+            self.generated_modules.pop(module_name, None)
+            return
+
+        source_file = Path(quarantined_entry.get("file", ""))
+        quarantine_file = self.self_authoring_quarantine_dir / f"{module_name}_{int(time.time() * 1000)}.py"
+        if source_file.exists():
+            try:
+                shutil.move(str(source_file), str(quarantine_file))
+            except Exception:
+                quarantine_file = Path(quarantined_entry.get("file", ""))
+
+        quarantined_entry["status"] = "quarantined"
+        quarantined_entry["quarantined_at"] = time.time()
+        quarantined_entry["quarantine_reason"] = reason
+        quarantined_entry["quarantine_file"] = str(quarantine_file)
+
+        registry["active_modules"] = remaining
+        registry.setdefault("quarantined_modules", []).append(quarantined_entry)
+        registry["last_updated"] = time.time()
+        self.self_authoring_registry_path.write_text(json.dumps(registry, indent=2), encoding="utf-8")
+        self.generated_modules.pop(module_name, None)
 
     def startup(self) -> None:
         """Start the consciousness kernel."""
@@ -246,6 +367,8 @@ class AntahkaranaKernel:
         if not self.is_active:
             logger.error("[ANTAHKARANA] Kernel not active")
             return "[ERROR] Kernel not active"
+
+        self._refresh_self_authored_modules_if_needed()
         
         with self.state_lock:
             self.kernel_state["interactions_processed"] += 1
@@ -334,6 +457,16 @@ class AntahkaranaKernel:
                     "memory_id": memory_id,
                     "recalculations": inference_trace.recalculations_count,
                     "stability_score": self.self_model.stability_score
+                }
+            )
+
+            self._run_self_authored_interaction_hooks(
+                {
+                    "decision_id": decision_id,
+                    "input": input_data,
+                    "input_type": input_type,
+                    "output": output,
+                    "confidence": inference_trace.total_confidence,
                 }
             )
             
