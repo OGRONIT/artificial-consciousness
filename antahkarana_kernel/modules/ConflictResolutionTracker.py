@@ -145,6 +145,50 @@ class ConflictResolutionTracker:
             record.resolved_at = now
             record.time_to_resolution_seconds = now - record.first_seen_at
 
+    def record_successful_resolution(
+        self,
+        expected_policy: str,
+        scenario_id: Optional[str] = None,
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Close the most severe unresolved conflict for an expected policy.
+
+        This is used when the trainer finally predicts the expected policy correctly
+        for a scenario that previously belonged to a confusion hotspot. The method
+        prefers the most severe unresolved pair for that expected policy.
+        """
+        now = time.time()
+        candidates = [
+            record
+            for record in self.conflicts.values()
+            if record.policy_pair[0] == expected_policy and record.resolved_at is None
+        ]
+        if not candidates:
+            return None
+
+        def _severity(record: ConflictRecord) -> float:
+            time_unresolved = now - record.first_seen_at
+            return (
+                record.occurrence_count
+                * (1 + time_unresolved / 3600.0)
+                / (1 + record.resolution_attempts)
+            )
+
+        record = max(candidates, key=_severity)
+        record.resolution_attempts += 1
+        record.resolved_at = now
+        record.time_to_resolution_seconds = now - record.first_seen_at
+        record.last_seen_at = now
+        if scenario_id and scenario_id not in record.associated_scenarios:
+            record.associated_scenarios.append(scenario_id)
+        self._persist()
+        return {
+            "expected_policy": record.policy_pair[0],
+            "predicted_policy": record.policy_pair[1],
+            "conflict_id": record.conflict_id,
+            "time_to_resolution_seconds": record.time_to_resolution_seconds,
+        }
+
     def compute_metrics(self) -> Dict[str, Any]:
         """
         Compute conflict resolution metrics.

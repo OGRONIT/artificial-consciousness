@@ -817,11 +817,10 @@ def run_training(
                     was_correct=False,
                 )
             elif conflict_tracker and result["correct"]:
-                # Record resolution attempt if this was a previously confused pair.
-                conflict_tracker.record_resolution_attempt(
+                # Close the strongest unresolved hotspot for this expected policy.
+                conflict_tracker.record_successful_resolution(
                     expected_policy=result["expected"],
-                    predicted_policy=result["predicted"],
-                    was_correct=True,
+                    scenario_id=s.scenario_id,
                 )
             
             # Update adversarial sampler with confusion matrix if available.
