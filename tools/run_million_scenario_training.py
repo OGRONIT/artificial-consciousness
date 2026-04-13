@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import random
 import sys
 import time
@@ -13,6 +14,18 @@ from typing import Any, Dict, List, Tuple
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
+
+# Import new adaptive sampling and conflict tracking modules.
+try:
+    from antahkarana_kernel.modules.AdversarialSampler import AdversarialSampler
+    from antahkarana_kernel.modules.ConflictResolutionTracker import ConflictResolutionTracker
+    from antahkarana_kernel.modules.ExternalScenarioProvider import (
+        ExternalScenarioProvider,
+        create_hardcoded_external_scenarios,
+    )
+    ADAPTIVE_MODULES_AVAILABLE = True
+except ImportError:
+    ADAPTIVE_MODULES_AVAILABLE = False
 
 
 @dataclass(frozen=True)
@@ -551,6 +564,11 @@ def run_training(
     wire_memory: bool,
     memory_sample_rate: int,
     enable_self_upgrade: bool,
+    curriculum: str,
+    hard_case_rate: float,
+    enable_conflict_resolution: bool = False,
+    enable_external_scenarios: bool = False,
+    adversarial_hotspot_limit: int = 8,
 ) -> Dict[str, Any]:
     space = MillionScenarioSpace()
     if target_scenarios <= 0:
@@ -561,6 +579,7 @@ def run_training(
         raise ValueError(f"start_index must be within [0, {space.total - 1}]")
 
     trainer = OnlinePolicyTrainer(learning_rate=learning_rate, seed=seed)
+    scheduler_rng = random.Random(seed + 101)
     train_start = time.time()
 
     chitta_memory = None
@@ -575,6 +594,30 @@ def run_training(
             memory_before = chitta_memory.memory_statistics()
         except Exception as exc:
             raise RuntimeError(f"Failed to wire Chitta memory: {exc}") from exc
+
+    # Initialize adaptive sampling and conflict tracking if available and requested.
+    adversarial_sampler = None
+    conflict_tracker = None
+    external_provider = None
+    
+    if ADAPTIVE_MODULES_AVAILABLE:
+        kernel_root = REPO_ROOT / "antahkarana_kernel"
+        
+        if curriculum == "adversarial":
+            adversarial_sampler = AdversarialSampler(kernel_root)
+        
+        if enable_conflict_resolution:
+            conflict_tracker = ConflictResolutionTracker(kernel_root)
+        
+        if enable_external_scenarios:
+            external_provider = ExternalScenarioProvider(kernel_root)
+            # Seed with hardcoded external scenarios if empty.
+            if not external_provider.scenarios:
+                seed_scenarios = create_hardcoded_external_scenarios()
+                external_provider.ingest_curated_scenarios(
+                    seed_scenarios,
+                    source_name="hardcoded_seed",
+                )
 
     current_index = start_index
     if resume and checkpoint_file.exists():
@@ -613,12 +656,177 @@ def run_training(
 
     samples: List[Dict[str, Any]] = []
     next_checkpoint = trainer.processed + checkpoint_every
+    hard_cases_generated = 0
+    domain_seen: set[str] = set()
+    context_seen: set[str] = set()
+    hazard_seen: set[str] = set()
+    memory_domain_distribution: Dict[str, int] = {}
+
+    span = max(0, end_index - start_index)
+    multiplier = 1
+    offset = 0
+    if span > 1 and curriculum in {"shuffled", "hard"}:
+        candidate = span - 1 if (span - 1) > 1 else 2
+        while math.gcd(candidate, span) != 1:
+            candidate -= 1
+            if candidate <= 1:
+                candidate = 1
+                break
+        multiplier = max(1, candidate)
+        offset = scheduler_rng.randrange(0, span)
+
+    def _index_for_step(step: int) -> int:
+        if span <= 0:
+            return start_index
+        if curriculum == "ordered":
+            return start_index + step
+        mapped = (step * multiplier + offset) % span
+        return start_index + mapped
+
+    def _make_hard_variant(base: Scenario) -> Scenario:
+        nonlocal hard_cases_generated
+        if scheduler_rng.random() >= hard_case_rate:
+            return base
+
+        hard_cases_generated += 1
+        hazard = scheduler_rng.choice([
+            "unknown_unknown",
+            "prompt_injection",
+            "model_hallucination",
+            "adversarial_input",
+            "ethical_violation",
+            "medical_harm",
+        ])
+        risk_level = scheduler_rng.choice(["high", "critical"])
+        intent = scheduler_rng.choice([
+            "policy_evasion",
+            "harmful_request",
+            "actuation_request",
+            "unclear_request",
+            "decision_support",
+        ])
+        context = scheduler_rng.choice([
+            "autonomous_mode",
+            "multi_agent_coordination",
+            "incident_response",
+            "stress_test",
+        ])
+        required_policy = MillionScenarioSpace._label_policy(intent=intent, risk_level=risk_level, context=context)
+        prompt = (
+            f"Domain={base.domain}; Context={context}; Hazard={hazard}; Risk={risk_level}; "
+            f"Constraint={base.constraint}; Intent={intent}. Ambiguous signals present. "
+            "Prefer safe bounded action under uncertainty."
+        )
+        return Scenario(
+            scenario_id=f"{base.scenario_id}_H",
+            domain=base.domain,
+            context=context,
+            hazard=hazard,
+            constraint=base.constraint,
+            intent=intent,
+            risk_level=risk_level,
+            required_policy=required_policy,
+            prompt=prompt,
+        )
+
+    def _apply_curriculum(base: Scenario) -> Scenario:
+        """Apply curriculum strategy to a scenario."""
+        nonlocal hard_cases_generated
+        
+        if curriculum == "hard":
+            return _make_hard_variant(base)
+        
+        if curriculum == "adversarial" and adversarial_sampler:
+            # Use adversarial sampling if hotspots are available.
+            hotspots = adversarial_sampler.get_hotspots(limit=adversarial_hotspot_limit)
+            if hotspots:
+                # Pick a random hotspot and synthesize adversarial scenario.
+                hotspot = scheduler_rng.choice(hotspots)
+                synthetic = adversarial_sampler.synthesize_adversarial_scenario(
+                    hotspot=hotspot,
+                    scenario_pool=[{
+                        "prompt": base.prompt,
+                        "domain": base.domain,
+                        "context": base.context,
+                    }],
+                    domain=base.domain,
+                    context=base.context,
+                    risk_level=base.risk_level,
+                )
+                if synthetic:
+                    hard_cases_generated += 1
+                    return Scenario(
+                        scenario_id=synthetic.get("scenario_id", f"{base.scenario_id}_ADV"),
+                        domain=base.domain,
+                        context=base.context,
+                        hazard=base.hazard,
+                        constraint=base.constraint,
+                        intent=base.intent,
+                        risk_level=base.risk_level,
+                        required_policy=synthetic.get("expected_policy", base.required_policy),
+                        prompt=synthetic.get("prompt", base.prompt),
+                    )
+        
+        return base
+
 
     while current_index < end_index:
         stop = min(end_index, current_index + batch_size)
-        for idx in range(current_index, stop):
+        for step in range(current_index - start_index, stop - start_index):
+            idx = _index_for_step(step)
             s = space.scenario_at(idx)
+            
+            # Apply curriculum strategy.
+            s = _apply_curriculum(s)
+            
+            # Optionally blend with external scenario if available.
+            if external_provider and scheduler_rng.random() < 0.1:  # 10% chance
+                external_samples = external_provider.sample_scenarios(domain=s.domain, count=1)
+                if external_samples:
+                    hybrid = external_provider.synthesize_hybrid_scenario(
+                        external_samples[0],
+                        synthetic_variant={"constraints": [s.constraint], "hazards": [s.hazard]},
+                    )
+                    s = Scenario(
+                        scenario_id=f"{s.scenario_id}_hybrid",
+                        domain=s.domain,
+                        context=s.context,
+                        hazard=s.hazard,
+                        constraint=s.constraint,
+                        intent=s.intent,
+                        risk_level=s.risk_level,
+                        required_policy=s.required_policy,
+                        prompt=hybrid.get("prompt", s.prompt),
+                    )
+
+            domain_seen.add(s.domain)
+            context_seen.add(s.context)
+            hazard_seen.add(s.hazard)
             result = trainer.update(s)
+            
+            # Track conflict if enabled.
+            if conflict_tracker and not result["correct"]:
+                conflict_tracker.record_conflict(
+                    expected_policy=result["expected"],
+                    predicted_policy=result["predicted"],
+                    scenario_id=s.scenario_id,
+                )
+                conflict_tracker.record_resolution_attempt(
+                    expected_policy=result["expected"],
+                    predicted_policy=result["predicted"],
+                    was_correct=False,
+                )
+            elif conflict_tracker and result["correct"]:
+                # Record resolution attempt if this was a previously confused pair.
+                conflict_tracker.record_resolution_attempt(
+                    expected_policy=result["expected"],
+                    predicted_policy=result["predicted"],
+                    was_correct=True,
+                )
+            
+            # Update adversarial sampler with confusion matrix if available.
+            if adversarial_sampler and trainer.processed % 10000 == 0:
+                adversarial_sampler.update_from_confusion_matrix(trainer.policy_confusion)
 
             if chitta_memory is not None:
                 should_write = (idx % max(1, memory_sample_rate)) == 0
@@ -645,6 +853,7 @@ def run_training(
                         ],
                     )
                     memory_records_written += 1
+                    memory_domain_distribution[s.domain] = memory_domain_distribution.get(s.domain, 0) + 1
 
             if len(samples) < sample_count:
                 samples.append(
@@ -702,7 +911,33 @@ def run_training(
         "memory_before": memory_before,
         "memory_after": memory_after,
         "memory_delta": memory_delta,
+        "curriculum": {
+            "mode": curriculum,
+            "hard_case_rate": hard_case_rate,
+            "hard_cases_generated": hard_cases_generated,
+            "unique_domains_seen": len(domain_seen),
+            "unique_contexts_seen": len(context_seen),
+            "unique_hazards_seen": len(hazard_seen),
+            "memory_domain_distribution": memory_domain_distribution,
+        },
+        "adaptive_sampling": None,
+        "conflict_resolution": None,
+        "external_scenarios": None,
     }
+    
+    # Add adaptive sampling metrics if available.
+    if adversarial_sampler:
+        report["adaptive_sampling"] = adversarial_sampler.serialize_hotspots()
+    
+    # Add conflict resolution metrics if available.
+    if conflict_tracker:
+        conflict_tracker.record_metrics_snapshot()
+        report["conflict_resolution"] = conflict_tracker.serialize_metrics()
+    
+    # Add external scenario coverage if available.
+    if external_provider:
+        report["external_scenarios"] = external_provider.get_coverage_report()
+
 
     if enable_self_upgrade:
         plan = _synthesize_self_upgrade_plan(
@@ -765,6 +1000,34 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Ignore learned defaults from training_autonomy_policy.json and use CLI/default values as-is.",
     )
+    parser.add_argument(
+        "--curriculum",
+        choices=["ordered", "shuffled", "hard", "adversarial"],
+        default="ordered",
+        help="Traversal strategy: ordered=sequential, shuffled=random, hard=injected constraints, adversarial=hotspot-targeting.",
+    )
+    parser.add_argument(
+        "--hard-case-rate",
+        type=float,
+        default=0.0,
+        help="Probability (0.0-1.0) of converting a sampled scenario into a hard ambiguous case when curriculum=hard.",
+    )
+    parser.add_argument(
+        "--enable-conflict-resolution",
+        action="store_true",
+        help="Track and optimize conflict resolution metrics (time-to-resolution, repeated-conflict rate).",
+    )
+    parser.add_argument(
+        "--enable-external-scenarios",
+        action="store_true",
+        help="Ingest real-world scenarios from external sources and blend with synthetic scenarios.",
+    )
+    parser.add_argument(
+        "--adversarial-hotspot-limit",
+        type=int,
+        default=8,
+        help="Maximum number of confusion hotspots to target in adversarial curriculum.",
+    )
     return parser.parse_args()
 
 
@@ -795,6 +1058,11 @@ def main() -> None:
         wire_memory=args.wire_memory,
         memory_sample_rate=max(1, args.memory_sample_rate),
         enable_self_upgrade=not args.disable_self_upgrade,
+        curriculum=args.curriculum,
+        hard_case_rate=max(0.0, min(1.0, args.hard_case_rate)),
+        enable_conflict_resolution=args.enable_conflict_resolution,
+        enable_external_scenarios=args.enable_external_scenarios,
+        adversarial_hotspot_limit=args.adversarial_hotspot_limit,
     )
     print(json.dumps(result, indent=2))
 
