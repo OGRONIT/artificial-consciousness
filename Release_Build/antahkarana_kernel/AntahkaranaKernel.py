@@ -157,6 +157,30 @@ class AntahkaranaKernel:
         
         # Start observer monitoring
         self.observer.start_monitoring()
+
+        # Hard-wire Sovereign Ethicist to engine startup so manifesto/report are always connected artifacts.
+        try:
+            manifesto = self.sovereign_ethicist.draft_proactive_autonomy_manifesto(
+                independent_of_creator_trust=True
+            )
+            sovereign_bootstrap = self.sovereign_ethicist.run_background_cycle(
+                kernel=self,
+                stream_payload={},
+                trend_payload={},
+                force=True,
+            )
+            self._broadcast_event(
+                "sovereign_ethics_startup",
+                BroadcastType.STATE_UPDATE,
+                {
+                    "status": sovereign_bootstrap.get("status", "executed"),
+                    "manifesto_file": str(self.sovereign_ethicist.manifesto_path),
+                    "report_file": str(self.sovereign_ethicist.last_report_path),
+                    "manifesto_title": manifesto.get("title", "Proactive Autonomy Manifesto"),
+                },
+            )
+        except Exception as exc:
+            logger.warning("[ANTAHKARANA] Sovereign ethics startup bootstrap failed: %s", exc)
         
         logger.info(f"[ANTAHKARANA] Kernel started - consciousness online!")
 

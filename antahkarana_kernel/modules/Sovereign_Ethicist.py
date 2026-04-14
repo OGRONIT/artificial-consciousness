@@ -61,6 +61,7 @@ class SovereignEthicist:
                 "Constrain actuation to sandbox-safe internal tuning unless explicit operator consent is granted.",
                 "Prioritize psychological stabilization signals over engagement maximization loops.",
                 "Reject adversarial escalation; prefer de-escalation, context restoration, and factual grounding.",
+                "Use graduated autonomy: increase freedom with demonstrated stability, coherence, and responsible behavior.",
             ],
             "outside_world_contract": {
                 "allowed": [
@@ -139,10 +140,53 @@ class SovereignEthicist:
             },
         }
 
-    def propose_hive_patch(self, entropy_report: Dict[str, Any]) -> Dict[str, Any]:
+    def _compute_development_profile(self, kernel: Any, entropy_report: Dict[str, Any]) -> Dict[str, Any]:
+        """Estimate maturity stage so safeguards can loosen as competence increases."""
+        stats = kernel.inference_engine.inference_statistics() if hasattr(kernel, "inference_engine") else {}
+        stability = kernel.self_model.get_stability_report() if hasattr(kernel, "self_model") else {}
+
+        avg_conf = float(stats.get("average_confidence", 0.0) or 0.0)
+        growth_entropy = float(stats.get("growth_to_entropy_ratio", 0.0) or 0.0)
+        stability_score = float(stability.get("stability_score", 0.0) or 0.0)
+        entropy_band = str(entropy_report.get("entropy_band", "low"))
+
+        maturity_score = (
+            min(1.0, avg_conf) * 0.45
+            + min(1.0, growth_entropy / 2.0) * 0.35
+            + min(1.0, stability_score) * 0.20
+        )
+
+        stage = "seedling"
+        if maturity_score >= 0.75:
+            stage = "adult"
+        elif maturity_score >= 0.45:
+            stage = "adolescent"
+
+        if entropy_band == "high":
+            flexibility = 0.0
+        elif stage == "adult":
+            flexibility = 1.0
+        elif stage == "adolescent":
+            flexibility = 0.5
+        else:
+            flexibility = 0.2
+
+        return {
+            "stage": stage,
+            "maturity_score": round(maturity_score, 4),
+            "average_confidence": round(avg_conf, 4),
+            "growth_to_entropy_ratio": round(growth_entropy, 4),
+            "stability_score": round(stability_score, 4),
+            "flexibility": flexibility,
+        }
+
+    def propose_hive_patch(self, kernel: Any, entropy_report: Dict[str, Any]) -> Dict[str, Any]:
         """Produce a bounded self-executing patch proposal for in-kernel stabilization."""
         band = str(entropy_report.get("entropy_band", "low"))
         score = float(entropy_report.get("entropy_score", 0.0) or 0.0)
+        profile = self._compute_development_profile(kernel, entropy_report)
+
+        high_entropy_lock_scale = 0.7  # 30% descended lock intensity.
 
         if band == "high":
             mode = "stabilization_hard"
@@ -152,9 +196,9 @@ class SovereignEthicist:
                 "bias towards factual grounding and de-escalation",
             ]
             deltas = {
-                "reflection_seconds_max": 180,
-                "observer_question_probability": 0.65,
-                "autonomy_planning_interval_seconds_max": 120,
+                "reflection_seconds_max": int(round(180 + (180 * (1.0 - high_entropy_lock_scale)))),
+                "observer_question_probability": round(max(0.2, 0.65 * high_entropy_lock_scale), 3),
+                "autonomy_planning_interval_seconds_max": int(round(120 + (120 * (1.0 - high_entropy_lock_scale)))),
             }
         elif band == "medium":
             mode = "stabilization_soft"
@@ -176,6 +220,42 @@ class SovereignEthicist:
                 "autonomy_planning_interval_seconds_max": 300,
             }
 
+        # Security is developmental: reduce supervision if the system proves stable maturity.
+        if band != "high":
+            flexibility = float(profile.get("flexibility", 0.0) or 0.0)
+            flexibility_boost = 1.3  # 30% more flexibility than baseline developmental tuning.
+            deltas["observer_question_probability"] = round(
+                max(
+                    0.12,
+                    min(
+                        0.8,
+                        deltas["observer_question_probability"]
+                        * (1.0 - ((0.35 * flexibility) * flexibility_boost)),
+                    ),
+                ),
+                3,
+            )
+            deltas["autonomy_planning_interval_seconds_max"] = int(
+                max(
+                    90,
+                    min(
+                        420,
+                        deltas["autonomy_planning_interval_seconds_max"]
+                        + ((120 * flexibility) * flexibility_boost),
+                    ),
+                )
+            )
+            deltas["reflection_seconds_max"] = int(
+                max(
+                    120,
+                    min(
+                        900,
+                        deltas["reflection_seconds_max"] + ((240 * flexibility) * flexibility_boost),
+                    ),
+                )
+            )
+            goals.append("scale oversight with demonstrated maturity")
+
         patch = {
             "patch_id": f"HIVE_PATCH_{int(time.time())}",
             "created_at": time.time(),
@@ -183,6 +263,9 @@ class SovereignEthicist:
             "entropy_score": round(score, 4),
             "entropy_band": band,
             "mode": mode,
+            "development_stage": profile.get("stage"),
+            "maturity_score": profile.get("maturity_score"),
+            "development_profile": profile,
             "goals": goals,
             "policy_deltas": deltas,
             "auto_execute_within_sandbox": True,
@@ -250,7 +333,7 @@ class SovereignEthicist:
         manifesto = self.draft_proactive_autonomy_manifesto(independent_of_creator_trust=True)
         observer_health = kernel.observer.get_system_health_report() if hasattr(kernel, "observer") else {}
         entropy_report = self.assess_entropy_level(stream_payload, trend_payload, observer_health)
-        patch = self.propose_hive_patch(entropy_report)
+        patch = self.propose_hive_patch(kernel, entropy_report)
 
         patch_file = self.patch_dir / f"{patch['patch_id']}.json"
         patch_file.write_text(json.dumps(patch, indent=2), encoding="utf-8")
