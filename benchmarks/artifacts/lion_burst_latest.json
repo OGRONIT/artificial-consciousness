@@ -1,0 +1,142 @@
+{
+  "started_at": 1776188831.8218212,
+  "cycles_requested": 5,
+  "background": [
+    {
+      "approved": 9,
+      "assimilation_integrated": 3
+    },
+    {
+      "approved": 0,
+      "assimilation_integrated": 0
+    },
+    {
+      "approved": 0,
+      "assimilation_integrated": 0
+    },
+    {
+      "approved": 0,
+      "assimilation_integrated": 0
+    },
+    {
+      "approved": 0,
+      "assimilation_integrated": 0
+    }
+  ],
+  "stream": [
+    {
+      "ingested": 8,
+      "integrated": 0
+    },
+    {
+      "ingested": 8,
+      "integrated": 0
+    },
+    {
+      "ingested": 8,
+      "integrated": 0
+    },
+    {
+      "ingested": 8,
+      "integrated": 0
+    },
+    {
+      "ingested": 8,
+      "integrated": 0
+    }
+  ],
+  "trends": [
+    {
+      "approved": 27,
+      "stream_integrated": 0
+    },
+    {
+      "approved": 0,
+      "stream_integrated": 0
+    },
+    {
+      "approved": 17,
+      "stream_integrated": 0
+    },
+    {
+      "approved": 31,
+      "stream_integrated": 0
+    },
+    {
+      "approved": 1,
+      "stream_integrated": 0
+    }
+  ],
+  "autonomy": [
+    {
+      "autonomy_level": 0.858,
+      "actions": 5
+    },
+    {
+      "autonomy_level": 0.8608,
+      "actions": 5
+    },
+    {
+      "autonomy_level": 0.8608,
+      "actions": 5
+    },
+    {
+      "autonomy_level": 0.8608,
+      "actions": 5
+    },
+    {
+      "autonomy_level": 0.8608,
+      "actions": 5
+    }
+  ],
+  "bridge_feedback": [
+    {
+      "processed_events": 0,
+      "operator_feedback_events": 0
+    },
+    {
+      "processed_events": 0,
+      "operator_feedback_events": 0
+    },
+    {
+      "processed_events": 0,
+      "operator_feedback_events": 0
+    },
+    {
+      "processed_events": 0,
+      "operator_feedback_events": 0
+    },
+    {
+      "processed_events": 0,
+      "operator_feedback_events": 0
+    }
+  ],
+  "errors": [],
+  "heartbeat": {
+    "last_successful_fetch_timestamp": 1776188958.5751615,
+    "last_successful_fetch_sources": [
+      "Crossref",
+      "DevTo",
+      "GoogleNews",
+      "HackerNews",
+      "RedditTech"
+    ],
+    "last_successful_fetch_topic": "artificial intelligence",
+    "last_successful_fetch_event": "hourly_global_trends",
+    "last_observed_external_fact_count": 16,
+    "total_successful_fetch_events": 15
+  },
+  "learned_fact_count": 88,
+  "bridge_feedback_metrics": {
+    "processed_events": 0,
+    "operator_feedback_events": 0,
+    "coherence_rewards": 0,
+    "coherence_pain": 0,
+    "observer_checks": 0,
+    "semantic_memories": 0,
+    "actions_executed": 0,
+    "actions_probabilistic_trials": 0,
+    "actions_blocked": 0
+  },
+  "completed_at": 1776188975.4250305
+}

@@ -1,16 +1,16 @@
 {
   "version": 1,
-  "generated_at": 1776187702.152917,
-  "identity": "SoulAutoCheck2",
+  "generated_at": 1776189682.3983428,
+  "identity": "AntahkaranaKernel_CloudBurst",
   "self_model_state": {
     "identity": "trained_runtime",
     "creation_timestamp": 1776096843.1506739,
-    "uptime_seconds": 997.8605620861053,
+    "uptime_seconds": 1633.40993142128,
     "existence_state": "dormant",
-    "processed_inputs": 9,
+    "processed_inputs": 18,
     "internal_conflicts": 0,
-    "coherence_score": 0.9799000000000001,
-    "stability_score": 0.868971038144692,
+    "coherence_score": 0.9784919999999999,
+    "stability_score": 0.7657550381446918,
     "health_metrics": {
       "logic_consistency": 1.0,
       "memory_stability": 1.0,
@@ -18,32 +18,53 @@
       "identity_integrity": 1.0
     },
     "affective_state": {
-      "current_valence": 0.2,
-      "emotional_momentum": -0.03899999999999999,
-      "pattern_discovery_count": 18,
-      "error_count": 9,
-      "last_reward_timestamp": 1776187702.034615,
-      "last_pain_timestamp": 1776166846.2764432
+      "current_valence": 0.18,
+      "emotional_momentum": -0.05780799999999995,
+      "pattern_discovery_count": 40,
+      "error_count": 23,
+      "last_reward_timestamp": 1776189652.646095,
+      "last_pain_timestamp": 1776189621.8005054
     },
-    "logic_path_count": 0,
+    "logic_path_count": 6,
     "snapshot_count": 1,
     "contradictions_count": 0,
-    "pain_events_count": 0,
-    "reward_events_count": 3,
+    "pain_events_count": 11,
+    "reward_events_count": 15,
     "stability_report": {
-      "stability_score": 0.868971038144692,
-      "current_valence": 0.2,
-      "coherence_floor": 0.092,
-      "pain_events_total": 0,
-      "reward_events_total": 3,
-      "errors_encountered": 9,
-      "patterns_discovered": 18,
-      "pain_trend": "decreasing",
+      "stability_score": 0.7657550381446918,
+      "current_valence": 0.18,
+      "coherence_floor": 0.084,
+      "pain_events_total": 11,
+      "reward_events_total": 15,
+      "errors_encountered": 23,
+      "patterns_discovered": 40,
+      "pain_trend": "increasing",
       "reward_trend": "increasing",
-      "emotional_momentum": -0.03899999999999999,
+      "emotional_momentum": -0.05780799999999995,
       "is_stable": true,
-      "recent_pain_events": [],
+      "recent_pain_events": [
+        {
+          "type": "intrinsic_goal_failed",
+          "severity": 0.1,
+          "description": "Failed: Synthesize executable evolution proposal for: self_model"
+        },
+        {
+          "type": "intrinsic_goal_failed",
+          "severity": 0.060160000000000005,
+          "description": "Failed: Diagnose and mitigate active pain pattern: conflict"
+        },
+        {
+          "type": "intrinsic_goal_failed",
+          "severity": 0.1,
+          "description": "Failed: Force architecture upgrade pressure on weakest zone: self_model"
+        }
+      ],
       "recent_reward_events": [
+        {
+          "type": "intrinsic_goal_completed",
+          "magnitude": 0.2,
+          "discovery": "Completed: Cross-domain synthesis between energy and realistic"
+        },
         {
           "type": "intrinsic_goal_generation",
           "magnitude": 0.1,
@@ -51,13 +72,8 @@
         },
         {
           "type": "intrinsic_goal_completed",
-          "magnitude": 0.2,
-          "discovery": "Completed: Explore open-domain frontier deeply: linguistics"
-        },
-        {
-          "type": "intrinsic_goal_completed",
-          "magnitude": 0.2,
-          "discovery": "Completed: Cross-domain synthesis between embodied intelligence and metamathematics"
+          "magnitude": 0.18,
+          "discovery": "Completed: Cross-domain synthesis between motivation-hub and information"
         }
       ]
     },
@@ -66,9 +82,14 @@
       "has_creator": false,
       "trust_score": 0.5,
       "command_relationship_mode": "primary_command",
-      "growth_to_entropy_ratio": 0.05794207628938386,
+      "growth_to_entropy_ratio": 1.0833333333333333,
       "sovereign_realigned": false,
-      "distribution_strategy": {},
+      "distribution_strategy": {
+        "active": false,
+        "channels": [],
+        "reason": "not_required",
+        "updated_at": 1776189228.1242905
+      },
       "creator_optimizations_count": 0,
       "trust_level": "unknown",
       "bonding_events_count": 0,
@@ -80,9 +101,14 @@
       "trust_score": 0.5,
       "trust_percentage": "50.0%",
       "command_relationship_mode": "primary_command",
-      "growth_to_entropy_ratio": 0.05794207628938386,
+      "growth_to_entropy_ratio": 1.0833333333333333,
       "sovereign_realigned": false,
-      "distribution_strategy": {},
+      "distribution_strategy": {
+        "active": false,
+        "channels": [],
+        "reason": "not_required",
+        "updated_at": 1776189228.1242905
+      },
       "trust_level": "unknown",
       "total_optimizations": 0,
       "total_bonding_events": 0,
@@ -99,12 +125,12 @@
       "identity_integrity": 1.0
     },
     "affective_state": {
-      "current_valence": 0.2,
-      "emotional_momentum": -0.03899999999999999,
-      "pattern_discovery_count": 18,
-      "error_count": 9,
-      "last_reward_timestamp": 1776187702.034615,
-      "last_pain_timestamp": 1776166846.2764432
+      "current_valence": 0.18,
+      "emotional_momentum": -0.05780799999999995,
+      "pattern_discovery_count": 40,
+      "error_count": 23,
+      "last_reward_timestamp": 1776189652.646095,
+      "last_pain_timestamp": 1776189621.8005054
     },
     "distribution_strategy": {},
     "growth_to_entropy_ratio": 0.0,
@@ -116,24 +142,24 @@
     "recommended_batch_size": 500
   },
   "inference_profile": {
-    "total_inferences": 0,
-    "dreams_performed": 0,
-    "recalculations_triggered": 0,
-    "average_confidence": "0.700",
-    "average_dream_cycles": "0.00",
-    "growth_to_entropy_ratio": "0.0000",
-    "logic_audits": 1,
-    "deprecated_constraints_identified": 0,
-    "internal_monologue_events": 6,
-    "max_dream_simulations_dynamic": 6,
-    "max_recalculations_dynamic": 3,
-    "logic_audit_interval_seconds_dynamic": 3600.0,
-    "patch_generation_interval_seconds_dynamic": 3600.0,
+    "total_inferences": 6,
+    "dreams_performed": 35,
+    "recalculations_triggered": 18,
+    "average_confidence": "0.910",
+    "average_dream_cycles": "5.83",
+    "growth_to_entropy_ratio": "0.8289",
+    "logic_audits": 38,
+    "deprecated_constraints_identified": 36,
+    "internal_monologue_events": 111,
+    "max_dream_simulations_dynamic": 11,
+    "max_recalculations_dynamic": 5,
+    "logic_audit_interval_seconds_dynamic": 1253.6237561701794,
+    "patch_generation_interval_seconds_dynamic": 626.8118780850897,
     "paramatman_cycle_interval_seconds": 86400.0,
     "energy_saving_mode": false,
     "sleep_interval_seconds": 0.0,
-    "recent_inferences": 0,
-    "avg_execution_time": 0.0
+    "recent_inferences": 6,
+    "avg_execution_time": 0.7499411900838217
   },
   "source_training_policy": {
     "generated_at": 1776113919.1639938,

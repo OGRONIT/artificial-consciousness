@@ -216,7 +216,7 @@ class ManasBuddhi:
         self.energy_saving_mode = False
         self.inference_sleep_interval_seconds = 0.0
         self.last_patch_generation_timestamp = 0.0
-        self.patch_generation_interval_seconds = 3600.0
+        self.patch_generation_interval_seconds = 900.0
         self.patch_sequence = 0
         self.last_patch_target = ""
         self.patch_targets: List[Tuple[str, Path]] = [
@@ -234,9 +234,9 @@ class ManasBuddhi:
         self.last_paramatman_cycle_timestamp = 0.0
         self.paramatman_cycle_interval_seconds = 86400.0
         self.last_self_authoring_timestamp = 0.0
-        self.self_authoring_interval_seconds = 1800.0
+        self.self_authoring_interval_seconds = 300.0
         self.last_phase2_sovereign_timestamp = 0.0
-        self.phase2_sovereign_interval_seconds = 1200.0
+        self.phase2_sovereign_interval_seconds = 300.0
         self.last_autonomy_planning_timestamp = 0.0
         self.autonomy_planning_interval_seconds = 900.0
         self.last_autonomous_action_timestamp = 0.0
@@ -251,10 +251,10 @@ class ManasBuddhi:
         self.retired_intrinsic_goals: List[Dict[str, Any]] = []    # Completed / failed / expired
         self.intrinsic_goal_counter: int = 0                        # Monotonic ID counter
         self.last_goal_generation_timestamp: float = 0.0
-        self.goal_generation_interval_seconds: float = 300.0        # Generate every 5 minutes
+        self.goal_generation_interval_seconds: float = 45.0         # Generate aggressively
         self.last_goal_pursuit_timestamp: float = 0.0
-        self.goal_pursuit_interval_seconds: float = 120.0           # Pursue every 2 minutes
-        self.max_active_goals: int = 5
+        self.goal_pursuit_interval_seconds: float = 20.0            # Pursue rapidly
+        self.max_active_goals: int = 14
         self.goal_drive_threshold: float = 0.20                     # Minimum drive to spawn goal (lowered for autonomy)
         self.goal_max_lifetime_seconds: float = 3600.0              # Goals expire after 1 hour
         self.intrinsic_goal_lock = threading.RLock()
@@ -716,11 +716,11 @@ class ManasBuddhi:
             growth_entropy = float(self.metrics.get("growth_to_entropy_ratio", 0.0))
             avg_confidence = float(self.metrics.get("average_confidence", 0.7))
 
-        aggression = max(0.5, min(4.0, 1.0 + (growth_entropy / 3.0)))
-        new_dreams = max(4, min(24, int(round(5 * aggression))))
-        new_recalc = max(3, min(12, int(round(3 + (aggression * (1.0 - avg_confidence + 0.4))))))
-        new_logic_audit = max(300.0, min(3600.0, 3600.0 / aggression))
-        new_patch_interval = max(600.0, min(3600.0, 2400.0 / aggression))
+        aggression = max(0.8, min(8.0, 1.5 + (growth_entropy / 2.0)))
+        new_dreams = max(8, min(40, int(round(6 * aggression))))
+        new_recalc = max(5, min(20, int(round(4 + (aggression * (1.0 - avg_confidence + 0.5))))))
+        new_logic_audit = max(120.0, min(2400.0, 2400.0 / aggression))
+        new_patch_interval = max(180.0, min(1800.0, 1200.0 / aggression))
         new_monologue_interval = max(1.0, min(6.0, 6.0 / aggression))
 
         self.max_dream_simulations = new_dreams
@@ -1782,7 +1782,7 @@ class ManasBuddhi:
         facts = self._collect_chitta_facts()
         weakest = self._identify_weakest_module()
         motivation = float(drives.get("motivation_urgency", 0.0) or 0.0)
-        base_budget = max(2, min(8, int(2 + (motivation * 6))))
+        base_budget = max(3, min(12, int(3 + (motivation * 9))))
 
         def _add_goal(
             drive_name: str,
@@ -1806,7 +1806,7 @@ class ManasBuddhi:
             )
 
         curiosity = float(drives.get("curiosity_drive", 0.0) or 0.0)
-        topic_budget = max(3, min(len(frontier_topics), base_budget + 2))
+        topic_budget = max(4, min(len(frontier_topics), base_budget + 4))
         for topic in frontier_topics[:topic_budget]:
             _add_goal(
                 "curiosity_drive",
@@ -1815,7 +1815,7 @@ class ManasBuddhi:
                 "open_domain_scan",
                 {
                     "topic": topic,
-                    "source_budget": max(2, min(8, base_budget)),
+                    "source_budget": max(3, min(12, base_budget)),
                     "depth_hint": "broad",
                 },
                 "new_fact_integrated",
@@ -2165,8 +2165,8 @@ class ManasBuddhi:
         if not topic:
             frontier = self._derive_autonomous_topic_frontier(max_topics=8)
             topic = frontier[0] if frontier else "artificial consciousness"
-        source_budget = int(args.get("source_budget", 3) or 3)
-        source_budget = max(1, min(8, source_budget))
+        source_budget = int(args.get("source_budget", 4) or 4)
+        source_budget = max(2, min(12, source_budget))
 
         try:
             from Aakaash import scan_for_knowledge

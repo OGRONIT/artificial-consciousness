@@ -3,37 +3,42 @@
     "autogen_1776067965_00": {
       "family": "generic",
       "status": "active",
-      "updated_at": 1776166868.049873
+      "updated_at": 1776189525.3123221
     },
     "planner_1776068417_01": {
       "family": "planner",
       "status": "active",
-      "updated_at": 1776166868.049873
+      "updated_at": 1776189525.3133247
     },
     "planner_1776068590_02": {
       "family": "planner",
       "status": "active",
-      "updated_at": 1776166868.049873
+      "updated_at": 1776189525.3133247
     },
     "monitor_1776068970_03": {
       "family": "monitor",
       "status": "active",
-      "updated_at": 1776166868.049873
+      "updated_at": 1776189525.3133247
     },
     "monitor_1776096329_04": {
       "family": "monitor",
       "status": "active",
-      "updated_at": 1776166868.049873
+      "updated_at": 1776189525.3133247
     },
     "planner_1776096884_05": {
       "family": "planner",
       "status": "active",
-      "updated_at": 1776166868.049873
+      "updated_at": 1776189525.3133247
     },
     "optimizer_1776166868_06": {
       "family": "optimizer",
       "status": "active",
-      "updated_at": 1776166868.049873
+      "updated_at": 1776189525.3133247
+    },
+    "optimizer_1776188851_07": {
+      "family": "optimizer",
+      "status": "active",
+      "updated_at": 1776189525.3133247
     }
   },
   "edges": [
@@ -162,7 +167,61 @@
       "to": "planner_1776096884_05",
       "relation": "guides",
       "weight": 0.6
+    },
+    {
+      "from": "optimizer_1776188851_07",
+      "to": "autogen_1776067965_00",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "optimizer_1776188851_07",
+      "to": "planner_1776068417_01",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "optimizer_1776188851_07",
+      "to": "planner_1776068590_02",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "optimizer_1776188851_07",
+      "to": "monitor_1776068970_03",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "optimizer_1776188851_07",
+      "to": "monitor_1776096329_04",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "optimizer_1776188851_07",
+      "to": "planner_1776096884_05",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "optimizer_1776188851_07",
+      "to": "optimizer_1776166868_06",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "planner_1776096884_05",
+      "to": "optimizer_1776166868_06",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "planner_1776096884_05",
+      "to": "optimizer_1776188851_07",
+      "relation": "guides",
+      "weight": 0.6
     }
   ],
-  "last_updated": 1776166868.049873
+  "last_updated": 1776189525.3133247
 }

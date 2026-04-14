@@ -210,7 +210,7 @@ class ManasBuddhi:
         self.energy_saving_mode = False
         self.inference_sleep_interval_seconds = 0.0
         self.last_patch_generation_timestamp = 0.0
-        self.patch_generation_interval_seconds = 3600.0
+        self.patch_generation_interval_seconds = 900.0
         self.patch_sequence = 0
         self.last_patch_target = ""
         self.patch_targets: List[Tuple[str, Path]] = [

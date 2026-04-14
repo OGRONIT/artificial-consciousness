@@ -1,24 +1,25 @@
 {
   "version": 1,
-  "generated_at": 1776187702.1509209,
-  "source_memory_count": 261,
-  "loaded_memory_count": 261,
+  "generated_at": 1776189682.3973339,
+  "source_memory_count": 277,
+  "loaded_memory_count": 277,
   "memory_statistics": {
-    "total_memories": 261,
-    "max_local_memories": 290927,
+    "total_memories": 277,
+    "max_local_memories": 290923,
     "memory_clusters": 0,
     "contradictions_detected": 0,
-    "external_knowledge_facts": 23,
+    "external_knowledge_facts": 276,
     "external_knowledge_clusters": 0,
     "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
-    "average_external_verification_score": 0.9635652173913046,
+    "average_external_verification_score": 0.9725724637681176,
     "outcome_distribution": {
       "conflict": 5,
-      "success": 256
+      "success": 267,
+      "failed": 5
     },
-    "average_success_score": 0.9753249521072797,
-    "average_learning_value": 0.024675047892720306,
-    "emotional_trend": 0.0,
+    "average_success_score": 0.9610891245487367,
+    "average_learning_value": 0.038910875451263524,
+    "emotional_trend": -0.05,
     "most_accessed": [
       {
         "memory_id": "19700efd7a0f31d1",
@@ -78,10 +79,10 @@
         "outcome": "conflict"
       }
     ],
-    "avg_learning_value": 0.024675047892720306,
-    "avg_success_score": 0.9753249521072797,
+    "avg_learning_value": 0.038910875451263524,
+    "avg_success_score": 0.9610891245487367,
     "conflict_count": 5,
-    "conflict_ratio": 0.019157088122605363
+    "conflict_ratio": 0.018050541516245487
   },
   "memories": [
     {
@@ -210,6 +211,121 @@
       "last_accessed": 1776096768.0764432
     },
     {
+      "memory_id": "eb2cca911839aaab",
+      "interaction_id": "auto_1776189238581",
+      "timestamp": 1776189238.5812664,
+      "content": "Intrinsic goal exhausted: Force architecture upgrade pressure on weakest zone: self_model | Maximum pursuit attempts reached",
+      "interaction_type": "intrinsic_goal_outcome",
+      "outcome": "failed",
+      "success_score": 0.3,
+      "self_model_coherence_before": 1.0,
+      "self_model_coherence_after": 1.0,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": -0.3,
+      "embedding_vector": null,
+      "tags": [
+        "intrinsic_goal",
+        "growth_pressure",
+        "exhausted"
+      ],
+      "related_memories": [],
+      "learning_value": 0.7,
+      "access_count": 1,
+      "last_accessed": 1776189238.5812664
+    },
+    {
+      "memory_id": "33f0a5b3c0035ee8",
+      "interaction_id": "auto_1776189238583",
+      "timestamp": 1776189238.5832753,
+      "content": "Intrinsic goal exhausted: Diagnose and mitigate active pain pattern: conflict | Maximum pursuit attempts reached",
+      "interaction_type": "intrinsic_goal_outcome",
+      "outcome": "failed",
+      "success_score": 0.3,
+      "self_model_coherence_before": 1.0,
+      "self_model_coherence_after": 1.0,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": -0.3,
+      "embedding_vector": null,
+      "tags": [
+        "intrinsic_goal",
+        "pain_resolution_drive",
+        "exhausted"
+      ],
+      "related_memories": [],
+      "learning_value": 0.7,
+      "access_count": 1,
+      "last_accessed": 1776189238.5832753
+    },
+    {
+      "memory_id": "a981b287c756a958",
+      "interaction_id": "auto_1776189450763",
+      "timestamp": 1776189450.7643228,
+      "content": "Intrinsic goal exhausted: Synthesize executable evolution proposal for: self_model | Maximum pursuit attempts reached",
+      "interaction_type": "intrinsic_goal_outcome",
+      "outcome": "failed",
+      "success_score": 0.3,
+      "self_model_coherence_before": 1.0,
+      "self_model_coherence_after": 1.0,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": -0.3,
+      "embedding_vector": null,
+      "tags": [
+        "intrinsic_goal",
+        "growth_pressure",
+        "exhausted"
+      ],
+      "related_memories": [],
+      "learning_value": 0.7,
+      "access_count": 1,
+      "last_accessed": 1776189450.7643228
+    },
+    {
+      "memory_id": "3e02858b9303cc6c",
+      "interaction_id": "auto_1776189450768",
+      "timestamp": 1776189450.768331,
+      "content": "Intrinsic goal exhausted: Diagnose and mitigate active pain pattern: conflict | Maximum pursuit attempts reached",
+      "interaction_type": "intrinsic_goal_outcome",
+      "outcome": "failed",
+      "success_score": 0.3,
+      "self_model_coherence_before": 1.0,
+      "self_model_coherence_after": 1.0,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": -0.3,
+      "embedding_vector": null,
+      "tags": [
+        "intrinsic_goal",
+        "pain_resolution_drive",
+        "exhausted"
+      ],
+      "related_memories": [],
+      "learning_value": 0.7,
+      "access_count": 1,
+      "last_accessed": 1776189450.768331
+    },
+    {
+      "memory_id": "ea691bcf36145529",
+      "interaction_id": "auto_1776189621800",
+      "timestamp": 1776189621.8005054,
+      "content": "Intrinsic goal exhausted: Force architecture upgrade pressure on weakest zone: self_model | Maximum pursuit attempts reached",
+      "interaction_type": "intrinsic_goal_outcome",
+      "outcome": "failed",
+      "success_score": 0.3,
+      "self_model_coherence_before": 1.0,
+      "self_model_coherence_after": 1.0,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": -0.3,
+      "embedding_vector": null,
+      "tags": [
+        "intrinsic_goal",
+        "growth_pressure",
+        "exhausted"
+      ],
+      "related_memories": [],
+      "learning_value": 0.7,
+      "access_count": 1,
+      "last_accessed": 1776189621.8005054
+    },
+    {
       "memory_id": "d2071dc3f3690a29",
       "interaction_id": "063efc20",
       "timestamp": 1776166816.9694002,
@@ -230,6 +346,28 @@
       "learning_value": 0.3401875,
       "access_count": 1,
       "last_accessed": 1776166816.9694002
+    },
+    {
+      "memory_id": "99a32a772e3f89cd",
+      "interaction_id": "17d0cdd6",
+      "timestamp": 1776189198.0514016,
+      "content": "Extract and test this knowledge for actionable value. Topic=Human Psychology; Title=Designing AI Systems that Augment Human Performed vs. Demonstrated Critical Thinking; Summary=The recent rapid advancement of LLM-based AI systems has accelerated our search and production of information. While the advantages brought by these systems seemingly improve the performance or efficiency of human activities, they do not necessarily enhance human capabilities. Re",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.661875,
+      "self_model_coherence_before": 0.9941,
+      "self_model_coherence_after": 0.9941,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.338125,
+      "access_count": 1,
+      "last_accessed": 1776189198.0514016
     },
     {
       "memory_id": "31e51e189ca86a96",
@@ -320,6 +458,50 @@
       "last_accessed": 1776166816.959729
     },
     {
+      "memory_id": "d2b1a354d3e7ec03",
+      "interaction_id": "68884967",
+      "timestamp": 1776188839.012029,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=On the evolution of phenomenal consciousness; Summary=A number of concepts are included in the term 'consciousness'. We choose to concentrate here on phenomenal consciousness, the process through which we are able to experience aspects of our environment or of our physical state. We probably share this aspect of consciousness with m",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.8,
+      "self_model_coherence_before": 0.9818,
+      "self_model_coherence_after": 0.9818,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.19999999999999996,
+      "access_count": 1,
+      "last_accessed": 1776188839.012029
+    },
+    {
+      "memory_id": "c61d3273c489b1ea",
+      "interaction_id": "73bbc241",
+      "timestamp": 1776189198.056391,
+      "content": "Extract and test this knowledge for actionable value. Topic=Human Psychology; Title=Advanced Data Protection Control (ADPC): An Interdisciplinary Overview; Summary=The Advanced Data Protection Control (ADPC) is a technical specification - and a set of sociotechnical mechanisms surrounding it - that can change the current practice of Internet-based personal data protection and consenting by providing novel and standardized means for the comm",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.8,
+      "self_model_coherence_before": 0.9671,
+      "self_model_coherence_after": 0.9671,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.19999999999999996,
+      "access_count": 1,
+      "last_accessed": 1776189198.056391
+    },
+    {
       "memory_id": "c4164d94c0b6f701",
       "interaction_id": "8eabf19f",
       "timestamp": 1776166846.2664535,
@@ -362,6 +544,28 @@
       "learning_value": 0.09999999999999998,
       "access_count": 1,
       "last_accessed": 1776166846.2764432
+    },
+    {
+      "memory_id": "2649635814a98e96",
+      "interaction_id": "13a299c8",
+      "timestamp": 1776188839.0050898,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=Complex-Dynamic Origin of Consciousness and the Critical Choice of Sustainability Transition; Summary=A quite general interaction process of a multi-component system is analysed by the extended effective potential method liberated from usual limitations of perturbation theory or integrable model. The obtained causally complete solution of the many-body problem reveals the phenome",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 0.9,
+      "self_model_coherence_before": 0.9799000000000001,
+      "self_model_coherence_after": 0.9799000000000001,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.09999999999999998,
+      "access_count": 1,
+      "last_accessed": 1776188839.0050898
     },
     {
       "memory_id": "6a13557e671750c8",
@@ -6577,6 +6781,162 @@
       "learning_value": 0.0,
       "access_count": 1,
       "last_accessed": 1776187702.0356014
+    },
+    {
+      "memory_id": "e53a7c2ea0dc2f21",
+      "interaction_id": "0223acc4",
+      "timestamp": 1776188839.0194404,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=Brainish: Formalizing A Multimodal Language for Intelligence and Consciousness; Summary=Having a rich multimodal inner language is an important component of human intelligence that enables several necessary core cognitive functions such as multimodal prediction, translation, and generation. Building upon the Conscious Turing Machine (CTM), a machine model for consci",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 0.9801000000000001,
+      "self_model_coherence_after": 0.9801000000000001,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776188839.0194404
+    },
+    {
+      "memory_id": "03fa7a4ffdad698f",
+      "interaction_id": "a13c51e5",
+      "timestamp": 1776189198.0453043,
+      "content": "Extract and test this knowledge for actionable value. Topic=Human Psychology; Title=Needs-aware Artificial Intelligence: AI that 'serves [human] needs'; Summary=By defining the current limits (and thereby the frontiers), many boundaries are shaping, and will continue to shape, the future of Artificial Intelligence (AI). We push on these boundaries in order to make further progress into what were yesterday's frontiers. They are both pliab",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 0.9886,
+      "self_model_coherence_after": 0.9886,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776189198.0453043
+    },
+    {
+      "memory_id": "fd338128d900a638",
+      "interaction_id": "33fd8e66",
+      "timestamp": 1776189228.1051955,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=Complex-Dynamic Origin of Consciousness and the Critical Choice of Sustainability Transition; Summary=A quite general interaction process of a multi-component system is analysed by the extended effective potential method liberated from usual limitations of perturbation theory or integrable model. The obtained causally complete solution of the many-body problem reveals the phenome",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 0.9654,
+      "self_model_coherence_after": 0.9654,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776189228.1051955
+    },
+    {
+      "memory_id": "96f28b3e5d3d6eac",
+      "interaction_id": "ce262235",
+      "timestamp": 1776189228.11737,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=On the evolution of phenomenal consciousness; Summary=A number of concepts are included in the term 'consciousness'. We choose to concentrate here on phenomenal consciousness, the process through which we are able to experience aspects of our environment or of our physical state. We probably share this aspect of consciousness with m",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 0.9709,
+      "self_model_coherence_after": 0.9709,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776189228.11737
+    },
+    {
+      "memory_id": "8030254c8aecaf19",
+      "interaction_id": "34ffdfe5",
+      "timestamp": 1776189228.1263142,
+      "content": "Extract and test this knowledge for actionable value. Topic=Artificial Consciousness; Title=Brainish: Formalizing A Multimodal Language for Intelligence and Consciousness; Summary=Having a rich multimodal inner language is an important component of human intelligence that enables several necessary core cognitive functions such as multimodal prediction, translation, and generation. Building upon the Conscious Turing Machine (CTM), a machine model for consci",
+      "interaction_type": "knowledge_test",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 0.9763999999999999,
+      "self_model_coherence_after": 0.9763999999999999,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.0,
+      "embedding_vector": null,
+      "tags": [
+        "knowledge_test",
+        "interaction"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776189228.1263142
+    },
+    {
+      "memory_id": "2c01a6c9d6d8ee7a",
+      "interaction_id": "auto_1776189496898",
+      "timestamp": 1776189496.8984501,
+      "content": "Intrinsic goal completed: Cross-domain synthesis between energy and realistic | Integrated cross-domain hypothesis as 243e717c79fe1937",
+      "interaction_type": "intrinsic_goal_outcome",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 1.0,
+      "self_model_coherence_after": 1.0,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.5,
+      "embedding_vector": null,
+      "tags": [
+        "intrinsic_goal",
+        "novelty_deficit",
+        "completed"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776189496.8984501
+    },
+    {
+      "memory_id": "147c2870282f33c6",
+      "interaction_id": "auto_1776189652646",
+      "timestamp": 1776189652.646095,
+      "content": "Intrinsic goal completed: Cross-domain synthesis between motivation-hub and information | Integrated cross-domain hypothesis as 1667ef12a7a4fbb8",
+      "interaction_type": "intrinsic_goal_outcome",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 1.0,
+      "self_model_coherence_after": 1.0,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.5,
+      "embedding_vector": null,
+      "tags": [
+        "intrinsic_goal",
+        "novelty_deficit",
+        "completed"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776189652.646095
     }
   ]
 }
