@@ -734,27 +734,13 @@ class LiveConsciousnessEngine:
 
     def _persist_state_snapshot(self) -> None:
         """Persist a compact state snapshot for the interactive bridge."""
-        live_facts: List[Dict[str, Any]] = []
-        if hasattr(self.kernel.memory_system, "query_external_knowledge"):
-            for fact in self.kernel.memory_system.query_external_knowledge(limit=None, min_verification_score=0.0):
-                live_facts.append(
-                    {
-                        "timestamp": fact.integrated_at,
-                        "topic": fact.topic,
-                        "title": fact.title,
-                        "summary": fact.summary,
-                        "source_name": fact.source_name,
-                        "source_url": fact.source_url,
-                        "verification_score": fact.verification_score,
-                        "approved_by_turiya": fact.approved_by_turiya,
-                    }
-                )
+        base_state = self.kernel.get_full_state(fact_limit=None)
 
-        body_status = self._safe_body_status()
-        stability_report = self.kernel.self_model.get_stability_report()
-        inference_stats = self.kernel.inference_engine.inference_statistics()
-        intrinsic_status = self.kernel.inference_engine.get_intrinsic_motivation_status()
-        observer_health = self.kernel.observer.get_system_health_report()
+        body_status = base_state.get("body_status", self._safe_body_status())
+        stability_report = base_state.get("stability_report", self.kernel.self_model.get_stability_report())
+        inference_stats = base_state.get("inference_stats", self.kernel.inference_engine.inference_statistics())
+        intrinsic_status = base_state.get("intrinsic_motivation", self.kernel.inference_engine.get_intrinsic_motivation_status())
+        observer_health = base_state.get("observer_health", self.kernel.observer.get_system_health_report())
         consciousness_progress = self._compute_consciousness_progress(
             body_status=body_status,
             stability_report=stability_report,
@@ -764,22 +750,13 @@ class LiveConsciousnessEngine:
         )
 
         snapshot = {
-            "timestamp": time.time(),
-            "identity": self.kernel.identity_name,
+            **base_state,
             "learned_fact_count": self.learned_fact_count,
             "dream_thought_count": self.dream_thought_count,
-            "body_status": body_status,
-            "stability_report": stability_report,
-            "creator_awareness": self.kernel.self_model.get_creator_awareness(),
-            "inference_stats": inference_stats,
-            "intrinsic_motivation": intrinsic_status,
             "autonomy_agenda": self.last_autonomy_report or intrinsic_status.get("autonomy_agenda_preview", {}),
             "internet_heartbeat": dict(self.internet_heartbeat),
-            "observer_health": observer_health,
             "consciousness_progress": consciousness_progress,
             "llm_cognitive_loop": self.bridge_feedback_metrics,
-            "buffer_stats": self.kernel.conscious_buffer.buffer_statistics(),
-            "facts": live_facts,
         }
 
         self._atomic_write_json(self.state_snapshot_path, snapshot)

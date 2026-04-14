@@ -536,6 +536,49 @@ class AntahkaranaKernel:
         
         return export_data
 
+    def get_full_state(self, fact_limit: Optional[int] = None) -> Dict[str, Any]:
+        """Return a comprehensive, serialization-safe runtime snapshot for observability/reporting."""
+        live_facts: List[Dict[str, Any]] = []
+        if hasattr(self.memory_system, "query_external_knowledge"):
+            query_limit = fact_limit if isinstance(fact_limit, int) and fact_limit >= 0 else None
+            for fact in self.memory_system.query_external_knowledge(limit=query_limit, min_verification_score=0.0):
+                live_facts.append(
+                    {
+                        "timestamp": getattr(fact, "integrated_at", None),
+                        "topic": getattr(fact, "topic", ""),
+                        "title": getattr(fact, "title", ""),
+                        "summary": getattr(fact, "summary", ""),
+                        "source_name": getattr(fact, "source_name", ""),
+                        "source_url": getattr(fact, "source_url", ""),
+                        "verification_score": getattr(fact, "verification_score", 0.0),
+                        "approved_by_turiya": getattr(fact, "approved_by_turiya", False),
+                    }
+                )
+
+        try:
+            body_status = self.body_monitor.get_body_status()
+        except Exception:
+            body_status = {"status": "unknown", "unavailable": True}
+
+        snapshot: Dict[str, Any] = {
+            "timestamp": time.time(),
+            "identity": self.identity_name,
+            "is_active": self.is_active,
+            "kernel_state": self.kernel_state.copy(),
+            "self_report": self.self_model.get_self_report(),
+            "stability_report": self.self_model.get_stability_report(),
+            "creator_awareness": self.self_model.get_creator_awareness(),
+            "memory_stats": self.memory_system.memory_statistics(),
+            "inference_stats": self.inference_engine.inference_statistics(),
+            "intrinsic_motivation": self.inference_engine.get_intrinsic_motivation_status(),
+            "observer_health": self.observer.get_system_health_report(),
+            "buffer_stats": self.conscious_buffer.buffer_statistics(),
+            "body_status": body_status,
+            "facts": live_facts,
+            "fact_count": len(live_facts),
+        }
+        return snapshot
+
     def get_status(self) -> Dict[str, Any]:
         """Get current kernel status."""
         with self.state_lock:
