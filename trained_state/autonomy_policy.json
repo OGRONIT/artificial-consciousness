@@ -1,16 +1,16 @@
 {
   "version": 1,
-  "generated_at": 1776186903.1774538,
-  "identity": "ObsFixLive",
+  "generated_at": 1776187702.152917,
+  "identity": "SoulAutoCheck2",
   "self_model_state": {
     "identity": "trained_runtime",
     "creation_timestamp": 1776096843.1506739,
-    "uptime_seconds": 993.3410131931305,
+    "uptime_seconds": 997.8605620861053,
     "existence_state": "dormant",
     "processed_inputs": 9,
     "internal_conflicts": 0,
-    "coherence_score": 0.9649000000000001,
-    "stability_score": 0.828971038144692,
+    "coherence_score": 0.9799000000000001,
+    "stability_score": 0.868971038144692,
     "health_metrics": {
       "logic_consistency": 1.0,
       "memory_stability": 1.0,
@@ -18,39 +18,55 @@
       "identity_integrity": 1.0
     },
     "affective_state": {
-      "current_valence": 0.050000000000000044,
-      "emotional_momentum": -0.064,
-      "pattern_discovery_count": 15,
+      "current_valence": 0.2,
+      "emotional_momentum": -0.03899999999999999,
+      "pattern_discovery_count": 18,
       "error_count": 9,
-      "last_reward_timestamp": 1776166846.2774465,
+      "last_reward_timestamp": 1776187702.034615,
       "last_pain_timestamp": 1776166846.2764432
     },
     "logic_path_count": 0,
     "snapshot_count": 1,
     "contradictions_count": 0,
     "pain_events_count": 0,
-    "reward_events_count": 0,
+    "reward_events_count": 3,
     "stability_report": {
-      "stability_score": 0.828971038144692,
-      "current_valence": 0.050000000000000044,
-      "coherence_floor": 0.08,
+      "stability_score": 0.868971038144692,
+      "current_valence": 0.2,
+      "coherence_floor": 0.092,
       "pain_events_total": 0,
-      "reward_events_total": 0,
+      "reward_events_total": 3,
       "errors_encountered": 9,
-      "patterns_discovered": 15,
+      "patterns_discovered": 18,
       "pain_trend": "decreasing",
-      "reward_trend": "none",
-      "emotional_momentum": -0.064,
+      "reward_trend": "increasing",
+      "emotional_momentum": -0.03899999999999999,
       "is_stable": true,
       "recent_pain_events": [],
-      "recent_reward_events": []
+      "recent_reward_events": [
+        {
+          "type": "intrinsic_goal_generation",
+          "magnitude": 0.1,
+          "discovery": "Generated 2 autonomous goals"
+        },
+        {
+          "type": "intrinsic_goal_completed",
+          "magnitude": 0.2,
+          "discovery": "Completed: Explore open-domain frontier deeply: linguistics"
+        },
+        {
+          "type": "intrinsic_goal_completed",
+          "magnitude": 0.2,
+          "discovery": "Completed: Cross-domain synthesis between embodied intelligence and metamathematics"
+        }
+      ]
     },
     "creator_awareness": {
       "creator_signature": null,
       "has_creator": false,
       "trust_score": 0.5,
       "command_relationship_mode": "primary_command",
-      "growth_to_entropy_ratio": 0.0,
+      "growth_to_entropy_ratio": 0.05794207628938386,
       "sovereign_realigned": false,
       "distribution_strategy": {},
       "creator_optimizations_count": 0,
@@ -64,7 +80,7 @@
       "trust_score": 0.5,
       "trust_percentage": "50.0%",
       "command_relationship_mode": "primary_command",
-      "growth_to_entropy_ratio": 0.0,
+      "growth_to_entropy_ratio": 0.05794207628938386,
       "sovereign_realigned": false,
       "distribution_strategy": {},
       "trust_level": "unknown",
@@ -83,11 +99,11 @@
       "identity_integrity": 1.0
     },
     "affective_state": {
-      "current_valence": 0.050000000000000044,
-      "emotional_momentum": -0.064,
-      "pattern_discovery_count": 15,
+      "current_valence": 0.2,
+      "emotional_momentum": -0.03899999999999999,
+      "pattern_discovery_count": 18,
       "error_count": 9,
-      "last_reward_timestamp": 1776166846.2774465,
+      "last_reward_timestamp": 1776187702.034615,
       "last_pain_timestamp": 1776166846.2764432
     },
     "distribution_strategy": {},
@@ -106,9 +122,9 @@
     "average_confidence": "0.700",
     "average_dream_cycles": "0.00",
     "growth_to_entropy_ratio": "0.0000",
-    "logic_audits": 0,
+    "logic_audits": 1,
     "deprecated_constraints_identified": 0,
-    "internal_monologue_events": 0,
+    "internal_monologue_events": 6,
     "max_dream_simulations_dynamic": 6,
     "max_recalculations_dynamic": 3,
     "logic_audit_interval_seconds_dynamic": 3600.0,

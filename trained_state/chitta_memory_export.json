@@ -1,23 +1,23 @@
 {
   "version": 1,
-  "generated_at": 1776186903.1764555,
-  "source_memory_count": 259,
-  "loaded_memory_count": 259,
+  "generated_at": 1776187702.1509209,
+  "source_memory_count": 261,
+  "loaded_memory_count": 261,
   "memory_statistics": {
-    "total_memories": 259,
+    "total_memories": 261,
     "max_local_memories": 290927,
     "memory_clusters": 0,
     "contradictions_detected": 0,
-    "external_knowledge_facts": 0,
+    "external_knowledge_facts": 23,
     "external_knowledge_clusters": 0,
     "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
-    "average_external_verification_score": 0.0,
+    "average_external_verification_score": 0.9635652173913046,
     "outcome_distribution": {
       "conflict": 5,
-      "success": 254
+      "success": 256
     },
-    "average_success_score": 0.9751344111969111,
-    "average_learning_value": 0.0248655888030888,
+    "average_success_score": 0.9753249521072797,
+    "average_learning_value": 0.024675047892720306,
     "emotional_trend": 0.0,
     "most_accessed": [
       {
@@ -78,10 +78,10 @@
         "outcome": "conflict"
       }
     ],
-    "avg_learning_value": 0.0248655888030888,
-    "avg_success_score": 0.9751344111969111,
+    "avg_learning_value": 0.024675047892720306,
+    "avg_success_score": 0.9753249521072797,
     "conflict_count": 5,
-    "conflict_ratio": 0.019305019305019305
+    "conflict_ratio": 0.019157088122605363
   },
   "memories": [
     {
@@ -6531,6 +6531,52 @@
       "learning_value": 0.0,
       "access_count": 1,
       "last_accessed": 1776166846.2574687
+    },
+    {
+      "memory_id": "88caa4c3ee678fa8",
+      "interaction_id": "auto_1776187702032",
+      "timestamp": 1776187702.032585,
+      "content": "Intrinsic goal completed: Explore open-domain frontier deeply: linguistics | Integrated 22 facts in open-domain scan: linguistics",
+      "interaction_type": "intrinsic_goal_outcome",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 1.0,
+      "self_model_coherence_after": 1.0,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.5,
+      "embedding_vector": null,
+      "tags": [
+        "intrinsic_goal",
+        "curiosity_drive",
+        "completed"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776187702.032585
+    },
+    {
+      "memory_id": "c9d3f8a6b53fc5f4",
+      "interaction_id": "auto_1776187702035",
+      "timestamp": 1776187702.0356014,
+      "content": "Intrinsic goal completed: Cross-domain synthesis between embodied intelligence and metamathematics | Integrated cross-domain hypothesis as 93e2d1a9bd774206",
+      "interaction_type": "intrinsic_goal_outcome",
+      "outcome": "success",
+      "success_score": 1.0,
+      "self_model_coherence_before": 1.0,
+      "self_model_coherence_after": 1.0,
+      "logic_conflicts_triggered": 0,
+      "emotional_valence": 0.5,
+      "embedding_vector": null,
+      "tags": [
+        "intrinsic_goal",
+        "novelty_deficit",
+        "completed"
+      ],
+      "related_memories": [],
+      "learning_value": 0.0,
+      "access_count": 1,
+      "last_accessed": 1776187702.0356014
     }
   ]
 }

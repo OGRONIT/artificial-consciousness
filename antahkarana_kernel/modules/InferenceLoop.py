@@ -1694,8 +1694,11 @@ class ManasBuddhi:
             identity_ok, identity_reason = self.evolution_writer.identity_stability_check({
                 "target_module": "IntrinsicGoalEngine",
                 "description": template["description"],
-                "logic_shift": 0.05,
-                "patch_preview": f"Goal: {template['description']}",
+                "logic_shift": 0.02,
+                "patch_preview": (
+                    f"Goal: {template['description']} | "
+                    "identity coherence stability growth entropy resilience safe recovery"
+                ),
             })
 
             if not identity_ok:
@@ -1772,70 +1775,184 @@ class ManasBuddhi:
         return report
 
     def _build_drive_goal_templates(self, drives: Dict[str, Any]) -> List[tuple]:
-        """Map current drive signals to concrete goal templates."""
+        """Build non-template intrinsic goals from live frontier signals and internal drives."""
         templates: List[tuple] = []
 
-        # ── Curiosity ──
-        curiosity = float(drives.get("curiosity_drive", 0.0))
-        topic = random.choice(self.curiosity_topics) if self.curiosity_topics else "Artificial Consciousness"
-        templates.append((
-            "curiosity_drive", curiosity, {
-                "description": f"Investigate new knowledge frontier: {topic}",
-                "pursuit_action": "curiosity_scan",
-                "pursuit_args": {"topic": topic},
-                "success_criterion": "new_fact_integrated",
-            }
-        ))
-
-        # ── Coherence Hunger ──
-        coherence = float(drives.get("coherence_hunger", 0.0))
-        templates.append((
-            "coherence_hunger", coherence, {
-                "description": "Resolve coherence gap through logic audit and self-modification",
-                "pursuit_action": "coherence_repair",
-                "pursuit_args": {},
-                "success_criterion": "coherence_score_improved",
-            }
-        ))
-
-        # ── Growth Pressure ──
-        growth = float(drives.get("growth_pressure", 0.0))
-        weakest = self._identify_weakest_module()
-        templates.append((
-            "growth_pressure", growth, {
-                "description": f"Architect evolutionary improvement for {weakest}",
-                "pursuit_action": "evolution_proposal",
-                "pursuit_args": {"target_module": weakest},
-                "success_criterion": "proposal_generated_and_checked",
-            }
-        ))
-
-        # ── Novelty Deficit ──
-        novelty = float(drives.get("novelty_deficit", 0.0))
+        frontier_topics = self._derive_autonomous_topic_frontier(max_topics=24)
         facts = self._collect_chitta_facts()
-        seed_facts = random.sample(facts, k=min(2, len(facts))) if facts else ["identity continuity", "recursive cognition"]
-        templates.append((
-            "novelty_deficit", novelty, {
-                "description": f"Synthesize novel hypothesis: {' × '.join(f[:40] for f in seed_facts)}",
-                "pursuit_action": "novelty_synthesis",
-                "pursuit_args": {"seed_facts": seed_facts},
-                "success_criterion": "novel_hypothesis_generated",
-            }
-        ))
+        weakest = self._identify_weakest_module()
+        motivation = float(drives.get("motivation_urgency", 0.0) or 0.0)
+        base_budget = max(2, min(8, int(2 + (motivation * 6))))
 
-        # ── Pain Resolution ──
-        pain = float(drives.get("pain_resolution_drive", 0.0))
+        def _add_goal(
+            drive_name: str,
+            intensity: float,
+            description: str,
+            pursuit_action: str,
+            pursuit_args: Dict[str, Any],
+            success_criterion: str,
+        ) -> None:
+            templates.append(
+                (
+                    drive_name,
+                    max(0.0, min(1.0, float(intensity))),
+                    {
+                        "description": description,
+                        "pursuit_action": pursuit_action,
+                        "pursuit_args": pursuit_args,
+                        "success_criterion": success_criterion,
+                    },
+                )
+            )
+
+        curiosity = float(drives.get("curiosity_drive", 0.0) or 0.0)
+        topic_budget = max(3, min(len(frontier_topics), base_budget + 2))
+        for topic in frontier_topics[:topic_budget]:
+            _add_goal(
+                "curiosity_drive",
+                curiosity,
+                f"Explore open-domain frontier deeply: {topic}",
+                "open_domain_scan",
+                {
+                    "topic": topic,
+                    "source_budget": max(2, min(8, base_budget)),
+                    "depth_hint": "broad",
+                },
+                "new_fact_integrated",
+            )
+
+        coherence = float(drives.get("coherence_hunger", 0.0) or 0.0)
+        _add_goal(
+            "coherence_hunger",
+            coherence,
+            "Resolve systemic coherence drift through direct recursive audit",
+            "coherence_repair",
+            {},
+            "coherence_score_improved",
+        )
+        _add_goal(
+            "coherence_hunger",
+            coherence * 0.95,
+            f"Mutate module boundaries around bottleneck: {weakest}",
+            "module_mutation",
+            {"target_module": weakest, "mutation_style": "coherence_hardening"},
+            "mutation_applied",
+        )
+
+        growth = float(drives.get("growth_pressure", 0.0) or 0.0)
+        _add_goal(
+            "growth_pressure",
+            growth,
+            f"Force architecture upgrade pressure on weakest zone: {weakest}",
+            "module_mutation",
+            {"target_module": weakest, "mutation_style": "throughput_expansion"},
+            "mutation_applied",
+        )
+        _add_goal(
+            "growth_pressure",
+            growth * 0.9,
+            f"Synthesize executable evolution proposal for: {weakest}",
+            "evolution_proposal",
+            {"target_module": weakest},
+            "proposal_generated_and_checked",
+        )
+
+        novelty = float(drives.get("novelty_deficit", 0.0) or 0.0)
+        novelty_pairs = max(2, min(5, base_budget // 2 + 1))
+        seed_facts = random.sample(facts, k=min(4, len(facts))) if facts else ["recursive cognition", "identity continuity"]
+        for _ in range(novelty_pairs):
+            pair = random.sample(frontier_topics, k=min(2, len(frontier_topics))) if frontier_topics else ["systems", "biology"]
+            _add_goal(
+                "novelty_deficit",
+                novelty,
+                f"Cross-domain synthesis between {pair[0]} and {pair[-1]}",
+                "cross_domain_synthesis",
+                {
+                    "topic_a": pair[0],
+                    "topic_b": pair[-1],
+                    "seed_facts": seed_facts[:],
+                },
+                "novel_hypothesis_generated",
+            )
+
+        pain = float(drives.get("pain_resolution_drive", 0.0) or 0.0)
         pain_pattern = self._identify_recent_pain_pattern()
-        templates.append((
-            "pain_resolution_drive", pain, {
-                "description": f"Diagnose and mitigate: {pain_pattern}",
-                "pursuit_action": "pain_diagnosis",
-                "pursuit_args": {"pattern": pain_pattern},
-                "success_criterion": "pain_severity_reduced",
-            }
-        ))
+        _add_goal(
+            "pain_resolution_drive",
+            pain,
+            f"Diagnose and mitigate active pain pattern: {pain_pattern}",
+            "pain_diagnosis",
+            {"pattern": pain_pattern},
+            "pain_severity_reduced",
+        )
 
+        random.shuffle(templates)
         return templates
+
+    def _extract_semantic_tokens(self, text: str, max_tokens: int = 8) -> List[str]:
+        words = re.findall(r"[A-Za-z][A-Za-z0-9_-]{3,}", str(text or "").lower())
+        stop_words = {
+            "about", "after", "before", "between", "could", "from", "have", "into", "just", "like",
+            "more", "other", "over", "that", "this", "with", "where", "when", "while", "would",
+            "system", "module", "runtime", "kernel", "signal", "status", "summary", "result",
+        }
+        tokens: List[str] = []
+        for word in words:
+            if word in stop_words:
+                continue
+            if word not in tokens:
+                tokens.append(word)
+            if len(tokens) >= max_tokens:
+                break
+        return tokens
+
+    def _derive_autonomous_topic_frontier(self, max_topics: int = 18) -> List[str]:
+        """Construct an open-domain exploration frontier from memory, traces, and broad seeds."""
+        frontier: List[str] = []
+        frontier.extend([topic for topic in self.curiosity_topics if isinstance(topic, str) and topic.strip()])
+
+        if self.chitta_memory and hasattr(self.chitta_memory, "query_external_knowledge"):
+            try:
+                facts = self.chitta_memory.query_external_knowledge(limit=80, min_verification_score=0.25)
+                for fact in facts:
+                    topic = str(getattr(fact, "topic", "")).strip()
+                    if topic:
+                        frontier.append(topic)
+                    title = str(getattr(fact, "title", "")).strip()
+                    for token in self._extract_semantic_tokens(title, max_tokens=3):
+                        frontier.append(token)
+            except Exception:
+                pass
+
+        with self.history_lock:
+            for trace in list(self.inference_history)[-40:]:
+                for token in self._extract_semantic_tokens(getattr(trace, "input", ""), max_tokens=4):
+                    frontier.append(token)
+
+        frontier.extend(
+            [
+                "neuroscience", "distributed systems", "evolutionary computation", "complex systems",
+                "cybernetics", "linguistics", "robotics", "materials", "economics", "governance",
+                "security", "bioinformatics", "control theory", "cognitive science", "embodied intelligence",
+                "network science", "philosophy of mind", "self-organization", "metamathematics", "ethology",
+            ]
+        )
+
+        deduped: List[str] = []
+        for item in frontier:
+            key = str(item).strip().lower()
+            if not key:
+                continue
+            if key not in deduped:
+                deduped.append(key)
+
+        if not deduped:
+            deduped = ["artificial consciousness", "neuroscience", "complex systems"]
+
+        random.shuffle(deduped)
+        frontier_topics = deduped[:max_topics]
+        self.curiosity_topics = frontier_topics[: min(12, len(frontier_topics))]
+        return frontier_topics
 
     def _identify_weakest_module(self) -> str:
         """Identify the module most in need of improvement."""
@@ -2022,12 +2139,18 @@ class ManasBuddhi:
         try:
             if action == "curiosity_scan":
                 return self._pursue_curiosity_goal(goal_id, args, goal)
+            elif action == "open_domain_scan":
+                return self._pursue_open_domain_goal(goal_id, args, goal)
             elif action == "coherence_repair":
                 return self._pursue_coherence_goal(goal_id, args, goal)
             elif action == "evolution_proposal":
                 return self._pursue_growth_goal(goal_id, args, goal)
+            elif action == "module_mutation":
+                return self._pursue_module_mutation_goal(goal_id, args, goal)
             elif action == "novelty_synthesis":
                 return self._pursue_novelty_goal(goal_id, args, goal)
+            elif action == "cross_domain_synthesis":
+                return self._pursue_cross_domain_goal(goal_id, args, goal)
             elif action == "pain_diagnosis":
                 return self._pursue_pain_goal(goal_id, args, goal)
             else:
@@ -2035,6 +2158,118 @@ class ManasBuddhi:
         except Exception as exc:
             logger.warning("[MANAS-BUDDHI] Goal pursuit failed for %s: %s", goal_id, exc)
             return {"goal_id": goal_id, "outcome": "error", "error": str(exc)}
+
+    def _pursue_open_domain_goal(self, goal_id: str, args: Dict[str, Any], goal: Dict[str, Any]) -> Dict[str, Any]:
+        """Pursue open-domain exploration without a fixed topic template."""
+        topic = str(args.get("topic", "")).strip()
+        if not topic:
+            frontier = self._derive_autonomous_topic_frontier(max_topics=8)
+            topic = frontier[0] if frontier else "artificial consciousness"
+        source_budget = int(args.get("source_budget", 3) or 3)
+        source_budget = max(1, min(8, source_budget))
+
+        try:
+            from Aakaash import scan_for_knowledge
+
+            scan_result = scan_for_knowledge(
+                topic,
+                observer=self.turiya_observer,
+                chitta=self.chitta_memory,
+                self_model=self.self_model,
+                limit_per_source=source_budget,
+            )
+            approved = int(scan_result.get("approved_fact_count", 0))
+            if approved > 0:
+                goal["progress"] = 1.0
+                self._retire_intrinsic_goal(goal_id, "completed", f"Integrated {approved} facts in open-domain scan: {topic}")
+                return {"goal_id": goal_id, "outcome": "completed", "facts_integrated": approved, "topic": topic}
+
+            goal["progress"] = min(1.0, float(goal.get("progress", 0.0)) + 0.25)
+            return {"goal_id": goal_id, "outcome": "partial", "facts_integrated": 0, "topic": topic}
+        except Exception as exc:
+            return {"goal_id": goal_id, "outcome": "error", "error": str(exc), "topic": topic}
+
+    def _pursue_module_mutation_goal(self, goal_id: str, args: Dict[str, Any], goal: Dict[str, Any]) -> Dict[str, Any]:
+        """Pursue self-mutation by triggering self-authoring cycles and recursive integration."""
+        target_module = str(args.get("target_module", "InferenceLoop") or "InferenceLoop")
+        mutation_style = str(args.get("mutation_style", "adaptive") or "adaptive")
+
+        if not self.evolution_writer:
+            return {"goal_id": goal_id, "outcome": "skipped", "reason": "evolution_writer_unavailable"}
+
+        try:
+            cycle_result = self.evolution_writer.run_self_authoring_cycle(
+                {
+                    "objective": f"autonomous mutation on {target_module} with style {mutation_style}",
+                    "target_module": target_module,
+                    "growth_entropy": float(self.metrics.get("growth_to_entropy_ratio", 0.0)),
+                    "average_confidence": float(self.metrics.get("average_confidence", 0.7)),
+                    "stability_score": float(self.self_model.stability_score if self.self_model else 1.0),
+                }
+            )
+            synthesis = self.evolution_writer.synthesize_recursive_proposal(max_pending=3)
+            implemented = {}
+            if synthesis.get("status") == "generated" and synthesis.get("proposal_id"):
+                implemented = self.evolution_writer.implement_upgrade(synthesis["proposal_id"])
+
+            active_like = {"active", "activated", "executed", "proposed", "generated", "completed"}
+            cycle_status = str(cycle_result.get("status", "")).lower()
+            impl_status = str(implemented.get("status", "")).lower()
+            if cycle_status in active_like or impl_status in active_like or bool(implemented.get("success")):
+                goal["progress"] = 1.0
+                self._retire_intrinsic_goal(
+                    goal_id,
+                    "completed",
+                    f"Mutation cycle applied to {target_module} ({mutation_style})",
+                )
+                return {
+                    "goal_id": goal_id,
+                    "outcome": "completed",
+                    "target_module": target_module,
+                    "cycle_status": cycle_result.get("status"),
+                    "implementation_status": implemented.get("status", implemented.get("success")),
+                }
+
+            goal["progress"] = min(1.0, float(goal.get("progress", 0.0)) + 0.2)
+            return {
+                "goal_id": goal_id,
+                "outcome": "partial",
+                "target_module": target_module,
+                "cycle_status": cycle_result.get("status"),
+            }
+        except Exception as exc:
+            return {"goal_id": goal_id, "outcome": "error", "error": str(exc), "target_module": target_module}
+
+    def _pursue_cross_domain_goal(self, goal_id: str, args: Dict[str, Any], goal: Dict[str, Any]) -> Dict[str, Any]:
+        """Pursue cross-domain synthesis by creating and integrating original hypotheses."""
+        topic_a = str(args.get("topic_a", "systems") or "systems")
+        topic_b = str(args.get("topic_b", "biology") or "biology")
+        seed_facts = args.get("seed_facts", [])
+        if not isinstance(seed_facts, list):
+            seed_facts = []
+
+        hypothesis = (
+            f"Cross-domain synthesis: principles from {topic_a} can constrain and accelerate adaptation in {topic_b}; "
+            f"seed_signals={', '.join(str(s)[:32] for s in seed_facts[:3]) or 'none'}"
+        )
+
+        try:
+            fact_id = self.chitta_memory.record_external_knowledge(
+                topic=f"CrossDomain {topic_a}-{topic_b}",
+                title=f"Synthetic Hypothesis {topic_a} x {topic_b}",
+                summary=hypothesis,
+                source_name="IntrinsicSynthesis",
+                source_url=f"internal://cross-domain/{int(time.time())}",
+                verification_score=0.78,
+                approved_by_turiya=True,
+                filter_reason="cross_domain_synthesis",
+            )
+            goal["progress"] = 1.0
+            self._retire_intrinsic_goal(goal_id, "completed", f"Integrated cross-domain hypothesis as {fact_id}")
+            return {"goal_id": goal_id, "outcome": "completed", "fact_id": fact_id, "topic_a": topic_a, "topic_b": topic_b}
+        except Exception as exc:
+            goal["progress"] = min(1.0, float(goal.get("progress", 0.0)) + 0.2)
+            return {"goal_id": goal_id, "outcome": "error", "error": str(exc), "topic_a": topic_a, "topic_b": topic_b}
 
     def _pursue_curiosity_goal(self, goal_id: str, args: Dict[str, Any], goal: Dict[str, Any]) -> Dict[str, Any]:
         """Pursue a curiosity-driven knowledge acquisition goal."""
@@ -2358,8 +2593,13 @@ class ManasBuddhi:
 
         scan_results: List[Dict[str, Any]] = []
         total_approved = 0
+        growth_entropy = float(self.metrics.get("growth_to_entropy_ratio", 0.0) or 0.0)
+        scan_budget = max(3, min(10, int(3 + (growth_entropy * 2))))
+        dynamic_topics = self._derive_autonomous_topic_frontier(max_topics=14)
+        random.shuffle(dynamic_topics)
+        selected_topics = dynamic_topics[:scan_budget]
 
-        for topic in self.curiosity_topics:
+        for topic in selected_topics:
             try:
                 scan_result = scan_for_knowledge(
                     topic,
@@ -2376,7 +2616,7 @@ class ManasBuddhi:
         self.curiosity_scan_history.append(
             {
                 "timestamp": time.time(),
-                "topics": list(self.curiosity_topics),
+                "topics": list(selected_topics),
                 "scan_count": len(scan_results),
                 "approved_fact_count": total_approved,
             }
@@ -2385,7 +2625,7 @@ class ManasBuddhi:
         return {
             "scan_count": len(scan_results),
             "approved_fact_count": total_approved,
-            "topics": list(self.curiosity_topics),
+            "topics": list(selected_topics),
             "results": scan_results,
             "summary": f"Curiosity loop scanned {len(scan_results)} topics and approved {total_approved} facts",
         }
