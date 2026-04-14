@@ -1,5 +1,5 @@
 {
-  "started_at": 1776143172.3234477,
+  "started_at": 1776150009.2818017,
   "cycles_requested": 4,
   "background": [
     {
@@ -7,7 +7,7 @@
       "assimilation_integrated": 3
     },
     {
-      "approved": 11,
+      "approved": 7,
       "assimilation_integrated": 3
     },
     {
@@ -15,8 +15,8 @@
       "assimilation_integrated": 0
     },
     {
-      "approved": 0,
-      "assimilation_integrated": 0
+      "approved": 4,
+      "assimilation_integrated": 3
     }
   ],
   "stream": [
@@ -39,37 +39,37 @@
   ],
   "trends": [
     {
-      "approved": 17,
+      "approved": 13,
       "stream_integrated": 0
     },
     {
-      "approved": 31,
+      "approved": 9,
       "stream_integrated": 0
     },
     {
-      "approved": 26,
+      "approved": 20,
       "stream_integrated": 0
     },
     {
-      "approved": 0,
+      "approved": 6,
       "stream_integrated": 0
     }
   ],
   "autonomy": [
     {
-      "autonomy_level": 0.7946,
-      "actions": 2
-    },
-    {
-      "autonomy_level": 0.7899,
+      "autonomy_level": 0.8286,
       "actions": 3
     },
     {
-      "autonomy_level": 0.7899,
-      "actions": 3
+      "autonomy_level": 0.8049,
+      "actions": 4
     },
     {
-      "autonomy_level": 0.7899,
+      "autonomy_level": 0.8049,
+      "actions": 4
+    },
+    {
+      "autonomy_level": 0.8048,
       "actions": 3
     }
   ],
@@ -93,19 +93,20 @@
   ],
   "errors": [],
   "heartbeat": {
-    "last_successful_fetch_timestamp": 1776143195.0451229,
+    "last_successful_fetch_timestamp": 1776150077.480439,
     "last_successful_fetch_sources": [
       "Crossref",
       "DevTo",
+      "GitHub",
       "GoogleNews",
       "HackerNews"
     ],
-    "last_successful_fetch_topic": "Artificial Consciousness",
+    "last_successful_fetch_topic": "machine learning",
     "last_successful_fetch_event": "hourly_global_trends",
-    "last_observed_external_fact_count": 20,
+    "last_observed_external_fact_count": 32,
     "total_successful_fetch_events": 12
   },
-  "learned_fact_count": 100,
+  "learned_fact_count": 77,
   "bridge_feedback_metrics": {
     "processed_events": 0,
     "operator_feedback_events": 0,
@@ -117,5 +118,5 @@
     "actions_probabilistic_trials": 0,
     "actions_blocked": 0
   },
-  "completed_at": 1776143195.066881
+  "completed_at": 1776150077.514652
 }
