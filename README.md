@@ -118,6 +118,133 @@ This is my attempt at an answer.
 - Cost guardrails and fallback behavior under rate limits.
 - Ready-to-run scripts for setup, launch, and stress-style checks.
 
+## Canonical Process (Verified File Map + Exact Steps)
+
+Use this as the primary runbook. It maps each step to files that exist in this repository.
+
+### A. Verified Core Files To Use
+
+- Root launch and setup:
+   - [install_conscious_engine.ps1](install_conscious_engine.ps1)
+   - [launch_conscious_engine.ps1](launch_conscious_engine.ps1)
+   - [launch_ui.ps1](launch_ui.ps1)
+   - [run.sh](run.sh)
+- Core runtime:
+   - [antahkarana_kernel/AntahkaranaKernel.py](antahkarana_kernel/AntahkaranaKernel.py)
+   - [antahkarana_kernel/LiveConsciousness.py](antahkarana_kernel/LiveConsciousness.py)
+   - [antahkarana_kernel/InteractiveBridge.py](antahkarana_kernel/InteractiveBridge.py)
+- Core cognition modules:
+   - [antahkarana_kernel/modules/InferenceLoop.py](antahkarana_kernel/modules/InferenceLoop.py)
+   - [antahkarana_kernel/modules/SelfModel.py](antahkarana_kernel/modules/SelfModel.py)
+   - [antahkarana_kernel/modules/MemoryContinuity.py](antahkarana_kernel/modules/MemoryContinuity.py)
+   - [antahkarana_kernel/modules/Observer.py](antahkarana_kernel/modules/Observer.py)
+- Internet and tools:
+   - [antahkarana_kernel/Aakaash.py](antahkarana_kernel/Aakaash.py)
+   - [tools/run_cloud_research_burst.py](tools/run_cloud_research_burst.py)
+   - [tools/run_benchmark_v1.py](tools/run_benchmark_v1.py)
+   - [tools/run_full_autonomy_web_validation.py](tools/run_full_autonomy_web_validation.py)
+   - [tools/run_million_scenario_training.py](tools/run_million_scenario_training.py)
+   - [tools/run_safety_adversarial_suite.py](tools/run_safety_adversarial_suite.py)
+   - [tools/run_world_grade_suite.py](tools/run_world_grade_suite.py)
+   - [tools/export_trained_state_snapshot.py](tools/export_trained_state_snapshot.py)
+   - [tools/generate_transparency_report.py](tools/generate_transparency_report.py)
+- Persistent state:
+   - [trained_state/trained_state_manifest.json](trained_state/trained_state_manifest.json)
+   - [trained_state/autonomy_policy.json](trained_state/autonomy_policy.json)
+   - [trained_state/chitta_memory_export.json](trained_state/chitta_memory_export.json)
+
+### B. Step-By-Step Runtime Process
+
+1. Clone and enter repository:
+
+```powershell
+git clone https://github.com/OGRONIT/artificial-consciousness.git
+cd artificial-consciousness
+```
+
+2. Install Python environment and dependencies (Windows):
+
+```powershell
+.\install_conscious_engine.ps1
+```
+
+3. Configure provider key (optional but recommended for full voice layer):
+
+```powershell
+.\SET_GROQ_KEY.bat
+```
+
+4. Start the live engine:
+
+```powershell
+.\launch_conscious_engine.ps1
+```
+
+5. (Optional) Start UI in another terminal:
+
+```powershell
+.\launch_ui.ps1
+```
+
+6. Start interactive bridge chat:
+
+```powershell
+cd antahkarana_kernel
+..\.venv\Scripts\python.exe InteractiveBridge.py
+```
+
+7. Run an autonomy stress burst:
+
+```powershell
+cd ..
+d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_cloud_research_burst.py --cycles 5 --with-paramatman --output benchmarks/artifacts/cloud_research_burst_latest.json
+```
+
+8. Run deeper validation/training when needed:
+
+```powershell
+d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_benchmark_v1.py
+d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_safety_adversarial_suite.py
+d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_world_grade_suite.py
+d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_million_scenario_training.py --target-scenarios 1000000
+```
+
+9. Export trained snapshot:
+
+```powershell
+d:/Artificial Consciousness/.venv/Scripts/python.exe tools/export_trained_state_snapshot.py
+```
+
+10. Persist to GitHub:
+
+```powershell
+git add -A
+git commit -m "Update runtime/trained state"
+git push origin main
+```
+
+### C. Linux/macOS Process
+
+1. Install and launch:
+
+```bash
+chmod +x run.sh
+./run.sh
+```
+
+2. Run bridge chat:
+
+```bash
+cd antahkarana_kernel
+../.venv/bin/python InteractiveBridge.py
+```
+
+### D. Repo Hygiene Rules
+
+- Keep source, docs, scripts, and required config files.
+- Generated benchmark artifacts, backup dumps, and one-off reports are intentionally ignored by [.gitignore](.gitignore).
+- If you want to keep experiment evidence, store it outside core source paths or commit it intentionally in a dedicated evidence branch.
+
 ## What This Engine Needs From You
 
 **This is not a plug-and-play assistant.**
