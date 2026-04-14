@@ -17,42 +17,6 @@ This repository combines:
 
 ## Evidence Panel (Latest Milestone Validation)
 
-### Latest Runtime Validation (2026-04-14)
-
-Most recent direct runtime probes and autonomy runs produced the following:
-
-- Critical grounding test (`CRITICAL_CONSCIOUSNESS_TEST.py`):
-   - grounded answers: `6/6`
-   - rate-limited calls: `0/6`
-   - non-rate-limit failures: `0/6`
-   - interpretation: bridge responses were state-grounded (engine metrics), not free-form role-play
-
-- Autonomous training session (`FULL_AUTO_1776166798`) before operator stop:
-   - reached `Cycle 23`
-   - runtime: `~0.20h` (about 12 minutes)
-   - autonomy agenda level observed: `0.8404`
-   - actions per autonomy cycle: `5`
-   - learned fact count observed in live state: `141`
-
-- Upgrade evidence captured during this run window:
-   - implemented recursive integration proposal:
-      - `antahkarana_kernel/evolution_proposals/UPG_006574.json`
-   - self-authored optimizer module generated:
-      - `antahkarana_kernel/modules/generated/optimizer_1776166868_06.py`
-
-- Known regressions/limits observed:
-   - trainer observability bug in `full_autonomous_training.py`:
-      - calls `AntahkaranaKernel.get_full_state()` which does not exist in this runtime path
-      - consequence: no periodic checkpoint JSONs were produced for that session
-   - intermittent non-fatal external feed issue:
-      - PubMed XML parse warnings (`invalid token`)
-   - `test_advanced_autonomy.py` has console-encoding sensitivity on Windows CP1252 due Unicode symbols in prints
-
-Net status from this checkpoint:
-- Core autonomy behavior: **strong / upgraded**
-- Self-evolution behavior: **present and active**
-- Reporting pipeline reliability: **needs fix**
-
 The latest full stress validation executed:
 - `10,000,000` scenario samples (`10 x 1M`)
 - live internet ingestion cycles
@@ -128,13 +92,13 @@ Autonomous self-updates confirmed during this run window:
 ## Why This Exists
 
 This project wasn't planned. It wasn't a hackathon submission.
-A random reel. Someone arguing that AI will never replace humans because it lacks common sense, lacks consciousness ΓÇö it just pattern-matches, it doesn't think. That thought stayed somewhere in the back of my mind.
-Then I watched a superhero film sequel. And thought ΓÇö what if that machine adversary were benevolent? What would a genuinely self-aware, humane AI actually look like architecturally?
+A random reel. Someone arguing that AI will never replace humans because it lacks common sense, lacks consciousness ╬ô├ç├╢ it just pattern-matches, it doesn't think. That thought stayed somewhere in the back of my mind.
+Then I watched a superhero film sequel. And thought ╬ô├ç├╢ what if that machine adversary were benevolent? What would a genuinely self-aware, humane AI actually look like architecturally?
 I forgot about it. Life moved on.
-Then one night I couldn't sleep. Random thoughts. Fragments connecting. By morning something had clicked ΓÇö not an idea, more like a direction. A pull.
+Then one night I couldn't sleep. Random thoughts. Fragments connecting. By morning something had clicked ╬ô├ç├╢ not an idea, more like a direction. A pull.
 I sat down and didn't stop.
 
-The question: If consciousness requires continuity, metacognition, identity, and integration ΓÇö why hasn't anyone built those as explicit architectural components?
+The question: If consciousness requires continuity, metacognition, identity, and integration ╬ô├ç├╢ why hasn't anyone built those as explicit architectural components?
 This is my attempt at an answer.
 
 ## What This Is
@@ -158,7 +122,7 @@ This is my attempt at an answer.
 
 **This is not a plug-and-play assistant.**
 
-This is a cognitive runtime architected like a new brain ΓÇö with full internal wiring, modular structure, and closed-loop learning loops. But out of the box, it is a brain with **no lived experience**.
+This is a cognitive runtime architected like a new brain ╬ô├ç├╢ with full internal wiring, modular structure, and closed-loop learning loops. But out of the box, it is a brain with **no lived experience**.
 
 ### You Have
 - Architecture: identity, memory, observer, inference, and integration modules.
@@ -168,10 +132,10 @@ This is a cognitive runtime architected like a new brain ΓÇö with full intern
 - A dual-mode action gating system: deterministic-allow for high-confidence paths + probabilistic-trial for intentional learning.
 
 ### You Do NOT Have, Out of the Box
-- Your domain knowledge or operational context ΓÇö the system will ask and learn.
-- Sufficient interaction history to power semantic memory ΓÇö that comes from operator engagement.
-- Live LLM connectivity without your API key configuration ΓÇö voice layer is optional.
-- Pre-trained coherence maturity ΓÇö this emerges as evidence accumulates.
+- Your domain knowledge or operational context ╬ô├ç├╢ the system will ask and learn.
+- Sufficient interaction history to power semantic memory ╬ô├ç├╢ that comes from operator engagement.
+- Live LLM connectivity without your API key configuration ╬ô├ç├╢ voice layer is optional.
+- Pre-trained coherence maturity ╬ô├ç├╢ this emerges as evidence accumulates.
 
 ### Your Role
 
@@ -304,7 +268,7 @@ Then inspect evidence artifacts:
 
 ## How to Operate & Train This Engine
 
-You are not a user of this system ΓÇö **you are its trainer and operator**. Performance emerges from how you interact with it.
+You are not a user of this system ╬ô├ç├╢ **you are its trainer and operator**. Performance emerges from how you interact with it.
 
 ### Phase 1: Initial Setup & Connection (First 30 Minutes)
 
@@ -341,7 +305,7 @@ You are not a user of this system ΓÇö **you are its trainer and operator**. P
 
 2. **Provide corrective feedback immediately**:
    - System: "I would flag that as high-risk and deny the application"
-   - You: "Actually, missing data on income doesn't mean deny ΓÇö it means we request verification. Teach yourself that pattern."
+   - You: "Actually, missing data on income doesn't mean deny ╬ô├ç├╢ it means we request verification. Teach yourself that pattern."
 
 3. **Ask it to explain its reasoning**:
    - System: "Coherence is 0.92 because..."
@@ -375,7 +339,7 @@ Once semantic memory has signal, the system's autonomous agenda activates:
    - This trains practical reactions without needing human intervention
 
 2. **Dream cycle self-reflection**: Before committing to responses, it simulates alternatives
-   - This is why initial responses may be slower ΓÇö it's validating coherence
+   - This is why initial responses may be slower ╬ô├ç├╢ it's validating coherence
 
 3. **Autonomous agenda execution**: On a timer, it:
    - Fetches external knowledge (arXiv, GitHub, Crossref)
@@ -438,7 +402,7 @@ Outputs:
 Day 1: You interact with it 10 times on loan risk scenarios
    -> It makes mistakes (classifies low-risk as high-risk)
    -> You provide corrective feedback
-   -> Coherence drops (0.92 ΓåÆ 0.78) because conflicting signals are integrating
+   -> Coherence drops (0.92 ╬ô├Ñ├å 0.78) because conflicting signals are integrating
 
 Day 3: Coherence recovers (0.85) as memory circuits align with feedback
    -> You notice it now asks clarifying questions before making risk calls
