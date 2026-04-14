@@ -99,6 +99,11 @@ from .EvolutionSync import (
     EvolutionSync,
 )
 
+from .Sovereign_Ethicist import (
+    SovereignEthicist,
+    get_sovereign_ethicist,
+)
+
 __all__ = [
     # SelfModel
     "SelfModel",
@@ -184,6 +189,10 @@ __all__ = [
 
     # EvolutionSync
     "EvolutionSync",
+
+    # Sovereign Ethicist
+    "SovereignEthicist",
+    "get_sovereign_ethicist",
 ]
 
 __version__ = "0.1.0"

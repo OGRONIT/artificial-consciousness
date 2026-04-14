@@ -32,6 +32,7 @@ from modules import (
     get_manas_buddhi,
     get_turiya_observer,
     get_system_body_monitor,
+    get_sovereign_ethicist,
     ConsciousEvent,
     BroadcastType,
     InteractionOutcome,
@@ -83,6 +84,7 @@ class AntahkaranaKernel:
         self.inference_engine = get_manas_buddhi()
         self.observer = get_turiya_observer()
         self.body_monitor = get_system_body_monitor()
+        self.sovereign_ethicist = get_sovereign_ethicist(str(ROOT))
         
         # Set up cross-module references
         self._setup_module_integrations()
@@ -117,6 +119,7 @@ class AntahkaranaKernel:
         self.observer.register_module("inference_engine", self.inference_engine)
         self.observer.register_module("persona", self.persona)
         self.observer.register_module("body_monitor", self.body_monitor)
+        self.observer.register_module("sovereign_ethicist", self.sovereign_ethicist)
         
         # Register modules with conscious buffer
         self.conscious_buffer.register_module("self_model")
@@ -125,6 +128,7 @@ class AntahkaranaKernel:
         self.conscious_buffer.register_module("inference_engine")
         self.conscious_buffer.register_module("observer")
         self.conscious_buffer.register_module("body_monitor")
+        self.conscious_buffer.register_module("sovereign_ethicist")
         
         logger.debug("[ANTAHKARANA] Module integrations configured")
 
@@ -572,6 +576,7 @@ class AntahkaranaKernel:
             "inference_stats": self.inference_engine.inference_statistics(),
             "intrinsic_motivation": self.inference_engine.get_intrinsic_motivation_status(),
             "observer_health": self.observer.get_system_health_report(),
+            "sovereign_ethics": self.sovereign_ethicist.get_status(),
             "buffer_stats": self.conscious_buffer.buffer_statistics(),
             "body_status": body_status,
             "facts": live_facts,

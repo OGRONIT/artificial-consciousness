@@ -148,25 +148,37 @@
       "mission_id": "mission_followup_1776189220",
       "goal": "amplify_planner_capability",
       "priority": 0.55,
-      "status": "pending"
+      "status": "executed",
+      "executed_at": 1776194979.1884632,
+      "winner_module": "optimizer_1776188851_07",
+      "context_summary": {
+        "growth_entropy": 1.4,
+        "stability_score": 0.8057550381446918
+      }
     },
     {
       "mission_id": "mission_followup_1776189525",
       "goal": "amplify_optimizer_capability",
       "priority": 0.55,
       "status": "pending"
+    },
+    {
+      "mission_id": "mission_followup_1776194979",
+      "goal": "amplify_optimizer_capability",
+      "priority": 0.5,
+      "status": "pending"
     }
   ],
   "active": {
-    "mission_id": "mission_followup_1776188851",
-    "goal": "amplify_optimizer_capability",
-    "priority": 0.6,
+    "mission_id": "mission_followup_1776189220",
+    "goal": "amplify_planner_capability",
+    "priority": 0.55,
     "status": "executed",
-    "executed_at": 1776189525.3188417,
+    "executed_at": 1776194979.1884632,
     "winner_module": "optimizer_1776188851_07",
     "context_summary": {
-      "growth_entropy": 0.8289,
-      "stability_score": 0.7533550381446918
+      "growth_entropy": 1.4,
+      "stability_score": 0.8057550381446918
     }
   },
   "history": [
@@ -313,7 +325,19 @@
         "growth_entropy": 0.8289,
         "stability_score": 0.7533550381446918
       }
+    },
+    {
+      "mission_id": "mission_followup_1776189220",
+      "goal": "amplify_planner_capability",
+      "priority": 0.55,
+      "status": "executed",
+      "executed_at": 1776194979.1884632,
+      "winner_module": "optimizer_1776188851_07",
+      "context_summary": {
+        "growth_entropy": 1.4,
+        "stability_score": 0.8057550381446918
+      }
     }
   ],
-  "last_updated": 1776189525.3188417
+  "last_updated": 1776194979.1884632
 }

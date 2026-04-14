@@ -1,0 +1,20 @@
+{
+  "patch_id": "HIVE_PATCH_1776200451",
+  "created_at": 1776200451.288543,
+  "type": "psychology_stabilization",
+  "entropy_score": 0.0,
+  "entropy_band": "low",
+  "mode": "monitoring",
+  "goals": [
+    "monitor entropy drift",
+    "retain adaptive autonomy"
+  ],
+  "policy_deltas": {
+    "reflection_seconds_max": 600,
+    "observer_question_probability": 0.3,
+    "autonomy_planning_interval_seconds_max": 300
+  },
+  "auto_execute_within_sandbox": true,
+  "execution_scope": "internal_only",
+  "human_digital_psychology_note": "Patch targets internal model behavior for safer responses; it does not perform direct external manipulation."
+}

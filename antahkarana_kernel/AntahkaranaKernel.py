@@ -33,6 +33,7 @@ from modules import (
     get_conscious_buffer,
     get_manas_buddhi,
     get_turiya_observer,
+    get_sovereign_ethicist,
     get_system_body_monitor,
     TrainedStateManager,
     ConsciousEvent,
@@ -85,6 +86,7 @@ class AntahkaranaKernel:
         self.conscious_buffer = get_conscious_buffer()
         self.inference_engine = get_manas_buddhi()
         self.observer = get_turiya_observer()
+        self.sovereign_ethicist = get_sovereign_ethicist(str(ROOT))
         self.body_monitor = get_system_body_monitor()
         self.trained_state_manager = TrainedStateManager(ROOT)
         self.generated_modules: Dict[str, Any] = {}
@@ -127,6 +129,7 @@ class AntahkaranaKernel:
         self.observer.register_module("inference_engine", self.inference_engine)
         self.observer.register_module("persona", self.persona)
         self.observer.register_module("body_monitor", self.body_monitor)
+        self.observer.register_module("sovereign_ethicist", self.sovereign_ethicist)
         
         # Register modules with conscious buffer
         self.conscious_buffer.register_module("self_model")
@@ -135,6 +138,7 @@ class AntahkaranaKernel:
         self.conscious_buffer.register_module("inference_engine")
         self.conscious_buffer.register_module("observer")
         self.conscious_buffer.register_module("body_monitor")
+        self.conscious_buffer.register_module("sovereign_ethicist")
 
         # Dynamically wire self-authored modules that passed activation gates.
         self._load_self_authored_modules()
@@ -717,6 +721,7 @@ class AntahkaranaKernel:
             "inference_stats": self.inference_engine.inference_statistics(),
             "intrinsic_motivation": self.inference_engine.get_intrinsic_motivation_status(),
             "observer_health": self.observer.get_system_health_report(),
+            "sovereign_ethics": self.sovereign_ethicist.get_status(),
             "buffer_stats": self.conscious_buffer.buffer_statistics(),
             "body_status": body_status,
             "facts": live_facts,

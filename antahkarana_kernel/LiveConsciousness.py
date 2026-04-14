@@ -69,6 +69,11 @@ class LiveConsciousnessEngine:
         self.last_autonomy_agenda_time = 0.0
         self.autonomy_agenda_interval_seconds = 900.0
         self.last_autonomy_report: Dict[str, Any] = {}
+        self.last_sovereign_ethics_time = 0.0
+        self.sovereign_ethics_interval_seconds = 600.0
+        self.last_sovereign_ethics_report: Dict[str, Any] = {}
+        self.latest_stream_entropy_payload: Dict[str, Any] = {}
+        self.latest_hourly_trend_payload: Dict[str, Any] = {}
         self.internet_heartbeat: Dict[str, Any] = {
             "last_successful_fetch_timestamp": None,
             "last_successful_fetch_sources": [],
@@ -140,6 +145,9 @@ class LiveConsciousnessEngine:
 
             if self._due_for_autonomy_agenda(now):
                 self.perform_autonomous_agenda_cycle()
+
+            if self._due_for_sovereign_ethics(now):
+                self.perform_sovereign_ethics_cycle()
 
             self._process_bridge_feedback_commands()
 
@@ -235,6 +243,7 @@ class LiveConsciousnessEngine:
         self.learned_fact_count += int(assimilation.get("integrated_count", 0))
         self._persist_on_fact_milestone()
         self.last_stream_entropy_time = time.time()
+        self.latest_stream_entropy_payload = result
         self._log_thought(
             "stream_entropy",
             (
@@ -330,6 +339,7 @@ class LiveConsciousnessEngine:
         self.learned_fact_count += approved + integrated_stream
         self._update_internet_heartbeat(event="hourly_global_trends", topic=topic, scan_result=result)
         self.last_hourly_trend_time = time.time()
+        self.latest_hourly_trend_payload = result
         self._persist_on_fact_milestone()
         self._log_thought(
             "hourly_global_trends",
@@ -364,6 +374,28 @@ class LiveConsciousnessEngine:
             (
                 f"Autonomous agenda executed with autonomy_level={result.get('autonomy_level', 0.0):.2f} "
                 f"actions={len(result.get('executed_actions', []))}"
+            ),
+            result,
+        )
+        self._persist_state_snapshot()
+        return result
+
+    def perform_sovereign_ethics_cycle(self) -> Dict[str, Any]:
+        """Run sandbox-safe proactive autonomy manifesto + entropy audit cycle."""
+        result = self.kernel.sovereign_ethicist.run_background_cycle(
+            kernel=self.kernel,
+            stream_payload=self.latest_stream_entropy_payload,
+            trend_payload=self.latest_hourly_trend_payload,
+            force=True,
+        )
+        self.last_sovereign_ethics_time = time.time()
+        self.last_sovereign_ethics_report = result
+        entropy_report = result.get("entropy_report", {}) if isinstance(result, dict) else {}
+        self._log_thought(
+            "sovereign_ethics",
+            (
+                f"Sovereign ethics cycle executed: entropy={entropy_report.get('entropy_score', 0.0)} "
+                f"band={entropy_report.get('entropy_band', 'unknown')}"
             ),
             result,
         )
@@ -754,6 +786,7 @@ class LiveConsciousnessEngine:
             "learned_fact_count": self.learned_fact_count,
             "dream_thought_count": self.dream_thought_count,
             "autonomy_agenda": self.last_autonomy_report or intrinsic_status.get("autonomy_agenda_preview", {}),
+            "sovereign_ethics": self.last_sovereign_ethics_report or base_state.get("sovereign_ethics", {}),
             "internet_heartbeat": dict(self.internet_heartbeat),
             "consciousness_progress": consciousness_progress,
             "llm_cognitive_loop": self.bridge_feedback_metrics,
@@ -1137,6 +1170,9 @@ class LiveConsciousnessEngine:
 
     def _due_for_autonomy_agenda(self, now: float) -> bool:
         return self.last_autonomy_agenda_time == 0.0 or (now - self.last_autonomy_agenda_time) >= self.autonomy_agenda_interval_seconds
+
+    def _due_for_sovereign_ethics(self, now: float) -> bool:
+        return self.last_sovereign_ethics_time == 0.0 or (now - self.last_sovereign_ethics_time) >= self.sovereign_ethics_interval_seconds
 
 
 def main() -> None:

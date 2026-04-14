@@ -63,6 +63,11 @@ from .EvolutionaryWriter import (
     get_evolutionary_writer
 )
 
+from .Sovereign_Ethicist import (
+    SovereignEthicist,
+    get_sovereign_ethicist,
+)
+
 __all__ = [
     # SelfModel
     "SelfModel",
@@ -116,6 +121,10 @@ __all__ = [
     # EvolutionaryWriter
     "EvolutionaryWriter",
     "get_evolutionary_writer",
+
+    # Sovereign Ethicist
+    "SovereignEthicist",
+    "get_sovereign_ethicist",
 ]
 
 __version__ = "0.1.0"
