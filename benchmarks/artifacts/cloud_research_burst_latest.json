@@ -1,5 +1,5 @@
 {
-  "started_at": 1776178597.8161895,
+  "started_at": 1776182695.6576405,
   "cycles_requested": 4,
   "background": [
     {
@@ -39,38 +39,38 @@
   ],
   "trends": [
     {
-      "approved": 25,
+      "approved": 17,
       "stream_integrated": 0
     },
     {
-      "approved": 32,
-      "stream_integrated": 0
-    },
-    {
-      "approved": 16,
+      "approved": 27,
       "stream_integrated": 0
     },
     {
       "approved": 16,
+      "stream_integrated": 0
+    },
+    {
+      "approved": 0,
       "stream_integrated": 0
     }
   ],
   "autonomy": [
     {
-      "autonomy_level": 0.814,
+      "autonomy_level": 0.815,
       "actions": 5
     },
     {
-      "autonomy_level": 0.7927,
-      "actions": 3
+      "autonomy_level": 0.837,
+      "actions": 5
     },
     {
-      "autonomy_level": 0.7927,
-      "actions": 3
+      "autonomy_level": 0.837,
+      "actions": 5
     },
     {
-      "autonomy_level": 0.7927,
-      "actions": 3
+      "autonomy_level": 0.837,
+      "actions": 5
     }
   ],
   "bridge_feedback": [
@@ -93,21 +93,20 @@
   ],
   "errors": [],
   "heartbeat": {
-    "last_successful_fetch_timestamp": 1776178619.0439775,
+    "last_successful_fetch_timestamp": 1776182715.6854467,
     "last_successful_fetch_sources": [
       "Crossref",
       "DevTo",
       "GitHub",
       "GoogleNews",
-      "HackerNews",
-      "arXiv"
+      "HackerNews"
     ],
-    "last_successful_fetch_topic": "Human Psychology",
+    "last_successful_fetch_topic": "artificial intelligence",
     "last_successful_fetch_event": "hourly_global_trends",
-    "last_observed_external_fact_count": 51,
+    "last_observed_external_fact_count": 17,
     "total_successful_fetch_events": 12
   },
-  "learned_fact_count": 115,
+  "learned_fact_count": 86,
   "bridge_feedback_metrics": {
     "processed_events": 0,
     "operator_feedback_events": 0,
@@ -119,5 +118,5 @@
     "actions_probabilistic_trials": 0,
     "actions_blocked": 0
   },
-  "completed_at": 1776178619.0800972
+  "completed_at": 1776182715.7105708
 }
