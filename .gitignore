@@ -35,3 +35,24 @@ __pycache__/
 *.log
 *.lock
 *.db
+
+# Generated benchmark/run outputs
+benchmarks/artifacts/
+training_outputs/
+
+# Generated backup and shadow artifacts
+backup/
+antahkarana_kernel/backup/
+antahkarana_kernel/evolution_vault/active_backups/
+antahkarana_kernel/evolution_vault/shadow_memory/
+
+# Generated evolution proposals
+evolution_proposals/
+antahkarana_kernel/evolution_proposals/
+
+# Root-level one-off reports/checklists/tests
+API_INVENTORY_CHECKLIST.md
+CONSCIOUSNESS_TEST_REPORT.md
+TASK_COMPLETION_REPORT.md
+CRITICAL_CONSCIOUSNESS_TEST.py
+ADAPTIVE_CURRICULUM_IMPLEMENTATION.md
