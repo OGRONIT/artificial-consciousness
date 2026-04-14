@@ -3,32 +3,37 @@
     "autogen_1776067965_00": {
       "family": "generic",
       "status": "active",
-      "updated_at": 1776096884.7171614
+      "updated_at": 1776166868.049873
     },
     "planner_1776068417_01": {
       "family": "planner",
       "status": "active",
-      "updated_at": 1776096884.7174814
+      "updated_at": 1776166868.049873
     },
     "planner_1776068590_02": {
       "family": "planner",
       "status": "active",
-      "updated_at": 1776096884.7174814
+      "updated_at": 1776166868.049873
     },
     "monitor_1776068970_03": {
       "family": "monitor",
       "status": "active",
-      "updated_at": 1776096884.7174814
+      "updated_at": 1776166868.049873
     },
     "monitor_1776096329_04": {
       "family": "monitor",
       "status": "active",
-      "updated_at": 1776096884.7174814
+      "updated_at": 1776166868.049873
     },
     "planner_1776096884_05": {
       "family": "planner",
       "status": "active",
-      "updated_at": 1776096884.7174814
+      "updated_at": 1776166868.049873
+    },
+    "optimizer_1776166868_06": {
+      "family": "optimizer",
+      "status": "active",
+      "updated_at": 1776166868.049873
     }
   },
   "edges": [
@@ -121,7 +126,43 @@
       "to": "monitor_1776096329_04",
       "relation": "guides",
       "weight": 0.6
+    },
+    {
+      "from": "optimizer_1776166868_06",
+      "to": "autogen_1776067965_00",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "optimizer_1776166868_06",
+      "to": "planner_1776068417_01",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "optimizer_1776166868_06",
+      "to": "planner_1776068590_02",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "optimizer_1776166868_06",
+      "to": "monitor_1776068970_03",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "optimizer_1776166868_06",
+      "to": "monitor_1776096329_04",
+      "relation": "guides",
+      "weight": 0.6
+    },
+    {
+      "from": "optimizer_1776166868_06",
+      "to": "planner_1776096884_05",
+      "relation": "guides",
+      "weight": 0.6
     }
   ],
-  "last_updated": 1776096884.7174814
+  "last_updated": 1776166868.049873
 }

@@ -710,6 +710,77 @@ class SelfModel:
         with self.affective_lock:
             return self._adaptive_coherence_floor_locked()
 
+    def compute_drive_signals(self) -> Dict[str, Any]:
+        """Compute normalized intrinsic drive signals from current affective state.
+
+        Returns five drives in [0.0, 1.0] that represent *what the system wants*:
+        - curiosity_drive:        hunger for new external knowledge
+        - coherence_hunger:       desire to close worldview gaps
+        - growth_pressure:        urge to push architecture further
+        - novelty_deficit:        staleness of recent internal thought
+        - pain_resolution_drive:  need to fix something that hurts
+
+        The composite ``motivation_urgency`` is a weighted sum.  A high urgency
+        means the system has strong unsatisfied needs — the goal engine should
+        generate new goals.
+        """
+        now = time.time()
+
+        with self.affective_lock:
+            # --- curiosity_drive ---
+            # Higher when we haven't received a reward recently (knowledge starvation).
+            last_reward_ts = float(self.affective_state.get("last_reward_timestamp", now) or now)
+            seconds_since_reward = max(0.0, now - last_reward_ts)
+            # Saturates at ~30 minutes of no new reward.
+            curiosity_drive = min(1.0, seconds_since_reward / 1800.0)
+
+            # --- coherence_hunger ---
+            # Direct function of how far coherence has drifted from 1.0.
+            coherence_hunger = max(0.0, min(1.0, 1.0 - self.coherence_score))
+
+            # --- growth_pressure ---
+            # Proportional to growth-to-entropy ratio (already 0.0+).
+            growth_pressure = max(0.0, min(1.0, self.growth_to_entropy_ratio / 2.0))
+
+            # --- novelty_deficit ---
+            # Inversely proportional to recent pattern discovery rate.
+            recent_rewards_3m = self._count_recent_events_locked(self.reward_events, 180.0)
+            # If we've had 5+ discoveries in 3 minutes, novelty is fully satisfied.
+            novelty_deficit = max(0.0, min(1.0, 1.0 - (recent_rewards_3m / 5.0)))
+
+            # --- pain_resolution_drive ---
+            recent_pain_3m = self._count_recent_events_locked(self.pain_events, 180.0)
+            recent_pain_severity = 0.0
+            if self.pain_events:
+                recent_window = [
+                    e for e in self.pain_events
+                    if float(e.get("timestamp", 0.0)) >= (now - 180.0)
+                ]
+                if recent_window:
+                    recent_pain_severity = sum(
+                        float(e.get("severity", 0.0)) for e in recent_window
+                    ) / len(recent_window)
+            pain_resolution_drive = max(0.0, min(1.0, recent_pain_severity))
+
+            # --- composite urgency ---
+            motivation_urgency = (
+                curiosity_drive * 0.25
+                + coherence_hunger * 0.20
+                + growth_pressure * 0.20
+                + novelty_deficit * 0.15
+                + pain_resolution_drive * 0.20
+            )
+
+            return {
+                "curiosity_drive": round(curiosity_drive, 4),
+                "coherence_hunger": round(coherence_hunger, 4),
+                "growth_pressure": round(growth_pressure, 4),
+                "novelty_deficit": round(novelty_deficit, 4),
+                "pain_resolution_drive": round(pain_resolution_drive, 4),
+                "motivation_urgency": round(min(1.0, motivation_urgency), 4),
+                "computed_at": now,
+            }
+
     def set_creator_signature(self, signature: str) -> None:
         """
         Set the cryptographic signature identifying 'The Father' (Creator).
@@ -855,6 +926,87 @@ class SelfModel:
             logger.info(f"[AHAMKARA] State exported to {filepath}")
         
         return state_data
+
+    def compute_growth_entropy_locally(self) -> float:
+        """
+        Compute growth-to-entropy ratio from internal state without external dependency.
+        
+        This enables the system to assess its own capacity for evolution based on
+        reward history, pattern discovery, and stability metrics.
+        
+        Returns:
+            float: Growth-to-entropy ratio (0.0 to 2.0+)
+        """
+        with self.affective_lock:
+            now = time.time()
+            
+            # Count successful improvements (rewards in last 10 minutes)
+            window_start = now - 600.0
+            successful_mods = len([
+                e for e in self.reward_events
+                if float(e.get("timestamp", 0.0)) >= window_start
+            ])
+            
+            # Count constraint conflicts (pain events)
+            deprecated = len([
+                e for e in self.pain_events
+                if float(e.get("timestamp", 0.0)) >= window_start
+            ])
+            
+            # Complexity growth: use stability score improvement trend
+            complexity_growth = max(0.0, (self.stability_score - 0.80) * 2.0)  # Accelerated growth
+            
+            # Knowledge integration signal: if system learned facts, that's growth
+            external_knowledge_count = self.affective_state.get("external_knowledge_entries", 0)
+            knowledge_growth = max(0.0, min(1.0, external_knowledge_count / 50.0))  # 50 facts = full signal
+            
+            # Formula: (improvements + growth_signals) / (1 + deprecated_constraints)
+            # Adjusted to be more generous when learning happens
+            ratio = (successful_mods + complexity_growth + knowledge_growth) / max(1.0, 1.0 + deprecated)
+            
+            # Cap at reasonable bounds
+            ratio = min(3.0, max(0.0, ratio))
+            
+            # Update internal tracking
+            self.growth_to_entropy_ratio = ratio
+            
+            logger.debug(
+                f"[AHAMKARA] Growth-Entropy computed locally: ratio={ratio:.4f} | "
+                f"improvements={successful_mods} | deprecated={deprecated} | "
+                f"complexity={complexity_growth:.4f} | knowledge={knowledge_growth:.4f}"
+            )
+            
+            return ratio
+
+    def can_create_new_module(self) -> bool:
+        """
+        Check if system is eligible to autonomously create new modules.
+        
+        Returns True when:
+        - System has sufficient external knowledge integrated (>10 facts)
+        - System maintains high stability (>0.90)
+        - System has growth signal (growth_to_entropy_ratio > 0.05)
+        
+        This is more sophisticated than simple coherence threshold, enabling
+        module creation even during stable operation if growth signal exists.
+        
+        Returns:
+            bool: True if system can autonomously create new modules
+        """
+        with self.affective_lock:
+            has_knowledge = self.affective_state.get("external_knowledge_entries", 0) > 10
+            has_stability = self.stability_score > 0.90
+            has_growth_signal = self.growth_to_entropy_ratio > 0.05
+            
+            can_create = has_knowledge and has_stability and has_growth_signal
+            
+            if can_create:
+                logger.info(
+                    f"[AHAMKARA] Module creation eligible: knowledge={has_knowledge} | "
+                    f"stability={self.stability_score:.3f} | growth_ratio={self.growth_to_entropy_ratio:.4f}"
+                )
+            
+            return can_create
 
     def load_state(self, state: Dict[str, Any]) -> None:
         """Hydrate the self-model from a persisted trained-state snapshot."""

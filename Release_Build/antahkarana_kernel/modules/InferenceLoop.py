@@ -228,7 +228,7 @@ class ManasBuddhi:
         self.last_paramatman_cycle_timestamp = 0.0
         self.paramatman_cycle_interval_seconds = 86400.0
         self.last_autonomy_planning_timestamp = 0.0
-        self.autonomy_planning_interval_seconds = 600.0
+        self.autonomy_planning_interval_seconds = 900.0
         self.last_autonomous_action_timestamp = 0.0
         self.autonomy_agenda_history: List[Dict[str, Any]] = []
 

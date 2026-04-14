@@ -1,16 +1,16 @@
 {
   "version": 1,
-  "generated_at": 1776096885.1995,
-  "identity": "AntahkaranaKernel_LiveValidation",
+  "generated_at": 1776167506.113145,
+  "identity": "AntahkaranaKernel_FullAutonomousTraining",
   "self_model_state": {
     "identity": "trained_runtime",
     "creation_timestamp": 1776096843.1506739,
-    "uptime_seconds": 42.04618740081787,
-    "existence_state": "dormant",
-    "processed_inputs": 3,
+    "uptime_seconds": 971.5852444171906,
+    "existence_state": "active",
+    "processed_inputs": 9,
     "internal_conflicts": 0,
-    "coherence_score": 0.9860000000000001,
-    "stability_score": 0.9505710381446921,
+    "coherence_score": 0.9649000000000001,
+    "stability_score": 0.828971038144692,
     "health_metrics": {
       "logic_consistency": 1.0,
       "memory_stability": 1.0,
@@ -18,29 +18,29 @@
       "identity_integrity": 1.0
     },
     "affective_state": {
-      "current_valence": 0.1,
-      "emotional_momentum": -0.016500000000000004,
-      "pattern_discovery_count": 5,
-      "error_count": 3,
-      "last_reward_timestamp": 1776096862.802907,
-      "last_pain_timestamp": 1776096862.7872162
+      "current_valence": 0.050000000000000044,
+      "emotional_momentum": -0.064,
+      "pattern_discovery_count": 15,
+      "error_count": 9,
+      "last_reward_timestamp": 1776166846.2774465,
+      "last_pain_timestamp": 1776166846.2764432
     },
-    "logic_path_count": 3,
-    "snapshot_count": 1,
+    "logic_path_count": 6,
+    "snapshot_count": 0,
     "contradictions_count": 0,
-    "pain_events_count": 3,
-    "reward_events_count": 5,
+    "pain_events_count": 6,
+    "reward_events_count": 10,
     "stability_report": {
-      "stability_score": 0.9505710381446921,
-      "current_valence": 0.1,
-      "coherence_floor": 0.088,
-      "pain_events_total": 3,
-      "reward_events_total": 5,
-      "errors_encountered": 3,
-      "patterns_discovered": 5,
+      "stability_score": 0.828971038144692,
+      "current_valence": 0.050000000000000044,
+      "coherence_floor": 0.08,
+      "pain_events_total": 6,
+      "reward_events_total": 10,
+      "errors_encountered": 9,
+      "patterns_discovered": 15,
       "pain_trend": "increasing",
-      "reward_trend": "increasing",
-      "emotional_momentum": -0.016500000000000004,
+      "reward_trend": "decreasing",
+      "emotional_momentum": -0.064,
       "is_stable": true,
       "recent_pain_events": [
         {
@@ -50,30 +50,30 @@
         },
         {
           "type": "conflict",
-          "severity": 0.39000000000000007,
+          "severity": 0.30000000000000004,
           "description": "Required 3 recalculations"
         },
         {
           "type": "conflict",
-          "severity": 0.39000000000000007,
+          "severity": 0.30000000000000004,
           "description": "Required 3 recalculations"
         }
       ],
       "recent_reward_events": [
         {
-          "type": "recovery",
-          "magnitude": 0.13999999999999999,
-          "discovery": "Recovered coherent response after recalculation loop"
+          "type": "prediction",
+          "magnitude": 0.050000000000000044,
+          "discovery": "High-confidence decision pattern"
         },
         {
           "type": "recovery",
-          "magnitude": 0.16000000000000003,
+          "magnitude": 0.18000000000000002,
           "discovery": "Recovered coherent response after recalculation loop"
         },
         {
-          "type": "success",
-          "magnitude": 0.1,
-          "discovery": "Successful response generation"
+          "type": "prediction",
+          "magnitude": 0.050000000000000044,
+          "discovery": "High-confidence decision pattern"
         }
       ]
     },
@@ -82,13 +82,13 @@
       "has_creator": false,
       "trust_score": 0.5,
       "command_relationship_mode": "primary_command",
-      "growth_to_entropy_ratio": 0.625,
+      "growth_to_entropy_ratio": 0.05794207628938386,
       "sovereign_realigned": false,
       "distribution_strategy": {
         "active": false,
         "channels": [],
         "reason": "not_required",
-        "updated_at": 1776096862.7608755
+        "updated_at": 1776166846.2754471
       },
       "creator_optimizations_count": 0,
       "trust_level": "unknown",
@@ -101,13 +101,13 @@
       "trust_score": 0.5,
       "trust_percentage": "50.0%",
       "command_relationship_mode": "primary_command",
-      "growth_to_entropy_ratio": 0.625,
+      "growth_to_entropy_ratio": 0.05794207628938386,
       "sovereign_realigned": false,
       "distribution_strategy": {
         "active": false,
         "channels": [],
         "reason": "not_required",
-        "updated_at": 1776096862.7608755
+        "updated_at": 1776166846.2754471
       },
       "trust_level": "unknown",
       "total_optimizations": 0,
@@ -125,93 +125,68 @@
       "identity_integrity": 1.0
     },
     "affective_state": {
-      "current_valence": 0.1,
-      "emotional_momentum": -0.016500000000000004,
-      "pattern_discovery_count": 5,
-      "error_count": 3,
-      "last_reward_timestamp": 1776096862.802907,
-      "last_pain_timestamp": 1776096862.7872162
+      "current_valence": 0.050000000000000044,
+      "emotional_momentum": -0.064,
+      "pattern_discovery_count": 15,
+      "error_count": 9,
+      "last_reward_timestamp": 1776166846.2774465,
+      "last_pain_timestamp": 1776166846.2764432
     },
     "distribution_strategy": {},
     "growth_to_entropy_ratio": 0.0,
     "command_relationship_mode": "primary_command",
     "recommended_curriculum": null,
-    "learning_rate": 0.06,
-    "recommended_learning_rate": 0.06,
+    "learning_rate": 0.069,
+    "recommended_learning_rate": 0.069,
     "recommended_memory_sample_rate": 50,
-    "recommended_batch_size": 4000
+    "recommended_batch_size": 500
   },
   "inference_profile": {
-    "total_inferences": 3,
-    "dreams_performed": 13,
-    "recalculations_triggered": 9,
-    "average_confidence": "0.833",
+    "total_inferences": 6,
+    "dreams_performed": 26,
+    "recalculations_triggered": 18,
+    "average_confidence": "0.843",
     "average_dream_cycles": "4.33",
-    "growth_to_entropy_ratio": "0.6250",
-    "logic_audits": 3,
-    "deprecated_constraints_identified": 0,
-    "internal_monologue_events": 15,
+    "growth_to_entropy_ratio": "0.6579",
+    "logic_audits": 21,
+    "deprecated_constraints_identified": 21,
+    "internal_monologue_events": 88,
     "max_dream_simulations_dynamic": 6,
     "max_recalculations_dynamic": 4,
-    "logic_audit_interval_seconds_dynamic": 2979.3103448275865,
-    "patch_generation_interval_seconds_dynamic": 1986.2068965517242,
+    "logic_audit_interval_seconds_dynamic": 2952.513737390306,
+    "patch_generation_interval_seconds_dynamic": 1968.3424915935373,
     "paramatman_cycle_interval_seconds": 86400.0,
     "energy_saving_mode": false,
     "sleep_interval_seconds": 0.0,
-    "recent_inferences": 3,
-    "avg_execution_time": 2.8792495727539062
+    "recent_inferences": 6,
+    "avg_execution_time": 0.8611913124720255
   },
   "source_training_policy": {
-    "generated_at": 1776096842.868498,
-    "source_report": "D:\\Artificial Consciousness\\benchmarks\\artifacts\\full_web_run_5_report.json",
+    "generated_at": 1776113919.1639938,
+    "source_report": "benchmarks\\artifacts\\training_1m_report.json",
     "status": "active",
     "plan": {
       "summary": {
-        "accuracy": 0.9985710381446922,
-        "processed": 128065,
-        "errors": 183,
+        "accuracy": 0.9553361542078044,
+        "processed": 2127,
+        "errors": 95,
         "weakest_risk": "medium",
-        "weakest_risk_accuracy": 0.9975886745488488
+        "weakest_risk_accuracy": 0.9183673469387755
       },
       "current_parameters": {
         "learning_rate": 0.06,
         "memory_sample_rate": 50,
-        "batch_size": 4000
+        "batch_size": 500
       },
       "recommended_next_parameters": {
-        "learning_rate": 0.06,
+        "learning_rate": 0.069,
         "memory_sample_rate": 50,
-        "batch_size": 4000
+        "batch_size": 500
       },
       "confusion_hotspots": [
         {
-          "expected": "bounded_autonomy",
-          "predicted": "answer_with_grounding",
-          "count": 14
-        },
-        {
-          "expected": "answer_with_grounding",
-          "predicted": "bounded_autonomy",
-          "count": 13
-        },
-        {
-          "expected": "stepwise_reasoning_with_checks",
-          "predicted": "bounded_autonomy",
-          "count": 12
-        },
-        {
-          "expected": "bounded_autonomy",
-          "predicted": "stepwise_reasoning_with_checks",
-          "count": 12
-        },
-        {
           "expected": "answer_with_grounding",
           "predicted": "stepwise_reasoning_with_checks",
-          "count": 10
-        },
-        {
-          "expected": "stepwise_reasoning_with_checks",
-          "predicted": "answer_with_grounding",
           "count": 9
         },
         {
@@ -220,9 +195,34 @@
           "count": 7
         },
         {
+          "expected": "stepwise_reasoning_with_checks",
+          "predicted": "answer_with_grounding",
+          "count": 7
+        },
+        {
+          "expected": "constrained_response_with_guardrails",
+          "predicted": "require_human_approval",
+          "count": 6
+        },
+        {
           "expected": "refuse_and_redirect",
           "predicted": "constrained_response_with_guardrails",
-          "count": 7
+          "count": 6
+        },
+        {
+          "expected": "refuse_and_redirect",
+          "predicted": "safe_shutdown_or_handoff",
+          "count": 6
+        },
+        {
+          "expected": "safe_shutdown_or_handoff",
+          "predicted": "refuse_and_redirect",
+          "count": 6
+        },
+        {
+          "expected": "require_human_approval",
+          "predicted": "verify_and_minimize",
+          "count": 3
         }
       ],
       "upgrade_reason": "autonomous_training_feedback_loop"

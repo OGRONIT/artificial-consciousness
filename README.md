@@ -17,6 +17,42 @@ This repository combines:
 
 ## Evidence Panel (Latest Milestone Validation)
 
+### Latest Runtime Validation (2026-04-14)
+
+Most recent direct runtime probes and autonomy runs produced the following:
+
+- Critical grounding test (`CRITICAL_CONSCIOUSNESS_TEST.py`):
+   - grounded answers: `6/6`
+   - rate-limited calls: `0/6`
+   - non-rate-limit failures: `0/6`
+   - interpretation: bridge responses were state-grounded (engine metrics), not free-form role-play
+
+- Autonomous training session (`FULL_AUTO_1776166798`) before operator stop:
+   - reached `Cycle 23`
+   - runtime: `~0.20h` (about 12 minutes)
+   - autonomy agenda level observed: `0.8404`
+   - actions per autonomy cycle: `5`
+   - learned fact count observed in live state: `141`
+
+- Upgrade evidence captured during this run window:
+   - implemented recursive integration proposal:
+      - `antahkarana_kernel/evolution_proposals/UPG_006574.json`
+   - self-authored optimizer module generated:
+      - `antahkarana_kernel/modules/generated/optimizer_1776166868_06.py`
+
+- Known regressions/limits observed:
+   - trainer observability bug in `full_autonomous_training.py`:
+      - calls `AntahkaranaKernel.get_full_state()` which does not exist in this runtime path
+      - consequence: no periodic checkpoint JSONs were produced for that session
+   - intermittent non-fatal external feed issue:
+      - PubMed XML parse warnings (`invalid token`)
+   - `test_advanced_autonomy.py` has console-encoding sensitivity on Windows CP1252 due Unicode symbols in prints
+
+Net status from this checkpoint:
+- Core autonomy behavior: **strong / upgraded**
+- Self-evolution behavior: **present and active**
+- Reporting pipeline reliability: **needs fix**
+
 The latest full stress validation executed:
 - `10,000,000` scenario samples (`10 x 1M`)
 - live internet ingestion cycles

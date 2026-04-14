@@ -100,25 +100,37 @@
       "mission_id": "mission_followup_1776096329",
       "goal": "amplify_planner_capability",
       "priority": 0.65,
-      "status": "pending"
+      "status": "executed",
+      "executed_at": 1776166868.0518582,
+      "winner_module": "optimizer_1776166868_06",
+      "context_summary": {
+        "growth_entropy": 0.6579,
+        "stability_score": 0.828971038144692
+      }
     },
     {
       "mission_id": "mission_followup_1776096884",
       "goal": "amplify_planner_capability",
       "priority": 0.65,
       "status": "pending"
+    },
+    {
+      "mission_id": "mission_followup_1776166868",
+      "goal": "amplify_optimizer_capability",
+      "priority": 0.6,
+      "status": "pending"
     }
   ],
   "active": {
-    "mission_id": "mission_followup_1776093314",
-    "goal": "amplify_optimizer_capability",
-    "priority": 0.7,
+    "mission_id": "mission_followup_1776096329",
+    "goal": "amplify_planner_capability",
+    "priority": 0.65,
     "status": "executed",
-    "executed_at": 1776096884.7215195,
-    "winner_module": "planner_1776096884_05",
+    "executed_at": 1776166868.0518582,
+    "winner_module": "optimizer_1776166868_06",
     "context_summary": {
-      "growth_entropy": 0.625,
-      "stability_score": 0.9505710381446921
+      "growth_entropy": 0.6579,
+      "stability_score": 0.828971038144692
     }
   },
   "history": [
@@ -217,7 +229,19 @@
         "growth_entropy": 0.625,
         "stability_score": 0.9505710381446921
       }
+    },
+    {
+      "mission_id": "mission_followup_1776096329",
+      "goal": "amplify_planner_capability",
+      "priority": 0.65,
+      "status": "executed",
+      "executed_at": 1776166868.0518582,
+      "winner_module": "optimizer_1776166868_06",
+      "context_summary": {
+        "growth_entropy": 0.6579,
+        "stability_score": 0.828971038144692
+      }
     }
   ],
-  "last_updated": 1776096884.7215195
+  "last_updated": 1776166868.0518582
 }

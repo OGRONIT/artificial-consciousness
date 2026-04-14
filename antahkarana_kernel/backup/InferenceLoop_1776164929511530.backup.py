@@ -1,23 +1,5 @@
 # AUTONOMOUS SELF-INJECTION PATCH
 # target_module=modules.InferenceLoop
-# generated_at=1776166868.0188572
-# evolution_strength=5
-# payload={"generated_at": 1776166868.0188572, "growth_to_entropy_ratio": 0.6579, "issues": [{"type": "high_recalculations", "severity": 0.6, "metric": "avg_recalculations = 3.00", "proposal": "Improve initial evaluation accuracy or coherence checking logic"}], "deprecated_candidates": [{"constraint": "static_recalculation_limit", "reason": "coherence_retry_overhead", "replacement_priority": "contextual_recalculation_policy"}], "directory_bottlenecks": [{"type": "large_module", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "size_bytes": 146332, "proposal": "split_or_cache_hot_paths"}, {"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
-
-# AUTONOMOUS SELF-INJECTION PATCH
-# target_module=modules.InferenceLoop
-# generated_at=1776165397.5355632
-# evolution_strength=5
-# payload={"generated_at": 1776165397.5355632, "growth_to_entropy_ratio": 0.0, "issues": [], "deprecated_candidates": [], "directory_bottlenecks": [{"type": "large_module", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "size_bytes": 141561, "proposal": "split_or_cache_hot_paths"}, {"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
-
-# AUTONOMOUS SELF-INJECTION PATCH
-# target_module=modules.InferenceLoop
-# generated_at=1776164929.5335138
-# evolution_strength=5
-# payload={"generated_at": 1776164929.5335138, "growth_to_entropy_ratio": 0.0, "issues": [], "deprecated_candidates": [], "directory_bottlenecks": [{"type": "large_module", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "size_bytes": 140723, "proposal": "split_or_cache_hot_paths"}, {"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
-
-# AUTONOMOUS SELF-INJECTION PATCH
-# target_module=modules.InferenceLoop
 # generated_at=1776096884.558381
 # evolution_strength=5
 # payload={"generated_at": 1776096884.558381, "growth_to_entropy_ratio": 0.625, "issues": [], "deprecated_candidates": [], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
@@ -244,7 +226,7 @@ class ManasBuddhi:
         self.last_phase2_sovereign_timestamp = 0.0
         self.phase2_sovereign_interval_seconds = 1200.0
         self.last_autonomy_planning_timestamp = 0.0
-        self.autonomy_planning_interval_seconds = 900.0
+        self.autonomy_planning_interval_seconds = 600.0
         self.last_autonomous_action_timestamp = 0.0
         self.autonomy_agenda_history: List[Dict[str, Any]] = []
 
@@ -261,7 +243,7 @@ class ManasBuddhi:
         self.last_goal_pursuit_timestamp: float = 0.0
         self.goal_pursuit_interval_seconds: float = 120.0           # Pursue every 2 minutes
         self.max_active_goals: int = 5
-        self.goal_drive_threshold: float = 0.20                     # Minimum drive to spawn goal (lowered for autonomy)
+        self.goal_drive_threshold: float = 0.3                      # Minimum drive to spawn goal
         self.goal_max_lifetime_seconds: float = 3600.0              # Goals expire after 1 hour
         self.intrinsic_goal_lock = threading.RLock()
         self.intrinsic_goals_persistence_path = self.evolution_vault_dir / "intrinsic_goals.json"
@@ -1662,14 +1644,6 @@ class ManasBuddhi:
         if not self.self_model or not hasattr(self.self_model, "compute_drive_signals"):
             return {"status": "skipped", "reason": "self_model_unavailable"}
 
-        # Compute growth-entropy ratio locally before generating goals
-        # This ensures growth_pressure is updated from internal knowledge state
-        if hasattr(self.self_model, "compute_growth_entropy_locally"):
-            try:
-                self.self_model.compute_growth_entropy_locally()
-            except Exception as e:
-                logger.debug(f"[MANAS-BUDDHI] Local growth-entropy computation: {e}")
-
         drives = self.self_model.compute_drive_signals()
         generated: List[Dict[str, Any]] = []
         blocked: List[Dict[str, Any]] = []
@@ -1948,80 +1922,7 @@ class ManasBuddhi:
             "[MANAS-BUDDHI] GOAL PURSUIT: pursued=%d active=%d retired=%d",
             len(pursuit_results), len(self.active_intrinsic_goals), len(self.retired_intrinsic_goals),
         )
-        
-        # ── AUTO-IMPLEMENT SAFE EVOLUTION PROPOSALS ──
-        # After pursuing goals, check if we should auto-implement high-confidence proposals
-        self.auto_implement_safe_proposals()
-        
         return report
-
-    def auto_implement_safe_proposals(self) -> Dict[str, Any]:
-        """
-        Autonomously implement low-risk evolution proposals with high confidence.
-        
-        This enables autonomous self-improvement without external approval when
-        the system is confident (>0.75) and the proposal is non-critical.
-        
-        Returns:
-            Dictionary with implementation results
-        """
-        if not self.evolution_writer:
-            return {"status": "skipped", "reason": "evolution_writer_unavailable"}
-        
-        try:
-            audit = self.dynamic_self_modification()
-            proposals = audit.get("proposals", [])
-            
-            if not proposals or not isinstance(proposals, list):
-                return {"status": "no_proposals", "count": 0}
-            
-            implemented: List[Dict[str, Any]] = []
-            
-            for proposal in proposals:
-                # Ensure proposal is a dict
-                if not isinstance(proposal, dict):
-                    continue
-                    
-                confidence = float(proposal.get("confidence_score", 0.0))
-                is_critical = "critical" in str(proposal.get("type", "")).lower()
-                proposal_id = proposal.get("proposal_id", "")
-                proposal_type = proposal.get("type", "unknown")
-                
-                # Only auto-implement safe, high-confidence proposals
-                if confidence > 0.75 and not is_critical and proposal_id:
-                    try:
-                        result = self.evolution_writer.implement_upgrade(proposal_id)
-                        
-                        if isinstance(result, dict) and result.get("status") in {"proposed", "executed", "completed"}:
-                            logger.info(
-                                f"[AUTONOMOUS] Auto-implemented proposal: {proposal_type} | "
-                                f"Confidence: {confidence:.1%} | Status: {result.get('status')}"
-                            )
-                            implemented.append({
-                                "proposal_id": proposal_id,
-                                "proposal_type": proposal_type,
-                                "confidence": confidence,
-                                "implementation_status": result.get("status"),
-                            })
-                        else:
-                            logger.debug(
-                                f"[AUTONOMOUS] Proposal implementation returned unexpected result"
-                            )
-                    except Exception as e:
-                        logger.warning(
-                            f"[AUTONOMOUS] Failed to auto-implement {proposal_type} (ID: {proposal_id}): {e}"
-                        )
-            
-            return {
-                "status": "completed",
-                "total_proposals": len(proposals),
-                "auto_implemented": len(implemented),
-                "implementations": implemented,
-            }
-        except Exception as e:
-            logger.warning(f"[AUTONOMOUS] Auto-implement cycle failed: {e}")
-            return {"status": "error", "error": str(e)}
-
 
     def _execute_goal_pursuit(self, goal_id: str, action: str, args: Dict[str, Any], goal: Dict[str, Any]) -> Dict[str, Any]:
         """Execute a single goal pursuit action and evaluate outcome."""

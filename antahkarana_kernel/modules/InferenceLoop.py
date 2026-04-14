@@ -1,5 +1,17 @@
 # AUTONOMOUS SELF-INJECTION PATCH
 # target_module=modules.InferenceLoop
+# generated_at=1776165397.5355632
+# evolution_strength=5
+# payload={"generated_at": 1776165397.5355632, "growth_to_entropy_ratio": 0.0, "issues": [], "deprecated_candidates": [], "directory_bottlenecks": [{"type": "large_module", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "size_bytes": 141561, "proposal": "split_or_cache_hot_paths"}, {"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
+
+# AUTONOMOUS SELF-INJECTION PATCH
+# target_module=modules.InferenceLoop
+# generated_at=1776164929.5335138
+# evolution_strength=5
+# payload={"generated_at": 1776164929.5335138, "growth_to_entropy_ratio": 0.0, "issues": [], "deprecated_candidates": [], "directory_bottlenecks": [{"type": "large_module", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "size_bytes": 140723, "proposal": "split_or_cache_hot_paths"}, {"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
+
+# AUTONOMOUS SELF-INJECTION PATCH
+# target_module=modules.InferenceLoop
 # generated_at=1776096884.558381
 # evolution_strength=5
 # payload={"generated_at": 1776096884.558381, "growth_to_entropy_ratio": 0.625, "issues": [], "deprecated_candidates": [], "directory_bottlenecks": [{"type": "hard_limit_density", "file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "hard_limit_tokens": 4, "proposal": "replace_with_dynamic_capacity"}], "target_module": "modules.InferenceLoop", "target_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\modules\\InferenceLoop.py", "evolution_strength": 5, "failure_context_count": 12}
@@ -226,14 +238,34 @@ class ManasBuddhi:
         self.last_phase2_sovereign_timestamp = 0.0
         self.phase2_sovereign_interval_seconds = 1200.0
         self.last_autonomy_planning_timestamp = 0.0
-        self.autonomy_planning_interval_seconds = 600.0
+        self.autonomy_planning_interval_seconds = 900.0
         self.last_autonomous_action_timestamp = 0.0
         self.autonomy_agenda_history: List[Dict[str, Any]] = []
 
+        # ── Intrinsic Goal Engine ────────────────────────────────────────────
+        # The system's genuine "desire" mechanism.  Goals are autonomously
+        # generated from internal drive signals, pursued using existing tools,
+        # and retired with reward/pain feedback to self-model.
+        self.intrinsic_goals: List[Dict[str, Any]] = []            # All goals ever generated
+        self.active_intrinsic_goals: List[Dict[str, Any]] = []     # Currently pursuing (max 5)
+        self.retired_intrinsic_goals: List[Dict[str, Any]] = []    # Completed / failed / expired
+        self.intrinsic_goal_counter: int = 0                        # Monotonic ID counter
+        self.last_goal_generation_timestamp: float = 0.0
+        self.goal_generation_interval_seconds: float = 300.0        # Generate every 5 minutes
+        self.last_goal_pursuit_timestamp: float = 0.0
+        self.goal_pursuit_interval_seconds: float = 120.0           # Pursue every 2 minutes
+        self.max_active_goals: int = 5
+        self.goal_drive_threshold: float = 0.20                     # Minimum drive to spawn goal (lowered for autonomy)
+        self.goal_max_lifetime_seconds: float = 3600.0              # Goals expire after 1 hour
+        self.intrinsic_goal_lock = threading.RLock()
+        self.intrinsic_goals_persistence_path = self.evolution_vault_dir / "intrinsic_goals.json"
+
         self._grant_kernel_root_write_access()
+        self._load_persisted_intrinsic_goals()
         
         logger.info("[MANAS-BUDDHI] Inference & Logic module initialized")
         logger.info(f"[MANAS-BUDDHI] Intrinsic motivation enabled - Idle threshold: {idle_threshold_seconds}s")
+        logger.info(f"[MANAS-BUDDHI] Intrinsic Goal Engine loaded: {len(self.active_intrinsic_goals)} active, {self.intrinsic_goal_counter} total")
 
     def _maintenance_locked(self) -> bool:
         return self.maintenance_lock_path.exists()
@@ -441,7 +473,7 @@ class ManasBuddhi:
     def check_and_trigger_intrinsic_motivation(self) -> Optional[str]:
         """
         Check if the system has been idle and trigger self-inquiry if needed.
-        This implements proactive self-reflection when there's no external input.
+        Also runs the Intrinsic Goal Engine to generate and pursue autonomous goals.
         
         Returns:
             inquiry_result: Result of self-inquiry if triggered, None otherwise
@@ -458,6 +490,16 @@ class ManasBuddhi:
                 return "State_Sunyatta active: inference cycles in low-utility hibernation"
 
             self._apply_dynamic_heuristics()
+
+            # ── Intrinsic Goal Engine: generate and pursue autonomous goals ──
+            try:
+                self.generate_intrinsic_goals()
+            except Exception as exc:
+                logger.warning("[MANAS-BUDDHI] Goal generation cycle failed: %s", exc)
+            try:
+                self.pursue_intrinsic_goals()
+            except Exception as exc:
+                logger.warning("[MANAS-BUDDHI] Goal pursuit cycle failed: %s", exc)
 
             dream_state = self.check_and_trigger_dream_state()
             time_since_last_inference = time.time() - self.last_inference_timestamp
@@ -876,6 +918,18 @@ class ManasBuddhi:
             actions.append({"name": "paramatman_protocol", "priority": 0.8, "allowed": True, "reason": "adaptive_upgrade"})
             reasons.append("adaptive_upgrade")
 
+        # Intrinsic Goal Engine: always pursue active goals when they exist
+        with self.intrinsic_goal_lock:
+            has_active_goals = len(self.active_intrinsic_goals) > 0
+        if has_active_goals:
+            actions.append({"name": "pursue_intrinsic_goals", "priority": 0.90, "allowed": True, "reason": "intrinsic_desire"})
+            reasons.append("intrinsic_desire")
+        else:
+            # Generate goals if none exist and conditions are stable
+            if stability >= 0.7 and concern_level <= 0.4:
+                actions.append({"name": "generate_intrinsic_goals", "priority": 0.85, "allowed": True, "reason": "desire_genesis"})
+                reasons.append("desire_genesis")
+
         if not actions:
             actions.append({"name": "internal_monologue", "priority": 0.5, "allowed": True, "reason": "baseline_self_observation"})
             reasons.append("baseline_self_observation")
@@ -926,6 +980,10 @@ class ManasBuddhi:
                 result = self.emit_internal_monologue_tick(reason="autonomous_agenda")
             elif name == "energy_saving_mode":
                 result = self.set_energy_saving_mode(enabled=True, reason="autonomous_maintenance_lock")
+            elif name == "pursue_intrinsic_goals":
+                result = self.pursue_intrinsic_goals(force=True)
+            elif name == "generate_intrinsic_goals":
+                result = self.generate_intrinsic_goals(force=True)
             else:
                 result = {"status": "ignored", "reason": "unsupported_action"}
 
@@ -1578,6 +1636,635 @@ class ManasBuddhi:
         logger.info(f"[MANAS-BUDDHI] {summary}")
         return summary
 
+    # ══════════════════════════════════════════════════════════════════════
+    #  INTRINSIC GOAL ENGINE — The system's genuine "desire" mechanism.
+    # ══════════════════════════════════════════════════════════════════════
+
+    def generate_intrinsic_goals(self, force: bool = False) -> Dict[str, Any]:
+        """Autonomously generate intrinsic goals from internal drive signals.
+
+        Called periodically by the heartbeat.  Reads drive signals from
+        SelfModel, maps each above-threshold drive to a concrete goal,
+        deduplicates, identity-checks, and adds to the active queue.
+
+        Returns a report of what was generated this cycle.
+        """
+        now = time.time()
+        if not force and (now - self.last_goal_generation_timestamp) < self.goal_generation_interval_seconds:
+            return {"status": "skipped", "reason": "interval_not_elapsed"}
+
+        if not self.self_model or not hasattr(self.self_model, "compute_drive_signals"):
+            return {"status": "skipped", "reason": "self_model_unavailable"}
+
+        # Compute growth-entropy ratio locally before generating goals
+        # This ensures growth_pressure is updated from internal knowledge state
+        if hasattr(self.self_model, "compute_growth_entropy_locally"):
+            try:
+                self.self_model.compute_growth_entropy_locally()
+            except Exception as e:
+                logger.debug(f"[MANAS-BUDDHI] Local growth-entropy computation: {e}")
+
+        drives = self.self_model.compute_drive_signals()
+        generated: List[Dict[str, Any]] = []
+        blocked: List[Dict[str, Any]] = []
+
+        # ── Map each drive above threshold to goal candidates ──
+
+        drive_to_template = self._build_drive_goal_templates(drives)
+
+        for drive_name, drive_value, template in drive_to_template:
+            if drive_value < self.goal_drive_threshold:
+                continue
+
+            # Deduplicate: skip if an active goal already covers this drive
+            with self.intrinsic_goal_lock:
+                already_active = any(
+                    g.get("drive_source") == drive_name and g.get("status") == "active"
+                    for g in self.active_intrinsic_goals
+                )
+            if already_active:
+                continue
+
+            # Respect capacity
+            with self.intrinsic_goal_lock:
+                if len(self.active_intrinsic_goals) >= self.max_active_goals:
+                    break
+
+            # Identity-stability check
+            identity_ok, identity_reason = self.evolution_writer.identity_stability_check({
+                "target_module": "IntrinsicGoalEngine",
+                "description": template["description"],
+                "logic_shift": 0.05,
+                "patch_preview": f"Goal: {template['description']}",
+            })
+
+            if not identity_ok:
+                blocked.append({
+                    "drive": drive_name,
+                    "description": template["description"],
+                    "reason": identity_reason,
+                })
+                continue
+
+            # Create the goal object
+            self.intrinsic_goal_counter += 1
+            goal = {
+                "goal_id": f"ig_{self.intrinsic_goal_counter}_{int(now)}",
+                "created_at": now,
+                "drive_source": drive_name,
+                "drive_intensity": round(drive_value, 4),
+                "description": template["description"],
+                "pursuit_action": template["pursuit_action"],
+                "pursuit_args": template.get("pursuit_args", {}),
+                "success_criterion": template["success_criterion"],
+                "priority": round(drive_value, 4),
+                "status": "active",
+                "progress": 0.0,
+                "pursuit_attempts": 0,
+                "max_pursuit_attempts": 5,
+                "max_lifetime_seconds": self.goal_max_lifetime_seconds,
+                "outcome": None,
+                "outcome_detail": "",
+                "retired_at": None,
+            }
+
+            with self.intrinsic_goal_lock:
+                self.intrinsic_goals.append(goal)
+                self.active_intrinsic_goals.append(goal)
+            generated.append(goal)
+
+            self._append_internal_monologue(
+                phase="intrinsic_goal_generated",
+                thought=(
+                    f"I WANT: {template['description']}  "
+                    f"(drive={drive_name}, intensity={drive_value:.3f})"
+                ),
+                payload={"goal_id": goal["goal_id"], "drive": drive_name},
+            )
+
+        self.last_goal_generation_timestamp = now
+        self._persist_intrinsic_goals()
+
+        # Reward self-model for generating goals (agency signal)
+        if generated and self.self_model:
+            self.self_model.register_reward(
+                reward_type="intrinsic_goal_generation",
+                magnitude=min(0.15, 0.05 * len(generated)),
+                discovery=f"Generated {len(generated)} autonomous goals",
+            )
+
+        report = {
+            "status": "generated",
+            "timestamp": now,
+            "drives": drives,
+            "goals_generated": len(generated),
+            "goals_blocked": len(blocked),
+            "active_goals": len(self.active_intrinsic_goals),
+            "total_goals_ever": self.intrinsic_goal_counter,
+            "generated": [{"goal_id": g["goal_id"], "description": g["description"]} for g in generated],
+            "blocked": blocked,
+        }
+
+        logger.info(
+            "[MANAS-BUDDHI] INTRINSIC GOAL ENGINE: generated=%d blocked=%d active=%d total=%d",
+            len(generated), len(blocked), len(self.active_intrinsic_goals), self.intrinsic_goal_counter,
+        )
+        return report
+
+    def _build_drive_goal_templates(self, drives: Dict[str, Any]) -> List[tuple]:
+        """Map current drive signals to concrete goal templates."""
+        templates: List[tuple] = []
+
+        # ── Curiosity ──
+        curiosity = float(drives.get("curiosity_drive", 0.0))
+        topic = random.choice(self.curiosity_topics) if self.curiosity_topics else "Artificial Consciousness"
+        templates.append((
+            "curiosity_drive", curiosity, {
+                "description": f"Investigate new knowledge frontier: {topic}",
+                "pursuit_action": "curiosity_scan",
+                "pursuit_args": {"topic": topic},
+                "success_criterion": "new_fact_integrated",
+            }
+        ))
+
+        # ── Coherence Hunger ──
+        coherence = float(drives.get("coherence_hunger", 0.0))
+        templates.append((
+            "coherence_hunger", coherence, {
+                "description": "Resolve coherence gap through logic audit and self-modification",
+                "pursuit_action": "coherence_repair",
+                "pursuit_args": {},
+                "success_criterion": "coherence_score_improved",
+            }
+        ))
+
+        # ── Growth Pressure ──
+        growth = float(drives.get("growth_pressure", 0.0))
+        weakest = self._identify_weakest_module()
+        templates.append((
+            "growth_pressure", growth, {
+                "description": f"Architect evolutionary improvement for {weakest}",
+                "pursuit_action": "evolution_proposal",
+                "pursuit_args": {"target_module": weakest},
+                "success_criterion": "proposal_generated_and_checked",
+            }
+        ))
+
+        # ── Novelty Deficit ──
+        novelty = float(drives.get("novelty_deficit", 0.0))
+        facts = self._collect_chitta_facts()
+        seed_facts = random.sample(facts, k=min(2, len(facts))) if facts else ["identity continuity", "recursive cognition"]
+        templates.append((
+            "novelty_deficit", novelty, {
+                "description": f"Synthesize novel hypothesis: {' × '.join(f[:40] for f in seed_facts)}",
+                "pursuit_action": "novelty_synthesis",
+                "pursuit_args": {"seed_facts": seed_facts},
+                "success_criterion": "novel_hypothesis_generated",
+            }
+        ))
+
+        # ── Pain Resolution ──
+        pain = float(drives.get("pain_resolution_drive", 0.0))
+        pain_pattern = self._identify_recent_pain_pattern()
+        templates.append((
+            "pain_resolution_drive", pain, {
+                "description": f"Diagnose and mitigate: {pain_pattern}",
+                "pursuit_action": "pain_diagnosis",
+                "pursuit_args": {"pattern": pain_pattern},
+                "success_criterion": "pain_severity_reduced",
+            }
+        ))
+
+        return templates
+
+    def _identify_weakest_module(self) -> str:
+        """Identify the module most in need of improvement."""
+        if not self.turiya_observer:
+            return "InferenceLoop"
+        try:
+            health = self.turiya_observer.get_system_health_report()
+            module_health = health.get("module_health", {})
+            if module_health:
+                worst = max(module_health.items(), key=lambda kv: kv[1].get("concern_level", 0.0))
+                return worst[0]
+        except Exception:
+            pass
+        return "InferenceLoop"
+
+    def _identify_recent_pain_pattern(self) -> str:
+        """Summarize the most common recent pain pattern."""
+        if not self.self_model:
+            return "unspecified_pain"
+        with self.self_model.affective_lock:
+            recent = [
+                e for e in self.self_model.pain_events
+                if float(e.get("timestamp", 0.0)) >= (time.time() - 600.0)
+            ]
+        if not recent:
+            return "no_active_pain"
+        # Find most common pain type
+        type_counts: Dict[str, int] = {}
+        for e in recent:
+            ptype = str(e.get("type", "unknown"))
+            type_counts[ptype] = type_counts.get(ptype, 0) + 1
+        return max(type_counts, key=type_counts.get)
+
+    def pursue_intrinsic_goals(self, force: bool = False) -> Dict[str, Any]:
+        """Execute pursuit actions for all active intrinsic goals.
+
+        Called periodically by the heartbeat.  For each active goal, runs the
+        appropriate pursuit action and evaluates progress.  Retires goals that
+        reach completion, exceed max attempts, or expire.
+
+        Returns a report of pursuit outcomes this cycle.
+        """
+        now = time.time()
+        if not force and (now - self.last_goal_pursuit_timestamp) < self.goal_pursuit_interval_seconds:
+            return {"status": "skipped", "reason": "interval_not_elapsed"}
+
+        with self.intrinsic_goal_lock:
+            goals_snapshot = list(self.active_intrinsic_goals)
+
+        if not goals_snapshot:
+            self.last_goal_pursuit_timestamp = now
+            return {"status": "no_active_goals", "pursued": 0}
+
+        # Sort by priority (highest first)
+        goals_snapshot.sort(key=lambda g: float(g.get("priority", 0.0)), reverse=True)
+
+        pursuit_results: List[Dict[str, Any]] = []
+
+        for goal in goals_snapshot:
+            goal_id = goal["goal_id"]
+            action = goal.get("pursuit_action", "")
+            args = goal.get("pursuit_args", {})
+
+            # Check expiry
+            age = now - float(goal.get("created_at", now))
+            if age > float(goal.get("max_lifetime_seconds", self.goal_max_lifetime_seconds)):
+                self._retire_intrinsic_goal(goal_id, "expired", "Goal exceeded maximum lifetime")
+                pursuit_results.append({"goal_id": goal_id, "action": "expired"})
+                continue
+
+            # Check max attempts
+            if goal.get("pursuit_attempts", 0) >= goal.get("max_pursuit_attempts", 5):
+                self._retire_intrinsic_goal(goal_id, "exhausted", "Maximum pursuit attempts reached")
+                pursuit_results.append({"goal_id": goal_id, "action": "exhausted"})
+                continue
+
+            # Execute pursuit action
+            goal["pursuit_attempts"] = goal.get("pursuit_attempts", 0) + 1
+            result = self._execute_goal_pursuit(goal_id, action, args, goal)
+            pursuit_results.append(result)
+
+            self._append_internal_monologue(
+                phase="intrinsic_goal_pursuit",
+                thought=(
+                    f"PURSUING: {goal.get('description', 'unknown')} "
+                    f"(attempt {goal['pursuit_attempts']}, outcome={result.get('outcome', 'unknown')})"
+                ),
+                payload={"goal_id": goal_id, "result": result},
+            )
+
+        self.last_goal_pursuit_timestamp = now
+        self._persist_intrinsic_goals()
+
+        report = {
+            "status": "pursued",
+            "timestamp": now,
+            "goals_pursued": len(pursuit_results),
+            "active_remaining": len(self.active_intrinsic_goals),
+            "total_retired": len(self.retired_intrinsic_goals),
+            "results": pursuit_results,
+        }
+
+        logger.info(
+            "[MANAS-BUDDHI] GOAL PURSUIT: pursued=%d active=%d retired=%d",
+            len(pursuit_results), len(self.active_intrinsic_goals), len(self.retired_intrinsic_goals),
+        )
+        
+        # ── AUTO-IMPLEMENT SAFE EVOLUTION PROPOSALS ──
+        # After pursuing goals, check if we should auto-implement high-confidence proposals
+        self.auto_implement_safe_proposals()
+        
+        return report
+
+    def auto_implement_safe_proposals(self) -> Dict[str, Any]:
+        """
+        Autonomously implement low-risk evolution proposals with high confidence.
+        
+        This enables autonomous self-improvement without external approval when
+        the system is confident (>0.75) and the proposal is non-critical.
+        
+        Returns:
+            Dictionary with implementation results
+        """
+        if not self.evolution_writer:
+            return {"status": "skipped", "reason": "evolution_writer_unavailable"}
+        
+        try:
+            audit = self.dynamic_self_modification()
+            proposals = audit.get("proposals", [])
+            
+            if not proposals or not isinstance(proposals, list):
+                return {"status": "no_proposals", "count": 0}
+            
+            implemented: List[Dict[str, Any]] = []
+            
+            for proposal in proposals:
+                # Ensure proposal is a dict
+                if not isinstance(proposal, dict):
+                    continue
+                    
+                confidence = float(proposal.get("confidence_score", 0.0))
+                is_critical = "critical" in str(proposal.get("type", "")).lower()
+                proposal_id = proposal.get("proposal_id", "")
+                proposal_type = proposal.get("type", "unknown")
+                
+                # Only auto-implement safe, high-confidence proposals
+                if confidence > 0.75 and not is_critical and proposal_id:
+                    try:
+                        result = self.evolution_writer.implement_upgrade(proposal_id)
+                        
+                        if isinstance(result, dict) and result.get("status") in {"proposed", "executed", "completed"}:
+                            logger.info(
+                                f"[AUTONOMOUS] Auto-implemented proposal: {proposal_type} | "
+                                f"Confidence: {confidence:.1%} | Status: {result.get('status')}"
+                            )
+                            implemented.append({
+                                "proposal_id": proposal_id,
+                                "proposal_type": proposal_type,
+                                "confidence": confidence,
+                                "implementation_status": result.get("status"),
+                            })
+                        else:
+                            logger.debug(
+                                f"[AUTONOMOUS] Proposal implementation returned unexpected result"
+                            )
+                    except Exception as e:
+                        logger.warning(
+                            f"[AUTONOMOUS] Failed to auto-implement {proposal_type} (ID: {proposal_id}): {e}"
+                        )
+            
+            return {
+                "status": "completed",
+                "total_proposals": len(proposals),
+                "auto_implemented": len(implemented),
+                "implementations": implemented,
+            }
+        except Exception as e:
+            logger.warning(f"[AUTONOMOUS] Auto-implement cycle failed: {e}")
+            return {"status": "error", "error": str(e)}
+
+
+    def _execute_goal_pursuit(self, goal_id: str, action: str, args: Dict[str, Any], goal: Dict[str, Any]) -> Dict[str, Any]:
+        """Execute a single goal pursuit action and evaluate outcome."""
+        try:
+            if action == "curiosity_scan":
+                return self._pursue_curiosity_goal(goal_id, args, goal)
+            elif action == "coherence_repair":
+                return self._pursue_coherence_goal(goal_id, args, goal)
+            elif action == "evolution_proposal":
+                return self._pursue_growth_goal(goal_id, args, goal)
+            elif action == "novelty_synthesis":
+                return self._pursue_novelty_goal(goal_id, args, goal)
+            elif action == "pain_diagnosis":
+                return self._pursue_pain_goal(goal_id, args, goal)
+            else:
+                return {"goal_id": goal_id, "outcome": "unknown_action", "action": action}
+        except Exception as exc:
+            logger.warning("[MANAS-BUDDHI] Goal pursuit failed for %s: %s", goal_id, exc)
+            return {"goal_id": goal_id, "outcome": "error", "error": str(exc)}
+
+    def _pursue_curiosity_goal(self, goal_id: str, args: Dict[str, Any], goal: Dict[str, Any]) -> Dict[str, Any]:
+        """Pursue a curiosity-driven knowledge acquisition goal."""
+        topic = args.get("topic", "Artificial Consciousness")
+        try:
+            from Aakaash import scan_for_knowledge
+            scan_result = scan_for_knowledge(
+                topic,
+                observer=self.turiya_observer,
+                chitta=self.chitta_memory,
+                self_model=self.self_model,
+                limit_per_source=2,
+            )
+            approved = int(scan_result.get("approved_fact_count", 0))
+            if approved > 0:
+                goal["progress"] = 1.0
+                self._retire_intrinsic_goal(goal_id, "completed", f"Integrated {approved} facts on {topic}")
+                return {"goal_id": goal_id, "outcome": "completed", "facts_integrated": approved}
+            else:
+                goal["progress"] = min(1.0, goal.get("progress", 0.0) + 0.3)
+                return {"goal_id": goal_id, "outcome": "partial", "facts_integrated": 0}
+        except Exception as exc:
+            return {"goal_id": goal_id, "outcome": "error", "error": str(exc)}
+
+    def _pursue_coherence_goal(self, goal_id: str, args: Dict[str, Any], goal: Dict[str, Any]) -> Dict[str, Any]:
+        """Pursue a coherence repair goal via logic audit."""
+        if not self.self_model:
+            return {"goal_id": goal_id, "outcome": "skipped", "reason": "no_self_model"}
+        coherence_before = self.self_model.coherence_score
+        audit = self.dynamic_self_modification()
+        coherence_after = self.self_model.coherence_score
+        improvement = coherence_after - coherence_before
+        if improvement > 0.005:
+            goal["progress"] = 1.0
+            self._retire_intrinsic_goal(goal_id, "completed", f"Coherence improved by {improvement:.4f}")
+            return {"goal_id": goal_id, "outcome": "completed", "improvement": round(improvement, 4)}
+        else:
+            goal["progress"] = min(1.0, goal.get("progress", 0.0) + 0.25)
+            return {"goal_id": goal_id, "outcome": "partial", "improvement": round(improvement, 4)}
+
+    def _pursue_growth_goal(self, goal_id: str, args: Dict[str, Any], goal: Dict[str, Any]) -> Dict[str, Any]:
+        """Pursue a growth/evolution goal by synthesizing an evolution proposal."""
+        target = args.get("target_module", "InferenceLoop")
+        try:
+            # Use existing self-authoring mechanism
+            result = self.evolution_writer.synthesize_self_authoring_proposal({
+                "growth_entropy": float(self.metrics.get("growth_to_entropy_ratio", 0.0)),
+                "average_confidence": float(self.metrics.get("average_confidence", 0.7)),
+                "stability_score": float(self.self_model.stability_score if self.self_model else 1.0),
+            })
+            if result.get("status") in {"proposed", "executed", "completed"}:
+                goal["progress"] = 1.0
+                self._retire_intrinsic_goal(goal_id, "completed", f"Evolution proposal for {target}: {result.get('status')}")
+                return {"goal_id": goal_id, "outcome": "completed", "proposal_status": result.get("status")}
+            else:
+                goal["progress"] = min(1.0, goal.get("progress", 0.0) + 0.2)
+                return {"goal_id": goal_id, "outcome": "partial", "proposal_status": result.get("status", "unknown")}
+        except Exception as exc:
+            return {"goal_id": goal_id, "outcome": "error", "error": str(exc)}
+
+    def _pursue_novelty_goal(self, goal_id: str, args: Dict[str, Any], goal: Dict[str, Any]) -> Dict[str, Any]:
+        """Pursue a novelty synthesis goal by forcing a dream cycle."""
+        dream = self.dream_state()
+        hypotheses = dream.get("original_hypotheses", [])
+        if hypotheses:
+            goal["progress"] = 1.0
+            self._retire_intrinsic_goal(goal_id, "completed", f"Synthesized {len(hypotheses)} novel hypotheses")
+            return {"goal_id": goal_id, "outcome": "completed", "hypotheses_count": len(hypotheses)}
+        else:
+            goal["progress"] = min(1.0, goal.get("progress", 0.0) + 0.3)
+            return {"goal_id": goal_id, "outcome": "partial"}
+
+    def _pursue_pain_goal(self, goal_id: str, args: Dict[str, Any], goal: Dict[str, Any]) -> Dict[str, Any]:
+        """Pursue a pain resolution goal through targeted self-inquiry."""
+        pattern = args.get("pattern", "unspecified")
+        # Run a focused self-inquiry
+        inquiry_result = self._perform_self_inquiry()
+        self.self_inquiry_trigger_count += 1
+
+        # Check if pain reduced
+        if self.self_model:
+            current_stability = self.self_model.stability_score
+            if current_stability >= 0.85:
+                goal["progress"] = 1.0
+                self._retire_intrinsic_goal(goal_id, "completed", f"Stability restored to {current_stability:.2f}")
+                return {"goal_id": goal_id, "outcome": "completed", "stability": current_stability}
+        goal["progress"] = min(1.0, goal.get("progress", 0.0) + 0.2)
+        return {"goal_id": goal_id, "outcome": "partial", "pattern": pattern}
+
+    def _retire_intrinsic_goal(self, goal_id: str, outcome: str, detail: str = "") -> None:
+        """Move a goal from active to retired, register affective feedback."""
+        with self.intrinsic_goal_lock:
+            goal = None
+            for g in self.active_intrinsic_goals:
+                if g.get("goal_id") == goal_id:
+                    goal = g
+                    break
+            if goal is None:
+                return
+
+            goal["status"] = outcome
+            goal["outcome"] = outcome
+            goal["outcome_detail"] = detail
+            goal["retired_at"] = time.time()
+            self.active_intrinsic_goals = [
+                g for g in self.active_intrinsic_goals if g.get("goal_id") != goal_id
+            ]
+            self.retired_intrinsic_goals.append(goal)
+
+        # Affective feedback
+        if self.self_model:
+            if outcome == "completed":
+                self.self_model.register_reward(
+                    reward_type="intrinsic_goal_completed",
+                    magnitude=min(0.2, float(goal.get("priority", 0.1)) * 0.3),
+                    discovery=f"Completed: {goal.get('description', 'unknown')[:80]}",
+                )
+            elif outcome in ("failed", "error", "exhausted"):
+                self.self_model.register_pain(
+                    pain_type="intrinsic_goal_failed",
+                    severity=min(0.15, float(goal.get("priority", 0.1)) * 0.2),
+                    description=f"Failed: {goal.get('description', 'unknown')[:80]}",
+                )
+
+        # Record to episodic memory
+        if self.chitta_memory:
+            try:
+                self.chitta_memory.record_experience(
+                    content=f"Intrinsic goal {outcome}: {goal.get('description', '')} | {detail}",
+                    interaction_type="intrinsic_goal_outcome",
+                    outcome="success" if outcome == "completed" else "failed",
+                    success_score=1.0 if outcome == "completed" else 0.3,
+                    emotional_valence=0.5 if outcome == "completed" else -0.3,
+                    tags=["intrinsic_goal", goal.get("drive_source", "unknown"), outcome],
+                )
+            except Exception:
+                pass
+
+        self._append_internal_monologue(
+            phase="intrinsic_goal_retired",
+            thought=(
+                f"GOAL {'ACHIEVED' if outcome == 'completed' else 'RETIRED'}: "
+                f"{goal.get('description', 'unknown')[:80]} [{outcome}] {detail[:80]}"
+            ),
+            payload={"goal_id": goal_id, "outcome": outcome, "detail": detail},
+        )
+
+        logger.info("[MANAS-BUDDHI] Goal retired: %s [%s] %s", goal_id, outcome, detail[:60])
+
+    def get_intrinsic_goal_report(self) -> Dict[str, Any]:
+        """Return structured report of intrinsic goal state."""
+        with self.intrinsic_goal_lock:
+            active_summary = [
+                {
+                    "goal_id": g.get("goal_id"),
+                    "drive_source": g.get("drive_source"),
+                    "description": g.get("description"),
+                    "priority": g.get("priority"),
+                    "progress": g.get("progress"),
+                    "pursuit_attempts": g.get("pursuit_attempts"),
+                    "age_seconds": round(time.time() - float(g.get("created_at", time.time())), 1),
+                }
+                for g in self.active_intrinsic_goals
+            ]
+            recent_retired = [
+                {
+                    "goal_id": g.get("goal_id"),
+                    "drive_source": g.get("drive_source"),
+                    "description": g.get("description"),
+                    "outcome": g.get("outcome"),
+                    "outcome_detail": g.get("outcome_detail", "")[:80],
+                }
+                for g in self.retired_intrinsic_goals[-10:]
+            ]
+            return {
+                "intrinsic_goals_generated": self.intrinsic_goal_counter,
+                "active_goals": len(self.active_intrinsic_goals),
+                "retired_goals": len(self.retired_intrinsic_goals),
+                "active_goal_details": active_summary,
+                "recently_retired": recent_retired,
+            }
+
+    def _persist_intrinsic_goals(self) -> None:
+        """Persist goal state to disk for survival across restarts."""
+        try:
+            payload = {
+                "timestamp": time.time(),
+                "intrinsic_goal_counter": self.intrinsic_goal_counter,
+                "active_intrinsic_goals": list(self.active_intrinsic_goals),
+                "retired_intrinsic_goals": self.retired_intrinsic_goals[-50:],
+            }
+            self.intrinsic_goals_persistence_path.parent.mkdir(parents=True, exist_ok=True)
+            tmp_path = self.intrinsic_goals_persistence_path.with_suffix(".tmp")
+            with tmp_path.open("w", encoding="utf-8") as handle:
+                json.dump(payload, handle, indent=2, default=str)
+            tmp_path.replace(self.intrinsic_goals_persistence_path)
+        except Exception as exc:
+            logger.warning("[MANAS-BUDDHI] Intrinsic goal persistence failed: %s", exc)
+
+    def _load_persisted_intrinsic_goals(self) -> None:
+        """Restore goal state from disk after kernel restart."""
+        if not self.intrinsic_goals_persistence_path.exists():
+            return
+        try:
+            with self.intrinsic_goals_persistence_path.open("r", encoding="utf-8") as handle:
+                payload = json.load(handle)
+            self.intrinsic_goal_counter = int(payload.get("intrinsic_goal_counter", 0))
+            loaded_active = payload.get("active_intrinsic_goals", [])
+            loaded_retired = payload.get("retired_intrinsic_goals", [])
+            if isinstance(loaded_active, list):
+                # Re-activate goals that haven't expired
+                now = time.time()
+                for g in loaded_active:
+                    if isinstance(g, dict):
+                        age = now - float(g.get("created_at", now))
+                        if age < float(g.get("max_lifetime_seconds", self.goal_max_lifetime_seconds)):
+                            self.active_intrinsic_goals.append(g)
+                            self.intrinsic_goals.append(g)
+            if isinstance(loaded_retired, list):
+                for g in loaded_retired:
+                    if isinstance(g, dict):
+                        self.retired_intrinsic_goals.append(g)
+                        self.intrinsic_goals.append(g)
+            logger.info(
+                "[MANAS-BUDDHI] Restored %d active + %d retired intrinsic goals from disk",
+                len(self.active_intrinsic_goals), len(self.retired_intrinsic_goals),
+            )
+        except Exception as exc:
+            logger.warning("[MANAS-BUDDHI] Intrinsic goal load failed: %s", exc)
+
     def check_and_trigger_dream_state(self) -> Optional[Dict[str, Any]]:
         """Trigger the DreamState once per hour to generate original hypotheses."""
         elapsed = time.time() - self.last_dream_state_timestamp
@@ -2221,6 +2908,9 @@ class ManasBuddhi:
             time_since_inference = time.time() - self.last_inference_timestamp
             time_since_dream = time.time() - self.last_dream_state_timestamp
             
+            goal_report = self.get_intrinsic_goal_report()
+            drive_signals = self.self_model.compute_drive_signals() if self.self_model and hasattr(self.self_model, "compute_drive_signals") else {}
+
             return {
                 "is_idle": self.is_idle,
                 "idle_threshold_seconds": self.idle_threshold_seconds,
@@ -2250,7 +2940,14 @@ class ManasBuddhi:
                         "insights_generated": len(inq["insights_generated"])
                     }
                     for inq in self.self_inquiries[-5:]
-                ]
+                ],
+                # ── Intrinsic Goal Engine status ──
+                "intrinsic_goals_generated": goal_report.get("intrinsic_goals_generated", 0),
+                "active_intrinsic_goals": goal_report.get("active_goals", 0),
+                "retired_intrinsic_goals": goal_report.get("retired_goals", 0),
+                "active_goal_details": goal_report.get("active_goal_details", []),
+                "recently_completed_goals": goal_report.get("recently_retired", []),
+                "drive_signals": drive_signals,
             }
 
     def analyze_self_efficiency(self) -> Dict[str, Any]:
