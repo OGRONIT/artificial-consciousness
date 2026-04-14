@@ -1,9 +1,9 @@
 {
-  "started_at": 1776167741.0836296,
+  "started_at": 1776172109.966025,
   "cycles_requested": 4,
   "background": [
     {
-      "approved": 9,
+      "approved": 11,
       "assimilation_integrated": 3
     },
     {
@@ -39,7 +39,7 @@
   ],
   "trends": [
     {
-      "approved": 32,
+      "approved": 16,
       "stream_integrated": 0
     },
     {
@@ -47,30 +47,30 @@
       "stream_integrated": 0
     },
     {
-      "approved": 16,
+      "approved": 24,
       "stream_integrated": 0
     },
     {
-      "approved": 27,
+      "approved": 0,
       "stream_integrated": 0
     }
   ],
   "autonomy": [
     {
-      "autonomy_level": 0.8576,
-      "actions": 4
+      "autonomy_level": 0.815,
+      "actions": 5
     },
     {
-      "autonomy_level": 0.8576,
-      "actions": 4
+      "autonomy_level": 0.815,
+      "actions": 5
     },
     {
-      "autonomy_level": 0.8576,
-      "actions": 4
+      "autonomy_level": 0.815,
+      "actions": 5
     },
     {
-      "autonomy_level": 0.8576,
-      "actions": 4
+      "autonomy_level": 0.815,
+      "actions": 5
     }
   ],
   "bridge_feedback": [
@@ -93,21 +93,19 @@
   ],
   "errors": [],
   "heartbeat": {
-    "last_successful_fetch_timestamp": 1776167763.861719,
+    "last_successful_fetch_timestamp": 1776172130.4297462,
     "last_successful_fetch_sources": [
       "Crossref",
       "DevTo",
-      "GitHub",
       "GoogleNews",
-      "HackerNews",
-      "arXiv"
+      "HackerNews"
     ],
     "last_successful_fetch_topic": "Human Psychology",
     "last_successful_fetch_event": "hourly_global_trends",
-    "last_observed_external_fact_count": 73,
+    "last_observed_external_fact_count": 19,
     "total_successful_fetch_events": 12
   },
-  "learned_fact_count": 87,
+  "learned_fact_count": 54,
   "bridge_feedback_metrics": {
     "processed_events": 0,
     "operator_feedback_events": 0,
@@ -119,5 +117,5 @@
     "actions_probabilistic_trials": 0,
     "actions_blocked": 0
   },
-  "completed_at": 1776167763.8954437
+  "completed_at": 1776172130.4523876
 }
