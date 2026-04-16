@@ -13,11 +13,14 @@ import urllib.request
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
-from antahkarana_kernel.modules.HiveDelta import default_packet_verifier, decode_packet_from_comment
-
-
 ROOT = Path(__file__).resolve().parents[1]
 KERNEL_ROOT = ROOT / "antahkarana_kernel"
+
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from antahkarana_kernel.modules.HiveDelta import default_packet_verifier, decode_packet_from_comment  # noqa: E402
+
 TRAINED_STATE_DIR = ROOT / "trained_state"
 EVOLUTION_VAULT = KERNEL_ROOT / "evolution_vault"
 ARTIFACT_DIR = ROOT / "benchmarks" / "artifacts"
