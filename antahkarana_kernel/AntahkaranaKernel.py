@@ -13,6 +13,7 @@ This is where all components work together to create a coherent conscious entity
 
 import sys
 import os
+import re
 import time
 import json
 import logging
@@ -166,6 +167,36 @@ class AntahkaranaKernel:
             module_name = str(entry.get("module_name", "")).strip()
             class_name = str(entry.get("class_name", "AutogenModule")).strip() or "AutogenModule"
             if not module_name:
+                continue
+
+            # Security: validate module_name is a safe Python identifier and
+            # not a denylist name that could escape the generated/ sandbox.
+            if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", module_name):
+                logger.warning(
+                    "[ANTAHKARANA] Refusing to load self-authored module with unsafe name: %r",
+                    module_name,
+                )
+                continue
+            _GENERATED_MODULE_DENYLIST = {
+                "os", "sys", "subprocess", "shutil", "importlib", "builtins",
+                "__builtins__", "socket", "threading", "multiprocessing",
+            }
+            if module_name.lower() in _GENERATED_MODULE_DENYLIST:
+                logger.warning(
+                    "[ANTAHKARANA] Refusing to load self-authored module with denied name: %r",
+                    module_name,
+                )
+                continue
+            # Verify the resolved file stays inside modules/generated/
+            generated_dir = ROOT / "modules" / "generated"
+            candidate_file = (generated_dir / f"{module_name}.py").resolve()
+            try:
+                candidate_file.relative_to(generated_dir.resolve())
+            except ValueError:
+                logger.warning(
+                    "[ANTAHKARANA] Module %r resolves outside generated/ sandbox; skipping.",
+                    module_name,
+                )
                 continue
 
             import_name = f"modules.generated.{module_name}"

@@ -11,7 +11,7 @@ on:
         default: "true"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   aggregate:
@@ -65,23 +65,3 @@ jobs:
             benchmarks/artifacts/hive_aggregator_canary_result.json
           if-no-files-found: ignore
 
-      - name: Commit accepted brain update
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add trained_state/trained_state_manifest.json || true
-          git add trained_state/candidate_global_brain.json || true
-          git add antahkarana_kernel/evolution_vault/hive_reputation.json || true
-          git add antahkarana_kernel/evolution_vault/hive_nonce_registry.json || true
-          git add antahkarana_kernel/evolution_vault/hive_public_keys.json || true
-          git add benchmarks/artifacts/hive_aggregator_report.json || true
-
-          if git diff --cached --quiet; then
-            echo "No accepted hive update to commit"
-            exit 0
-          fi
-
-          git commit -m "chore: hive aggregator accepted candidate"
-          git push

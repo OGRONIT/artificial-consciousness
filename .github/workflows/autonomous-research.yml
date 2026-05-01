@@ -15,7 +15,7 @@ on:
     - cron: "*/15 * * * *"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   cloud-burst:
@@ -62,23 +62,3 @@ jobs:
             live_engine_state.json
           if-no-files-found: ignore
 
-      - name: Commit autonomous updates
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add benchmarks/artifacts/cloud_research_burst_latest.json || true
-          git add antahkarana_kernel/live_engine_state.json || true
-          git add live_engine_state.json || true
-          git add antahkarana_kernel/evolution_vault/Bridge_Commands.jsonl || true
-          git add antahkarana_kernel/evolution_vault/bridge_command_cursor.json || true
-          git add antahkarana_kernel/evolution_vault/llm_cognitive_loop_metrics.json || true
-
-          if git diff --cached --quiet; then
-            echo "No autonomous deltas to commit"
-            exit 0
-          fi
-
-          git commit -m "chore: autonomous cloud research burst update"
-          git push
