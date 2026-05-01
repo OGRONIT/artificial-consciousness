@@ -162,7 +162,7 @@
     "enabled": true,
     "source": "run_million_scenario_training.py",
     "last_upgrade_at": 1776096842.8704984,
-    "policy_file": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\training_autonomy_policy.json",
+    "policy_file": "antahkarana_kernel/evolution_vault/training_autonomy_policy.json",
     "recommended_next_parameters": {
       "learning_rate": 0.06,
       "memory_sample_rate": 50,
@@ -211,5 +211,10 @@
         "count": 7
       }
     ]
+  },
+  "reproducibility": {
+    "enabled": false,
+    "seed": 42,
+    "description": "When enabled, seeds Python random for deterministic benchmark runs and disables nondeterministic network ingestion."
   }
 }

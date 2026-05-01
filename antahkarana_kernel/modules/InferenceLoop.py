@@ -203,7 +203,7 @@ class ManasBuddhi:
         self.last_logic_audit_timestamp = time.time()
         self.logic_audit_history: List[Dict[str, Any]] = []
         self.deprecated_constraints: List[Dict[str, Any]] = []
-        self.kernel_root_dir = Path(r"D:\Artificial Consciousness\antahkarana_kernel")
+        self.kernel_root_dir = Path(__file__).resolve().parent.parent
         self.atman_core_file = self.kernel_root_dir / "Atman_Core.json"
         self.evolution_vault_dir = self.kernel_root_dir / "evolution_vault"
         self.evolution_vault_dir.mkdir(parents=True, exist_ok=True)
@@ -1170,8 +1170,8 @@ class ManasBuddhi:
 
         if target_module == "modules.InferenceLoop":
             pattern = (
-                r"def __init__\(self, max_dream_simulations: int = (\\d+), "
-                r"max_recalculations: int = (\\d+), idle_threshold_seconds: float = 300\\.0\):"
+                r"def __init__\(self, max_dream_simulations: int = (\d+), "
+                r"max_recalculations: int = (\d+), idle_threshold_seconds: float = 300\.0\):"
             )
             match = re.search(pattern, source)
             if match:
@@ -1188,7 +1188,7 @@ class ManasBuddhi:
             return source
 
         if target_module == "Aakaash":
-            interval_pattern = r"self\.stream_scan_interval_seconds = ([0-9]+(?:\\.[0-9]+)?)"
+            interval_pattern = r"self\.stream_scan_interval_seconds = ([0-9]+(?:\.[0-9]+)?)"
             interval_match = re.search(interval_pattern, source)
             if interval_match:
                 old_interval = float(interval_match.group(1))

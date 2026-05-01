@@ -38,6 +38,7 @@ _llm_rate_limit_reason = ""
 _dotenv_loaded = False
 _llm_response_cache: Dict[str, Dict[str, Any]] = {}
 _llm_response_cache_ttl_seconds = 1800.0
+_llm_response_cache_max_size = 256  # Prevent unbounded growth
 _llm_usage_guardrail_path = _kernel_root / "evolution_vault" / "llm_usage_guardrail.json"
 _llm_cognitive_loop_metrics_path = _kernel_root / "evolution_vault" / "llm_cognitive_loop_metrics.json"
 _research_priority_sources = {"arXiv", "GitHub", "Crossref", "PubMed"}
@@ -370,6 +371,12 @@ def _call_openai_compatible_llm(system_prompt: str, user_prompt: str) -> str:
         input_tokens=estimated_input_tokens,
         output_tokens=_estimate_tokens(final_content),
     )
+    # Evict oldest entry when cache is at capacity (simple LRU-lite via insertion order)
+    if len(_llm_response_cache) >= _llm_response_cache_max_size:
+        try:
+            _llm_response_cache.pop(next(iter(_llm_response_cache)))
+        except StopIteration:
+            pass
     _llm_response_cache[cache_key] = {
         "content": final_content,
         "expires_at": time.time() + _llm_response_cache_ttl_seconds,
