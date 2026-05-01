@@ -19,7 +19,7 @@ _VALID_PATTERN = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 
 
 def is_safe_module_name(name: str) -> bool:
-    if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name):
+    if not _VALID_PATTERN.fullmatch(name):
         return False
     if name.lower() in _DENYLIST:
         return False

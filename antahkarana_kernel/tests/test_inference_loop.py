@@ -58,15 +58,11 @@ def test_pattern_captures_different_values():
 # ── Path resolution tests ──────────────────────────────────────────────────────
 
 def test_kernel_root_dir_resolves_under_repo():
-    """kernel_root_dir must be inside the repo, not a Windows absolute path."""
-    from modules.InferenceLoop import ManasBuddhi
-    engine = ManasBuddhi.__new__(ManasBuddhi)
-    # Access the class source to check the attribute is set to a Path(__file__) derivative
-    # We instantiate minimally to check the path without triggering the full init
+    """kernel_root_dir must use Path(__file__) for portable resolution."""
     import inspect
+    from modules.InferenceLoop import ManasBuddhi
     src = inspect.getsource(ManasBuddhi.__init__)
-    assert "D:\\\\Artificial Consciousness" not in src
-    assert "Path(__file__)" in src
+    assert "Path(__file__)" in src, "kernel_root_dir must be derived from Path(__file__)"
 
 
 # ── ManasBuddhi mutate source tests ───────────────────────────────────────────

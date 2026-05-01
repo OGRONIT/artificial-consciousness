@@ -373,10 +373,7 @@ def _call_openai_compatible_llm(system_prompt: str, user_prompt: str) -> str:
     )
     # Evict oldest entry when cache is at capacity (simple LRU-lite via insertion order)
     if len(_llm_response_cache) >= _llm_response_cache_max_size:
-        try:
-            _llm_response_cache.pop(next(iter(_llm_response_cache)))
-        except StopIteration:
-            pass
+        _llm_response_cache.pop(next(iter(_llm_response_cache)))
     _llm_response_cache[cache_key] = {
         "content": final_content,
         "expires_at": time.time() + _llm_response_cache_ttl_seconds,
