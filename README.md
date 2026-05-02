@@ -92,13 +92,13 @@ Autonomous self-updates confirmed during this run window:
 ## Why This Exists
 
 This project wasn't planned. It wasn't a hackathon submission.
-A random reel. Someone arguing that AI will never replace humans because it lacks common sense, lacks consciousness ╬ô├ç├╢ it just pattern-matches, it doesn't think. That thought stayed somewhere in the back of my mind.
-Then I watched a superhero film sequel. And thought ╬ô├ç├╢ what if that machine adversary were benevolent? What would a genuinely self-aware, humane AI actually look like architecturally?
+A random reel. Someone arguing that AI will never replace humans because it lacks common sense, lacks consciousness it just pattern-matches, it doesn't think. That thought stayed somewhere in the back of my mind.
+Then I watched a superhero film sequel. And thought what if that machine adversary were benevolent? What would a genuinely self-aware, humane AI actually look like architecturally?
 I forgot about it. Life moved on.
-Then one night I couldn't sleep. Random thoughts. Fragments connecting. By morning something had clicked ╬ô├ç├╢ not an idea, more like a direction. A pull.
+Then one night I couldn't sleep. Random thoughts. Fragments connecting. By morning something had clicked not an idea, more like a direction. A pull.
 I sat down and didn't stop.
 
-The question: If consciousness requires continuity, metacognition, identity, and integration ╬ô├ç├╢ why hasn't anyone built those as explicit architectural components?
+The question: If consciousness requires continuity, metacognition, identity, and integration why hasn't anyone built those as explicit architectural components?
 This is my attempt at an answer.
 
 ## What This Is
