@@ -195,29 +195,28 @@ cd antahkarana_kernel
 
 7. Run an autonomy stress burst:
 
-```powershell
-cd ..
-d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_cloud_research_burst.py --cycles 5 --with-paramatman --output benchmarks/artifacts/cloud_research_burst_latest.json
+```bash
+python tools/run_cloud_research_burst.py --cycles 5 --with-paramatman --output benchmarks/artifacts/cloud_research_burst_latest.json
 ```
 
 8. Run deeper validation/training when needed:
 
-```powershell
-d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_benchmark_v1.py
-d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_safety_adversarial_suite.py
-d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_world_grade_suite.py
-d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_million_scenario_training.py --target-scenarios 1000000
+```bash
+python tools/run_benchmark_v1.py
+python tools/run_safety_adversarial_suite.py
+python tools/run_world_grade_suite.py
+python tools/run_million_scenario_training.py --target-scenarios 1000000
 ```
 
 9. Export trained snapshot:
 
-```powershell
-d:/Artificial Consciousness/.venv/Scripts/python.exe tools/export_trained_state_snapshot.py
+```bash
+python tools/export_trained_state_snapshot.py
 ```
 
 10. Persist to GitHub:
 
-```powershell
+```bash
 git add -A
 git commit -m "Update runtime/trained state"
 git push origin main
@@ -340,8 +339,8 @@ Workflow file:
 
 What it does:
 - Runs autonomous burst cycles on a schedule (every 15 minutes)
-- Uploads runtime artifacts
-- Optionally commits autonomous deltas back to the repository
+- Uploads runtime artifacts as GitHub Actions artifacts
+- Does **not** commit or push to the main branch (governance safe)
 
 How to enable:
 1. Push repository to GitHub
@@ -353,6 +352,7 @@ How to enable:
 
 Primary output artifact:
 - `benchmarks/artifacts/cloud_research_burst_latest.json`
+  (uploaded as a GitHub Actions artifact; not committed to main)
 
 ### B. Manual Deep Mode
 
@@ -361,14 +361,14 @@ Runner file:
 
 Standard deep run:
 
-```powershell
-d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_cloud_research_burst.py --cycles 8 --with-paramatman --output benchmarks/artifacts/cloud_research_burst_manual_deep.json
+```bash
+python tools/run_cloud_research_burst.py --cycles 8 --with-paramatman --output benchmarks/artifacts/cloud_research_burst_manual_deep.json
 ```
 
 Ultra deep run:
 
-```powershell
-d:/Artificial Consciousness/.venv/Scripts/python.exe tools/run_cloud_research_burst.py --cycles 15 --with-paramatman --output benchmarks/artifacts/cloud_research_burst_ultra.json
+```bash
+python tools/run_cloud_research_burst.py --cycles 15 --with-paramatman --output benchmarks/artifacts/cloud_research_burst_ultra.json
 ```
 
 ### C. Strategy
@@ -712,6 +712,69 @@ Latest published diagnostic state:
 **What this does NOT prove**: Production readiness, long-term coherence stability, or real-world domain performance. Production maturity requires sustained operator interaction and multi-domain testing.
 
 Note: LLM remains a voice layer; external learning and autonomous action loops run independently of LLM key presence.
+
+## Verification
+
+This section separates what the CI test suite proves from what requires
+optional long-run validation.
+
+### What CI Guarantees (every push / pull request)
+
+The `.github/workflows/ci.yml` workflow:
+1. Compiles all modules (`python -m compileall`).
+2. Imports the three top-level packages to confirm there are no import errors.
+3. Runs the full unit test suite plus the fast end-to-end smoke test
+   (`pytest antahkarana_kernel/tests/ -m "not integration"`).
+
+The smoke test (`antahkarana_kernel/tests/test_e2e_smoke.py`) proves:
+- Key modules import and instantiate correctly.
+- `SelfModel`, `ChittaMemoryDB`, and `ConsciousBuffer` interact correctly.
+- `TrainedStateManager` can export a state snapshot to a temp directory.
+- All invariants (coherence range, drive signals, event broadcasting) hold.
+
+**To reproduce CI locally** (works on Linux, macOS, and Windows without an API key):
+
+```bash
+# 1. Clone and enter the repo
+git clone https://github.com/OGRONIT/artificial-consciousness.git
+cd artificial-consciousness
+
+# 2. Install dev/test dependencies
+python -m pip install -r requirements-dev.txt
+
+# 3. Run the full test suite (unit tests + smoke test; excludes integration)
+pytest -q
+
+# 4. (Optional) Run the environment health check
+python tools/doctor.py
+```
+
+See [`docs/reproducibility.md`](docs/reproducibility.md) for deterministic seeding
+instructions and the component taxonomy (heuristic vs. LLM-backed).
+
+### What Is Optional Long-Run Validation
+
+The following require an active internet connection, an API key, or significant
+compute time. They are **not** run in CI by default:
+
+- `tools/run_benchmark_v1.py` — architectural integrity benchmark
+- `tools/run_safety_adversarial_suite.py` — safety policy suite
+- `tools/run_world_grade_suite.py` — world-grade end-to-end harness
+- `tools/run_million_scenario_training.py` — 1 M-scenario curriculum training
+- `tools/run_full_autonomy_web_validation.py` — 10 M-scenario web validation
+- Integration tests (`pytest -m integration`) — requires `RUN_INTEGRATION=1`
+
+### Environment Health Check (`tools/doctor.py`)
+
+The `doctor` script performs a quick sanity check without needing any API keys:
+
+```bash
+python tools/doctor.py
+```
+
+It prints Python version / platform, verifies that key files exist
+(`config.json`, `trained_state` manifest, module sources), runs the same
+pipeline logic as the CI smoke test, and exits non-zero on any failure.
 
 ## Contributing
 Contributions are welcome. Start with:

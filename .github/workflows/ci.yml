@@ -27,7 +27,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f antahkarana_kernel/requirements.txt ]; then pip install -r antahkarana_kernel/requirements.txt; fi
-          pip install pytest
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; else pip install pytest; fi
 
       - name: Compile check
         run: |
@@ -50,4 +50,4 @@ jobs:
 
       - name: Run tests
         run: |
-          python -m pytest antahkarana_kernel/tests/ -q
+          python -m pytest antahkarana_kernel/tests/ -q -m "not integration"
