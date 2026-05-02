@@ -248,7 +248,7 @@ cd antahkarana_kernel
 
 **This is not a plug-and-play assistant.**
 
-This is a cognitive runtime architected like a new brain ╬ô├ç├╢ with full internal wiring, modular structure, and closed-loop learning loops. But out of the box, it is a brain with **no lived experience**.
+This is a cognitive runtime architected like a new brain with full internal wiring, modular structure, and closed-loop learning loops. But out of the box, it is a brain with **no lived experience**.
 
 ### You Have
 - Architecture: identity, memory, observer, inference, and integration modules.
@@ -258,10 +258,10 @@ This is a cognitive runtime architected like a new brain ╬ô├ç├╢ with f
 - A dual-mode action gating system: deterministic-allow for high-confidence paths + probabilistic-trial for intentional learning.
 
 ### You Do NOT Have, Out of the Box
-- Your domain knowledge or operational context ╬ô├ç├╢ the system will ask and learn.
-- Sufficient interaction history to power semantic memory ╬ô├ç├╢ that comes from operator engagement.
-- Live LLM connectivity without your API key configuration ╬ô├ç├╢ voice layer is optional.
-- Pre-trained coherence maturity ╬ô├ç├╢ this emerges as evidence accumulates.
+- Your domain knowledge or operational context the system will ask and learn.
+- Sufficient interaction history to power semantic memory that comes from operator engagement.
+- Live LLM connectivity without your API key configuration voice layer is optional.
+- Pre-trained coherence maturity this emerges as evidence accumulates.
 
 ### Your Role
 
