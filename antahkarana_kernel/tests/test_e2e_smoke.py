@@ -2,7 +2,7 @@
 test_e2e_smoke.py - Deterministic end-to-end smoke tests for the Antahkarana Kernel.
 
 Smoke test (test_e2e_kernel_smoke):
-  - No LLM required, no network calls, runs < 30 s.
+  - No LLM required, no network calls, runs in well under 30 s.
   - Seeds Python random from config.json reproducibility.seed (fallback: 42).
   - Instantiates the key modules and exercises the core pipeline.
   - Asserts structural invariants rather than exact values.
@@ -193,7 +193,6 @@ def test_e2e_live_cycle():
     Only runs when RUN_INTEGRATION=1 is set.
     """
     # Import here so the integration test does not affect unit test collection
-    import sys
     from pathlib import Path as _Path
 
     _KERNEL_ROOT = _Path(__file__).resolve().parent.parent

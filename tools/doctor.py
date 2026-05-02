@@ -281,7 +281,6 @@ def check_kernel_smoke() -> bool:
 def main() -> int:
     print("\nAntahkarana Kernel Doctor")
     print("Run this script to verify your environment before submitting results.\n")
-    print(f"  python tools/doctor.py\n")
 
     check_system_info()
     files_ok = check_key_files()
