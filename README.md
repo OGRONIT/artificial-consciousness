@@ -395,7 +395,7 @@ Then inspect evidence artifacts:
 
 ## How to Operate & Train This Engine
 
-You are not a user of this system ╬ô├ç├╢ **you are its trainer and operator**. Performance emerges from how you interact with it.
+You are not a user of this system **you are its trainer and operator**. Performance emerges from how you interact with it.
 
 ### Phase 1: Initial Setup & Connection (First 30 Minutes)
 
