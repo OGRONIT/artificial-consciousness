@@ -554,7 +554,7 @@ class SelfModel:
             "latest_state_hash": latest_snapshot.state_hash if latest_snapshot else None,
         }
         return (
-            "Introspection unavailable: backed inference/LLM is disconnected. "
+            "Introspection unavailable: inference backend/LLM is disconnected. "
             f"Limited static self-report for '{question}': {json.dumps(static_report, sort_keys=True)}"
         )
 
