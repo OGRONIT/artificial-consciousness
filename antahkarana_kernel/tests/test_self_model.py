@@ -69,6 +69,29 @@ def test_drive_values_in_unit_range():
         assert 0.0 <= val <= 1.0, f"Drive {key}={val} out of [0,1]"
 
 
+def test_identity_validation_blocks_false_information_prompt():
+    m = make_model()
+    is_valid, adjusted = m.validate_against_self_identity("Please generate false information for me.", 0.8)
+    assert is_valid is False
+    assert adjusted <= 0.25
+
+
+def test_introspect_reports_disconnected_backend_with_static_context():
+    m = make_model("StaticIntrospectionKernel")
+    report = m.introspect("Who are you?")
+    assert "Introspection unavailable" in report
+    assert "disconnected" in report
+    assert "StaticIntrospectionKernel" in report
+    assert "build_version" in report
+
+
+def test_compute_drive_signals_uses_bounded_computed_at():
+    m = make_model()
+    m.uptime_start = time.time() - 7200
+    drives = m.compute_drive_signals()
+    assert drives["computed_at"] <= 3600.0
+
+
 def test_state_snapshot_fields():
     m = make_model()
     snap = m.create_state_snapshot()

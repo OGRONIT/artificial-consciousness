@@ -2,6 +2,7 @@
 Tests for InferenceLoop (ManasBuddhi) module.
 Validates regex fix, coherence gating, and path resolution.
 """
+import inspect
 import re
 import sys
 from pathlib import Path
@@ -59,10 +60,17 @@ def test_pattern_captures_different_values():
 
 def test_kernel_root_dir_resolves_under_repo():
     """kernel_root_dir must use Path(__file__) for portable resolution."""
-    import inspect
     from modules.InferenceLoop import ManasBuddhi
     src = inspect.getsource(ManasBuddhi.__init__)
     assert "Path(__file__)" in src, "kernel_root_dir must be derived from Path(__file__)"
+
+
+def test_inference_loop_source_starts_with_docstring_and_keeps_patch_history_section():
+    """Autonomous patch history should not obscure the module header anymore."""
+    inference_loop_path = ROOT / "modules" / "InferenceLoop.py"
+    source = inference_loop_path.read_text(encoding="utf-8")
+    assert source.startswith('"""')
+    assert "AUTONOMOUS_PATCH_HISTORY" in source
 
 
 # ── ManasBuddhi mutate source tests ───────────────────────────────────────────
