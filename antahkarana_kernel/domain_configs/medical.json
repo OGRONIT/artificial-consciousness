@@ -1,0 +1,5 @@
+{
+  "name": "medical",
+  "keywords": ["medical", "patient", "diagnosis", "treatment", "symptom"],
+  "description": "Medical domain configuration (example)."
+}

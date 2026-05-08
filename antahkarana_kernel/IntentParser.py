@@ -1,0 +1,94 @@
+"""Intent parser for Layer 1 — lightweight, LLM-free heuristics.
+
+Produces a structured dict with fields: action, target, domain, constraints, raw.
+"""
+from typing import Dict, Optional
+import re
+import json
+import os
+
+
+class IntentParser:
+    def __init__(self, domain_configs_dir: Optional[str] = None):
+        self.domain_configs = {}
+        if domain_configs_dir:
+            self._load_domain_configs(domain_configs_dir)
+
+    def _load_domain_configs(self, dpath: str):
+        try:
+            for fname in os.listdir(dpath):
+                if fname.endswith('.json'):
+                    path = os.path.join(dpath, fname)
+                    with open(path, 'r', encoding='utf-8') as f:
+                        self.domain_configs[fname[:-5]] = json.load(f)
+        except Exception:
+            # best-effort loading; ignore errors
+            pass
+
+    def parse(self, text: str) -> Dict:
+        t = text.strip()
+        action = self._extract_action(t)
+        target = self._extract_target(t)
+        domain = self._detect_domain(t)
+        constraints = self._extract_constraints(t)
+        return {
+            'raw': text,
+            'action': action,
+            'target': target,
+            'domain': domain,
+            'constraints': constraints,
+        }
+
+    def _extract_action(self, text: str) -> Optional[str]:
+        verbs = [
+            'fix', 'update', 'fetch', 'get', 'read', 'write', 'edit', 'run', 'execute',
+            'push', 'call', 'crawl', 'search', 'test', 'install'
+        ]
+        low = text.lower()
+        for v in verbs:
+            if re.search(r'\b' + re.escape(v) + r'\b', low):
+                return v
+        # fallback: first verb-like token
+        m = re.match(r'^(\w+)', low)
+        return m.group(1) if m else None
+
+    def _extract_target(self, text: str) -> Optional[str]:
+        # filename pattern
+        m = re.search(r'([\w\-./\\]+\.(?:py|js|ts|md|json))', text)
+        if m:
+            return m.group(1)
+        # module pattern
+        m2 = re.search(r'\b(in|of|for) ([\w_.-]+)\b', text, re.I)
+        if m2:
+            return m2.group(2)
+        return None
+
+    def _detect_domain(self, text: str) -> Optional[str]:
+        low = text.lower()
+        mapping = {
+            'coding': ['python', 'react', 'javascript', 'node', 'docker', 'git', 'pytest'],
+            'medical': ['patient', 'diagnosis', 'treatment', 'medical'],
+        }
+        for domain, kws in mapping.items():
+            for k in kws:
+                if k in low:
+                    return domain
+        # fallback to configs
+        for cfg in self.domain_configs.keys():
+            for k in (self.domain_configs.get(cfg, {}).get('keywords') or []):
+                if k.lower() in low:
+                    return cfg
+        return None
+
+    def _extract_constraints(self, text: str) -> Dict:
+        cons = {}
+        # quick time constraint
+        m = re.search(r'within (\d+) (sec|second|s|minutes|mins|m)', text, re.I)
+        if m:
+            cons['deadline'] = m.group(1) + ' ' + m.group(2)
+        return cons
+
+
+if __name__ == '__main__':
+    p = IntentParser(os.path.join(os.path.dirname(__file__), 'domain_configs'))
+    print(p.parse('Fix the bug in InteractiveBridge.py and run tests'))

@@ -1,0 +1,10 @@
+{
+  "name": "custom",
+  "keywords": ["custom", "internal", "project"],
+  "description": "Custom domain placeholders for user-specific configs."
+}
+{
+  "name": "custom",
+  "keywords": [],
+  "description": "User custom domain config (empty by default)."
+}

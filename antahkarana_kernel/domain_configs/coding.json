@@ -1,0 +1,5 @@
+{
+  "name": "coding",
+  "keywords": ["python", "react", "javascript", "node", "git", "docker", "pytest"],
+  "description": "Configuration keywords and hints for coding domain."
+}

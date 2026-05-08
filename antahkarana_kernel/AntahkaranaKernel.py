@@ -42,6 +42,10 @@ from modules import (
     InteractionOutcome,
     ExistenceState
 )
+try:
+    from .domain_agent import create_agent
+except Exception:
+    create_agent = None
 
 _log_path = ROOT / "evolution_consciousness.log"
 _file_handler = logging.FileHandler(_log_path, encoding="utf-8", delay=False)
@@ -99,6 +103,16 @@ class AntahkaranaKernel:
         # Set up cross-module references
         self.trained_state_manager.load_into_kernel(self)
         self._setup_module_integrations()
+        # Instantiate domain agent (Layer 1/3/4 wiring)
+        try:
+            if create_agent:
+                self.domain_agent = create_agent()
+                logger.info("[ANTAHKARANA] Domain agent wired into kernel")
+            else:
+                self.domain_agent = None
+        except Exception as exc:
+            logger.warning("[ANTAHKARANA] Failed to create domain agent: %s", exc)
+            self.domain_agent = None
         
         # Kernel state
         self.kernel_state = {
@@ -794,6 +808,23 @@ class AntahkaranaKernel:
                 "self_coherence": self.self_model.coherence_score,
                 "health": "healthy" if self.observer.get_system_health_report()["system_is_healthy"] else "degraded"
             }
+
+    def handle_external_command(self, text: str) -> Dict[str, Any]:
+        """Allow external wiring to the domain agent for PC-control and crawling tasks.
+
+        This method provides a safe bridge for the kernel to delegate user-style commands
+        (parsed by IntentParser and executed via ToolExecutor/DomainCrawler).
+        """
+        if not getattr(self, 'domain_agent', None):
+            logger.warning("[ANTAHKARANA] No domain agent available to handle command")
+            return {"ok": False, "error": "no_domain_agent"}
+
+        try:
+            result = self.domain_agent.handle_command(text)
+            return {"ok": True, "result": result}
+        except Exception as exc:
+            logger.exception("[ANTAHKARANA] Domain agent command failed: %s", exc)
+            return {"ok": False, "error": str(exc)}
 
 
 if __name__ == "__main__":
