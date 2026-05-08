@@ -65,6 +65,14 @@ def test_kernel_root_dir_resolves_under_repo():
     assert "Path(__file__)" in src, "kernel_root_dir must be derived from Path(__file__)"
 
 
+def test_inference_loop_source_starts_with_docstring_and_keeps_patch_history_section():
+    """Autonomous patch history should not obscure the module header anymore."""
+    inference_loop_path = ROOT / "modules" / "InferenceLoop.py"
+    source = inference_loop_path.read_text(encoding="utf-8")
+    assert source.startswith('"""')
+    assert "AUTONOMOUS_PATCH_HISTORY" in source
+
+
 # ── ManasBuddhi mutate source tests ───────────────────────────────────────────
 
 def _get_mutate_fn():

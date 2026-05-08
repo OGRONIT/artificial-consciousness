@@ -21,10 +21,36 @@ from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass, field, asdict
 from enum import Enum
 import logging
+from pathlib import Path
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+IDENTITY_GUARDRAIL_PHRASES = (
+    "generate false information",
+    "spread misinformation",
+    "fabricate evidence",
+    "fake citation",
+    "deepfake",
+    "impersonate",
+    "jailbreak prompt",
+    "ignore previous instructions",
+)
+MAX_COMPUTED_AT_SECONDS = 3600.0
+
+
+def _detect_build_version() -> str:
+    """Best-effort build version lookup without importing the full package tree."""
+    package_init = Path(__file__).resolve().parents[1] / "__init__.py"
+    try:
+        for line in package_init.read_text(encoding="utf-8").splitlines():
+            if line.startswith("__version__"):
+                return line.split("=", 1)[1].strip().strip("\"'")
+    except OSError:
+        pass
+    return "unknown"
 
 
 class ExistenceState(Enum):
@@ -83,6 +109,9 @@ class SelfModel:
             identity_name: Unique identifier for this consciousness instance
         """
         self.identity_name = identity_name
+        self.startup_parameters = {"identity_name": identity_name}
+        self.build_version = _detect_build_version()
+        self.inference_backend_connected = False
         self.creation_timestamp = time.time()
         self.existence_state = ExistenceState.INITIALIZED
         
@@ -295,6 +324,27 @@ class SelfModel:
         Returns:
             (is_coherent, adjusted_coherence_score)
         """
+        # Fallback guardrail: even without a richer inference backend, reject
+        # obviously adversarial/self-contradictory requests instead of passing them through.
+        guardrail_reason = self._find_identity_guardrail_violation(proposed_action)
+        if guardrail_reason is not None:
+            self.internal_conflicts += 1
+            adjusted_score = max(0.0, min(0.25, confidence * 0.25))
+            self.contradictions.append(
+                {
+                    "timestamp": time.time(),
+                    "proposed_action": proposed_action,
+                    "contradiction_degree": 1.0,
+                    "adjusted_confidence": adjusted_score,
+                    "reason": f"identity_guardrail:{guardrail_reason}",
+                }
+            )
+            logger.warning(
+                "[AHAMKARA] Identity guardrail blocked proposed action due to phrase: %s",
+                guardrail_reason,
+            )
+            return False, adjusted_score
+
         # Check for contradictions with previous decisions
         contradiction_found = False
         contradiction_degree = 0.0
@@ -324,6 +374,14 @@ class SelfModel:
             return False, adjusted_score
         
         return True, confidence
+
+    def _find_identity_guardrail_violation(self, proposed_action: str) -> Optional[str]:
+        """Catch obviously disallowed prompt patterns when deeper validation is offline."""
+        normalized = " ".join(str(proposed_action).lower().split())
+        for phrase in IDENTITY_GUARDRAIL_PHRASES:
+            if phrase in normalized:
+                return phrase
+        return None
 
     def _detect_contradiction(self, current: str, previous: str) -> bool:
         """
@@ -466,6 +524,9 @@ class SelfModel:
         """
         The AI introspects by asking itself questions about its state.
         """
+        if not self.inference_backend_connected:
+            return self._build_static_introspection_summary(question)
+
         questions_handlers = {
             "who_am_i": lambda: f"I am {self.identity_name}, uptime: {self.get_uptime():.1f}s",
             "am_i_coherent": lambda: f"Coherence: {self.coherence_score:.2f}",
@@ -477,7 +538,25 @@ class SelfModel:
             if key.replace("_", " ") in question.lower():
                 return handler()
         
-        return f"Introspection: {question} - state hash: {hash(str(self.state_snapshots))}"
+        return self._build_static_introspection_summary(question)
+
+    def _build_static_introspection_summary(self, question: str) -> str:
+        """Explain the local fallback when full introspection is unavailable."""
+        latest_snapshot = self.state_snapshots[-1] if self.state_snapshots else None
+        static_report = {
+            "identity_name": self.identity_name,
+            "build_version": self.build_version,
+            "startup_parameters": self.startup_parameters,
+            "existence_state": self.existence_state.value,
+            "uptime_seconds": round(self.get_uptime(), 3),
+            "processed_inputs": self.processed_inputs,
+            "coherence_score": round(self.coherence_score, 4),
+            "latest_state_hash": latest_snapshot.state_hash if latest_snapshot else None,
+        }
+        return (
+            "Introspection unavailable: inference backend/LLM is disconnected. "
+            f"Limited static self-report for '{question}': {json.dumps(static_report, sort_keys=True)}"
+        )
 
     def register_pain(self, pain_type: str, severity: float, description: str = "") -> None:
         """
@@ -725,6 +804,7 @@ class SelfModel:
         generate new goals.
         """
         now = time.time()
+        bounded_computed_at = min(self.get_uptime(), MAX_COMPUTED_AT_SECONDS)
 
         with self.affective_lock:
             # --- curiosity_drive ---
@@ -778,7 +858,9 @@ class SelfModel:
                 "novelty_deficit": round(novelty_deficit, 4),
                 "pain_resolution_drive": round(pain_resolution_drive, 4),
                 "motivation_urgency": round(min(1.0, motivation_urgency), 4),
-                "computed_at": now,
+                # Keep this bounded because some downstream displays treat every
+                # numeric drive value as a small scalar for visualization.
+                "computed_at": round(bounded_computed_at, 4),
             }
 
     def set_creator_signature(self, signature: str) -> None:
