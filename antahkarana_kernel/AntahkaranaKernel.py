@@ -42,10 +42,6 @@ from modules import (
     InteractionOutcome,
     ExistenceState
 )
-try:
-    from .domain_agent import create_agent
-except Exception:
-    create_agent = None
 
 _log_path = ROOT / "evolution_consciousness.log"
 _file_handler = logging.FileHandler(_log_path, encoding="utf-8", delay=False)
@@ -103,8 +99,15 @@ class AntahkaranaKernel:
         # Set up cross-module references
         self.trained_state_manager.load_into_kernel(self)
         self._setup_module_integrations()
-        # Instantiate domain agent (Layer 1/3/4 wiring)
+        # Instantiate domain agent (Layer 1/3/4 wiring).
+        # Import is deferred to avoid package run warnings when domain_agent
+        # is executed directly with `python -m antahkarana_kernel.domain_agent`.
         try:
+            try:
+                from .domain_agent import create_agent
+            except Exception:
+                create_agent = None
+
             if create_agent:
                 self.domain_agent = create_agent()
                 logger.info("[ANTAHKARANA] Domain agent wired into kernel")

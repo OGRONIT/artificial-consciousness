@@ -53,11 +53,17 @@ class IntentParser:
         return m.group(1) if m else None
 
     def _extract_target(self, text: str) -> Optional[str]:
+        # URL has highest priority for fetch/crawl commands.
+        url_match = re.search(r'(https?://\S+)', text, re.I)
+        if url_match:
+            return url_match.group(1).rstrip(').,;!')
+
         # filename pattern
         m = re.search(r'([\w\-./\\]+\.(?:py|js|ts|md|json))', text)
         if m:
             return m.group(1)
-        # module pattern
+
+        # module/object pattern
         m2 = re.search(r'\b(in|of|for) ([\w_.-]+)\b', text, re.I)
         if m2:
             return m2.group(2)
@@ -66,13 +72,14 @@ class IntentParser:
     def _detect_domain(self, text: str) -> Optional[str]:
         low = text.lower()
         mapping = {
-            'coding': ['python', 'react', 'javascript', 'node', 'docker', 'git', 'pytest'],
-            'medical': ['patient', 'diagnosis', 'treatment', 'medical'],
+            'coding': ['coding', 'code', 'python', 'react', 'javascript', 'node', 'docker', 'git', 'pytest'],
+            'medical': ['medical', 'patient', 'diagnosis', 'treatment', 'symptom'],
         }
         for domain, kws in mapping.items():
             for k in kws:
                 if k in low:
                     return domain
+
         # fallback to configs
         for cfg in self.domain_configs.keys():
             for k in (self.domain_configs.get(cfg, {}).get('keywords') or []):
@@ -92,3 +99,4 @@ class IntentParser:
 if __name__ == '__main__':
     p = IntentParser(os.path.join(os.path.dirname(__file__), 'domain_configs'))
     print(p.parse('Fix the bug in InteractiveBridge.py and run tests'))
+    print(p.parse('fetch https://example.com and store in coding domain'))
