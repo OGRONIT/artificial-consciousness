@@ -42,12 +42,20 @@ class IntentParser:
     def _extract_action(self, text: str) -> Optional[str]:
         verbs = [
             'fix', 'update', 'fetch', 'get', 'read', 'write', 'edit', 'run', 'execute',
-            'push', 'call', 'crawl', 'search', 'test', 'install'
+            'push', 'call', 'crawl', 'search', 'test', 'install', 'research', 'study', 'learn'
         ]
         low = text.lower()
+        # Prefer the verb that appears earliest in the sentence (by index),
+        # rather than relying on a static list order. This avoids choosing
+        # verbs that come later in the phrase (e.g. 'update' vs 'edit').
+        found = []
         for v in verbs:
-            if re.search(r'\b' + re.escape(v) + r'\b', low):
-                return v
+            m = re.search(r'\b' + re.escape(v) + r'\b', low)
+            if m:
+                found.append((m.start(), v))
+        if found:
+            found.sort(key=lambda x: x[0])
+            return found[0][1]
         # fallback: first verb-like token
         m = re.match(r'^(\w+)', low)
         return m.group(1) if m else None
@@ -63,10 +71,11 @@ class IntentParser:
         if m:
             return m.group(1)
 
-        # module/object pattern
-        m2 = re.search(r'\b(in|of|for) ([\w_.-]+)\b', text, re.I)
+        # module/object pattern - skip common articles like "the/a/an" so
+        # "run tests for the project" yields "project" rather than "the".
+        m2 = re.search(r"\b(?:in|of|for)\s+(?:the\s+|a\s+|an\s+)?([\w_.-]+)\b", text, re.I)
         if m2:
-            return m2.group(2)
+            return m2.group(1)
         return None
 
     def _detect_domain(self, text: str) -> Optional[str]:
