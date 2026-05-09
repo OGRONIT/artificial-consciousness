@@ -1,1 +1,7 @@
-{"sources": ["https://example.com/testpage"]}
+{
+	"sources": [
+		"https://docs.python.org/3/",
+		"https://stackoverflow.com/questions/tagged/python",
+		"https://github.com/trending/python"
+	]
+}
