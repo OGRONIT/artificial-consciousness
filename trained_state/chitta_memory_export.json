@@ -1,25 +1,25 @@
 {
   "version": 1,
-  "generated_at": 1776203610.9219787,
+  "generated_at": 1778243177.7742503,
   "source_memory_count": 298,
   "loaded_memory_count": 298,
   "memory_statistics": {
     "total_memories": 298,
-    "max_local_memories": 290944,
+    "max_local_memories": 226089,
     "memory_clusters": 0,
     "contradictions_detected": 0,
-    "external_knowledge_facts": 381,
+    "external_knowledge_facts": 0,
     "external_knowledge_clusters": 0,
     "shadow_memory_log": "D:\\Artificial Consciousness\\antahkarana_kernel\\evolution_vault\\shadow_memory\\shadow_memory.jsonl",
-    "average_external_verification_score": 0.9755170603674566,
+    "average_external_verification_score": 0.0,
     "outcome_distribution": {
       "conflict": 5,
       "failed": 10,
       "success": 283
     },
-    "average_success_score": 0.9461187080536915,
+    "average_success_score": 0.9461187080536912,
     "average_learning_value": 0.0538812919463087,
-    "emotional_trend": 5.551115123125783e-18,
+    "emotional_trend": 0.0,
     "most_accessed": [
       {
         "memory_id": "19700efd7a0f31d1",
@@ -80,7 +80,7 @@
       }
     ],
     "avg_learning_value": 0.0538812919463087,
-    "avg_success_score": 0.9461187080536915,
+    "avg_success_score": 0.9461187080536912,
     "conflict_count": 5,
     "conflict_ratio": 0.016778523489932886
   },
